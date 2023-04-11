@@ -17,7 +17,7 @@ data class DoubleDamageFromEntity(
     val typeRelated: List<TypeEntity>
 )
 
-fun TypeDetailsResponse.toX2From(): List<DoubleDamageFromCrossRefEntity> {
+fun TypeDetailsResponse.toX2FromDB(): List<DoubleDamageFromCrossRefEntity> {
     return this.damageRelationsResponse.doubleDamageFrom.map {
         DoubleDamageFromCrossRefEntity(
             this.name,

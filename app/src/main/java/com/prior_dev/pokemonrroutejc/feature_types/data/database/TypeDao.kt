@@ -14,5 +14,5 @@ interface TypeDao {
     suspend fun insert(types: List<TypeEntity>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertDoubleDamageFrom(crossRef: DoubleDamageFromCrossRefEntity)
+    suspend fun insertDoubleDamageFrom(crossRef: List<DoubleDamageFromCrossRefEntity>)
 }

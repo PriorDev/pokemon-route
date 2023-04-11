@@ -6,6 +6,7 @@ import com.prior_dev.pokemonrroutejc.core.EnumTags
 import com.prior_dev.pokemonrroutejc.core.Resource
 import com.prior_dev.pokemonrroutejc.core.components.SealedMyExceptions
 import com.prior_dev.pokemonrroutejc.feature_types.data.database.TypeDao
+import com.prior_dev.pokemonrroutejc.feature_types.data.database.relations.toX2FromDB
 import com.prior_dev.pokemonrroutejc.feature_types.data.database.toDB
 import com.prior_dev.pokemonrroutejc.feature_types.data.network.TypeService
 import com.prior_dev.pokemonrroutejc.feature_types.domain.TypeData
@@ -63,7 +64,7 @@ class TypeRepositoryImp @Inject constructor(
 
                 response?.let { typeDetails ->
 
-                    dao.insertDoubleDamageFrom()
+                    dao.insertDoubleDamageFrom(typeDetails.toX2FromDB())
 
                     emit(Resource.Success(typeDetails.toDomain()))
 
