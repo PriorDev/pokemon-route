@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">PokemonRRouteJC</string>
+    <string name="types">Types</string>
+    <string name="damageX2">Damage x2</string>
+    <string name="offensive">Offensive</string>
+    <string name="half_damage">Damage 1/2</string>
+    <string name="no_damage">Damage x0</string>
+    <string name="defensive">Defensive</string>
+    <string name="pokemons">Pokemons</string>
+    <string name="search">Search</string>
+    <string name="abilities">Abilities</string>
+    <string name="hidden_ability">Hiden Ability</string>
+    <string name="stats">Stats</string>
+</resources>
