@@ -15,4 +15,7 @@ interface TypeDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertDoubleDamageFrom(crossRef: List<DoubleDamageFromCrossRefEntity>)
+
+    @Query("Select * From do where type = :type")
+    suspend fun getDoubleDamageFrom(type: String): List<Double>
 }

@@ -1,5 +1,6 @@
 package com.prior_dev.pokemonrroutejc.feature_types.domain
 
+import com.prior_dev.pokemonrroutejc.feature_types.data.database.DoubleDamageFromCrossRefEntity
 import com.prior_dev.pokemonrroutejc.feature_types.data.network.response.DamageRelationsResponse
 import com.prior_dev.pokemonrroutejc.feature_types.data.network.response.TypeDetailsResponse
 
@@ -30,3 +31,4 @@ fun DamageRelationsResponse.toDomain() = DamageRelationsData(
         noDamageFrom = noDamageFrom.map { it.toDomain() },
         noDamageTo = noDamageTo.map { it.toDomain() },
     )
+

@@ -9,6 +9,7 @@ import com.prior_dev.pokemonrroutejc.feature_types.data.database.TypeDao
 import com.prior_dev.pokemonrroutejc.feature_types.data.database.relations.toX2FromDB
 import com.prior_dev.pokemonrroutejc.feature_types.data.database.toDB
 import com.prior_dev.pokemonrroutejc.feature_types.data.network.TypeService
+import com.prior_dev.pokemonrroutejc.feature_types.domain.DamageRelationsData
 import com.prior_dev.pokemonrroutejc.feature_types.domain.TypeData
 import com.prior_dev.pokemonrroutejc.feature_types.domain.TypeDetailsData
 import com.prior_dev.pokemonrroutejc.feature_types.domain.toDomain
@@ -65,6 +66,13 @@ class TypeRepositoryImp @Inject constructor(
                 response?.let { typeDetails ->
 
                     dao.insertDoubleDamageFrom(typeDetails.toX2FromDB())
+                    val doubleDamageFrom = dao.getDoubleDamageFrom(type)
+
+                    val typeDetailsData = TypeDetailsData(
+                        damageRelationsData = DamageRelationsData(
+                            doubleDamageFrom = doubleDamageFrom.to
+                        )
+                    )
 
                     emit(Resource.Success(typeDetails.toDomain()))
 
