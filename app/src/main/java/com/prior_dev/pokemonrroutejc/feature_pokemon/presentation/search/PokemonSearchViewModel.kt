@@ -28,13 +28,20 @@ class PokemonSearchViewModel @Inject constructor(
     private val _pokemonNames = mutableStateListOf<PokemonNameData>()
     val pokemonNames: List<PokemonNameData> = _pokemonNames
 
-    private val _pokemons = mutableStateListOf<PokemonData>()
-    val pokemons: List<PokemonData> = _pokemons
-
     private var searchJob: Job? = null
 
     init {
         _states.value = states.value?.copy(isLoading = false)
+        viewModelScope.launch {
+            repository.getPokemonNamePaging(0).collect{ result ->
+                handleResource(result, _states = _states, states = states){
+                    result.data?.let {
+                        _pokemonNames.clear()
+                        _pokemonNames.addAll(it)
+                    }
+                }
+            }
+        }
     }
 
     fun onSearchText(text: String){
@@ -51,24 +58,6 @@ class PokemonSearchViewModel @Inject constructor(
                         }
                     }
                 }
-        }
-    }
-
-    fun onSearchClick(){
-        viewModelScope.launch{
-            if (pokemonNames.isEmpty())
-                return@launch
-
-            repository.getListOfPokemon(pokemonNames)
-                .collect{ result ->
-                    handleResource(result, _states, states){
-                        result.data?.let {
-                            _pokemons.clear()
-                            _pokemons.addAll(it)
-                        }
-                    }
-                }
-            _pokemonNames.clear()
         }
     }
 

@@ -3,6 +3,7 @@ package com.prior_dev.pokemonrroutejc.feature_types.data.network.response
 import com.google.gson.annotations.SerializedName
 
 data class TypeDetailsResponse(
+    @SerializedName("id") val id: Int,
     @SerializedName("name") val name: String,
     @SerializedName("damage_relations") val damageRelationsResponse: DamageRelationsResponse
 )

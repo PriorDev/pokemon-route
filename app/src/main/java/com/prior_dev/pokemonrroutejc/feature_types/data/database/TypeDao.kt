@@ -4,18 +4,24 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 
 @Dao
 interface TypeDao {
     @Query("Select * From catType")
-    suspend fun getAll(): List<TypeEntity>
+    suspend fun getAllTypes(): List<TypeEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(types: List<TypeEntity>)
+    suspend fun insertTypes(types: List<TypeEntity>)
+
+    @Transaction
+    @Query("Select * From damage_relations where ownTypeId = :typeId")
+    suspend fun getDamageRelationByTypeId(typeId: Int): List<DamageRelationsEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertDoubleDamageFrom(crossRef: List<DoubleDamageFromCrossRefEntity>)
+    suspend fun insertDamageRelations(damageRelationsEntity: List<DamageRelationsEntity>)
 
-    @Query("Select * From do where type = :type")
-    suspend fun getDoubleDamageFrom(type: String): List<Double>
+    @Query("Delete from damage_relations where ownTypeId = :typeId")
+    suspend fun deleteDamageRelation(typeId: Int)
+
 }

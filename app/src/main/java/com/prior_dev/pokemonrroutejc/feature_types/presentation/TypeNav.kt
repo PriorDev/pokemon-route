@@ -26,7 +26,7 @@ fun TypeNav(
             route = RoutesType.TypeDetails.route,
             arguments = listOf(
                 navArgument(RoutesType.TypeDetails.argType){
-                    type = NavType.StringType
+                    type = NavType.IntType
                 }
             )
         ){

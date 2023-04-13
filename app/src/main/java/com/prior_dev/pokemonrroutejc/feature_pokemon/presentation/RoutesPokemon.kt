@@ -13,7 +13,7 @@ sealed class RoutesPokemon(val route: String){
     object TypeDetails: RoutesPokemon("Details/{type}"){
         const val argType = "type"
 
-        fun getRoute(type: String) = "Details/$type"
+        fun getRoute(type: Int) = "Details/$type"
     }
 
     companion object{

@@ -35,18 +35,9 @@ fun PokemonSearchTextField(
                     imageVector = Icons.Default.Search,
                     contentDescription = stringResource(id = R.string.search)
                 )
-                Spacer(modifier = Modifier.width(16.dp))
                 Text(text = stringResource(id = R.string.search))
+                Spacer(modifier = Modifier.width(16.dp))
 
-            }
-        },
-        trailingIcon = {
-            IconButton(onClick = onSearch ) {
-                Icon(
-                    imageVector = Icons.Default.Search,
-                    contentDescription = stringResource(id = R.string.search),
-                    tint = MaterialTheme.colors.secondary
-                )
             }
         },
         colors = TextFieldDefaults.textFieldColors(backgroundColor = MaterialTheme.colors.primary),

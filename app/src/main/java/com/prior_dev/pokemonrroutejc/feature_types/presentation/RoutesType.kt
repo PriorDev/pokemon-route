@@ -5,7 +5,7 @@ sealed class RoutesType(val route: String){
     object TypeDetails: RoutesType("Details/{type}"){
         const val argType = "type"
 
-        fun getRoute(type: String) = "Details/$type"
+        fun getRoute(type: Int) = "Details/$type"
     }
 
     companion object {

@@ -78,7 +78,7 @@ fun MenuBottomNavBar(
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Icon(
-                        painter = painterResource(id = R.drawable.icon_attack),
+                        painter = painterResource(id = R.drawable.icon_pokeball),
                         contentDescription = stringResource(id = R.string.types),
                         modifier = Modifier.size(24.dp)
                     )

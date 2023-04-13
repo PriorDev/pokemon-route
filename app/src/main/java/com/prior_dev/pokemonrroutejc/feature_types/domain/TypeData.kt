@@ -1,22 +1,25 @@
 package com.prior_dev.pokemonrroutejc.feature_types.domain
 
 import com.prior_dev.pokemonrroutejc.core.EnumColorTypes
+import com.prior_dev.pokemonrroutejc.core.getIdFromPokeUrl
 import com.prior_dev.pokemonrroutejc.feature_types.data.database.TypeEntity
 import com.prior_dev.pokemonrroutejc.feature_types.data.network.response.TypeResponse
 
 data class TypeData(
-    val name: String,
     val id: Int,
+    val name: String,
 )
 
 fun TypeResponse.toDomain() =
     TypeData(
-        name = name, id = url.substring(0, url.length - 1).split("/").last().toInt()
+        id = url.getIdFromPokeUrl(),
+        name = name,
     )
 
 fun TypeEntity.toDomain() =
     TypeData(
-        name = name, id = id
+        id = id,
+        name = name,
     )
 
 fun TypeData.getColor() =

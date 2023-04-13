@@ -43,7 +43,7 @@ fun ListTypeView(
                 type = type,
                 style = MaterialTheme.typography.h4,
                 onClick = {
-                    nav.navigate(RoutesType.TypeDetails.getRoute(type.name))
+                    nav.navigate(RoutesType.TypeDetails.getRoute(type.id))
                 }
             )
         }

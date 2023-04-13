@@ -1,12 +1,25 @@
 package com.prior_dev.pokemonrroutejc.feature_pokemon.domain
 
+import com.prior_dev.pokemonrroutejc.core.getIdFromPokeUrl
 import com.prior_dev.pokemonrroutejc.feature_pokemon.data.database.PokemonNameEntity
+import com.prior_dev.pokemonrroutejc.feature_pokemon.data.network.response.PokemonNameResponse
 
 data class PokemonNameData(
-    val name: String
+    val id: Int,
+    val name: String,
+    val imgUrl: String
 )
 
 fun PokemonNameEntity.toDomain() =
     PokemonNameData(
-        name = name.uppercase()
+        id = id,
+        name = name.uppercase(),
+        imgUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/$id.png"
+    )
+
+fun PokemonNameResponse.toDomain() =
+    PokemonNameData(
+        id = url.getIdFromPokeUrl(),
+        name = name.uppercase(),
+        imgUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${url.getIdFromPokeUrl()}.png"
     )

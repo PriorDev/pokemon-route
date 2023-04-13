@@ -38,7 +38,7 @@ fun PokemonNav(
             route = RoutesPokemon.TypeDetails.route,
             arguments = listOf(
                 navArgument(name = RoutesPokemon.TypeDetails.argType){
-                    type = NavType.StringType
+                    type = NavType.IntType
                 }
             )
         ){

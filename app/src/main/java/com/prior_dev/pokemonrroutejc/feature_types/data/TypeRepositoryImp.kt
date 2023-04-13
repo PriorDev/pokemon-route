@@ -1,22 +1,20 @@
 package com.prior_dev.pokemonrroutejc.feature_types.data
 
-import android.accounts.NetworkErrorException
 import android.util.Log
 import com.prior_dev.pokemonrroutejc.core.EnumTags
 import com.prior_dev.pokemonrroutejc.core.Resource
 import com.prior_dev.pokemonrroutejc.core.components.SealedMyExceptions
+import com.prior_dev.pokemonrroutejc.feature_types.data.database.DamageRelationsEntity
 import com.prior_dev.pokemonrroutejc.feature_types.data.database.TypeDao
-import com.prior_dev.pokemonrroutejc.feature_types.data.database.relations.toX2FromDB
 import com.prior_dev.pokemonrroutejc.feature_types.data.database.toDB
 import com.prior_dev.pokemonrroutejc.feature_types.data.network.TypeService
+import com.prior_dev.pokemonrroutejc.feature_types.data.network.response.TypeDetailsResponse
 import com.prior_dev.pokemonrroutejc.feature_types.domain.DamageRelationsData
 import com.prior_dev.pokemonrroutejc.feature_types.domain.TypeData
 import com.prior_dev.pokemonrroutejc.feature_types.domain.TypeDetailsData
 import com.prior_dev.pokemonrroutejc.feature_types.domain.toDomain
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import retrofit2.HttpException
-import java.io.IOException
 import javax.inject.Inject
 
 class TypeRepositoryImp @Inject constructor(
@@ -27,7 +25,8 @@ class TypeRepositoryImp @Inject constructor(
         return flow { 
             emit(Resource.Loading())
             
-            val typeEntity = dao.getAll()
+            val typeEntity = dao.getAllTypes()
+
             if(typeEntity.isNotEmpty()){
                 emit(Resource.Success(
                     typeEntity.map { it.toDomain() }
@@ -39,13 +38,13 @@ class TypeRepositoryImp @Inject constructor(
             try{
                 val typeResponse = service.getAllTypes()
                 typeResponse?.let { response ->
-                    dao.insert(
+                    dao.insertTypes(
                         response.types.map { it.toDB() }
                     )
                 }
 
                 emit(Resource.Success(
-                    dao.getAll().map { it.toDomain() }
+                    dao.getAllTypes().map { it.toDomain() }
                 ))
             }catch (e: Exception){
                 Log.e(EnumTags.Error.tag, "getAllTypes: ${e.message}")
@@ -56,31 +55,37 @@ class TypeRepositoryImp @Inject constructor(
         }
     }
 
-    suspend fun getType(type: String): Flow<Resource<TypeDetailsData>>{
+    suspend fun getType(typeId: Int): Flow<Resource<TypeDetailsData>>{
         return flow {
             emit(Resource.Loading())
 
+            val damageRelationFromDB = dao.getDamageRelationByTypeId(typeId = typeId)
+
+            if(damageRelationFromDB.isNotEmpty()){
+                emit(Resource.Success(damageRelationFromDB.toDomain()))
+                emit(Resource.Loading(false))
+            }
+
             try {
-                val response = service.getType(type)
+                val response = service.getType(typeId)
 
                 response?.let { typeDetails ->
 
-                    dao.insertDoubleDamageFrom(typeDetails.toX2FromDB())
-                    val doubleDamageFrom = dao.getDoubleDamageFrom(type)
+                    //Elimina datos anteriores
+                    dao.deleteDamageRelation(typeDetails.id)
+                    dao.insertDamageRelations(typeDetails.toDB())
 
-                    val typeDetailsData = TypeDetailsData(
-                        damageRelationsData = DamageRelationsData(
-                            doubleDamageFrom = doubleDamageFrom.to
-                        )
-                    )
-
+                    emit(Resource.Loading())
                     emit(Resource.Success(typeDetails.toDomain()))
 
-                } ?: emit(Resource.Error("Error al obtener los detalles del tipo"))
+                } ?: emit(Resource.Error("Error al obtener la información del servidor"))
 
             }catch (ex: Exception){
                 Log.e(EnumTags.Error.tag, "getType: ${ex.message}")
-                emit(Resource.Error(SealedMyExceptions.serverError))
+
+                if(damageRelationFromDB.isEmpty()){
+                    emit(Resource.Error(SealedMyExceptions.serverError))
+                }
             }
 
             emit(Resource.Loading(false))

@@ -111,7 +111,7 @@ fun PokemonDetailsView(
                         modifier = Modifier
                             .width(100.dp)
                     ){
-                        navPokemon.navigate(RoutesPokemon.TypeDetails.getRoute(it.name))
+                        navPokemon.navigate(RoutesPokemon.TypeDetails.getRoute(it.id))
                     }
                 }
             }

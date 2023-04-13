@@ -23,7 +23,7 @@ class DetailsTypeViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            savedStateHandle.get<String>(RoutesType.TypeDetails.argType)?.let { type ->
+            savedStateHandle.get<Int>(RoutesType.TypeDetails.argType)?.let { type ->
                 repository.getType(type)
                     .collect{ result ->
                         when(result){

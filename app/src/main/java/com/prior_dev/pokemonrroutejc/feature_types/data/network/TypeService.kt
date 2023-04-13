@@ -15,9 +15,9 @@ class TypeService @Inject constructor (
         }
     }
 
-    suspend fun getType(type: String): TypeDetailsResponse?{
+    suspend fun getType(typeId: Int): TypeDetailsResponse?{
         return withContext(Dispatchers.IO){
-            api.getType("type/$type").body()
+            api.getType("type/$typeId").body()
         }
     }
 }

@@ -120,4 +120,25 @@ class PokemonRepositoryImp @Inject constructor(
             }
         }
     }
+
+    suspend fun getPokemonNamePaging(offSet: Int): Flow<Resource<List<PokemonNameData>>>{
+        return flow {
+            emit(Resource.Loading())
+
+            try{
+                val limit = 20
+                val pokemonNames = service.getAllPokemons(
+                    "pokemon?offset=$offSet&limit=$limit"
+                )
+
+                emit(Resource.Success(pokemonNames?.pokemons?.map { it.toDomain() }))
+            }catch (e: Exception){
+                Log.e(EnumTags.Error.tag, "getListOfPokemon: ${e.message}" )
+                emit(Resource.Error(SealedMyExceptions.serverError))
+            }
+
+            emit(Resource.Loading(false))
+        }
+    }
+
 }

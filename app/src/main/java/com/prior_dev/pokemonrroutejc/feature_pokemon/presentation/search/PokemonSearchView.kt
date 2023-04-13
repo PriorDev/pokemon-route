@@ -26,6 +26,7 @@ import com.prior_dev.pokemonrroutejc.core.CommonStates
 import com.prior_dev.pokemonrroutejc.core.components.DisposableMessage
 import com.prior_dev.pokemonrroutejc.feature_pokemon.presentation.RoutesPokemon
 import com.prior_dev.pokemonrroutejc.feature_pokemon.presentation.components.ItemPokemon
+import com.prior_dev.pokemonrroutejc.feature_pokemon.presentation.components.ItemPokemonName
 import com.prior_dev.pokemonrroutejc.feature_pokemon.presentation.components.PokemonSearchTextField
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -44,7 +45,6 @@ fun PokemonSearchView(
             value = states.searchText,
             onValueChange = viewModel::onSearchText,
             onSearch = {
-                viewModel.onSearchClick()
                 keyboardController?.hide()
             },
         )
@@ -52,7 +52,7 @@ fun PokemonSearchView(
         Box(
             Modifier.fillMaxSize()
         ){
-            if(!states.isLoading && viewModel.pokemonNames.isEmpty()){
+            if(!states.isLoading){
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2),
                     verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -61,8 +61,8 @@ fun PokemonSearchView(
                         .padding(horizontal = 8.dp)
                         .padding(top = 4.dp)
                 ){
-                    items(viewModel.pokemons){pokemon ->
-                        ItemPokemon(
+                    items(viewModel.pokemonNames){pokemon ->
+                        ItemPokemonName(
                             pokemon = pokemon,
                             modifier = Modifier.clickable {
                                 navPokemon
@@ -72,29 +72,6 @@ fun PokemonSearchView(
                     }
                     item { 
                         Spacer(modifier = Modifier.height(8.dp))
-                    }
-                }
-            }
-
-            LazyColumn{
-                if(states.isLoading){
-                    item{
-                        LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
-                    }
-                }else{
-                    items(viewModel.pokemonNames){ pokemonsName  ->
-                        Text(
-                            text = pokemonsName.name,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 8.dp, horizontal = 8.dp)
-                                .clickable {
-                                    navPokemon.navigate(
-                                        RoutesPokemon.PokemonDetails.getRoute(pokemonsName.name)
-                                    )
-                                }
-                        )
-                        Divider()
                     }
                 }
             }
