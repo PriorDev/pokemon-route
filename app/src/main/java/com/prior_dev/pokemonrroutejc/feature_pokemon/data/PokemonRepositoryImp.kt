@@ -24,12 +24,6 @@ class PokemonRepositoryImp @Inject constructor(
         return flow {
             emit(Resource.Loading())
 
-            if(name.isBlank()){
-                emit(Resource.Success(emptyList()))
-                emit(Resource.Loading(false))
-                return@flow
-            }
-
             val likeName = "%$name%"
             val pokemons = dao.getPokemonNameByMatch(likeName)
 

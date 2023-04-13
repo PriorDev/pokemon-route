@@ -7,19 +7,26 @@ import com.prior_dev.pokemonrroutejc.feature_pokemon.data.network.response.Pokem
 data class PokemonNameData(
     val id: Int,
     val name: String,
-    val imgUrl: String
+    var imgUrl: String
 )
 
 fun PokemonNameEntity.toDomain() =
     PokemonNameData(
         id = id,
         name = name.uppercase(),
-        imgUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/$id.png"
+        imgUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/$id.png"
     )
 
 fun PokemonNameResponse.toDomain() =
     PokemonNameData(
         id = url.getIdFromPokeUrl(),
         name = name.uppercase(),
-        imgUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${url.getIdFromPokeUrl()}.png"
+        imgUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${url.getIdFromPokeUrl()}.png"
+    )
+
+fun PokemonNameData.getAlternativeImg() =
+    PokemonNameData(
+        id = id,
+        name = name.uppercase(),
+        imgUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$id.png"
     )
