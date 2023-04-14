@@ -9,12 +9,16 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -38,6 +42,7 @@ fun PokemonSearchView(
     val viewModel: PokemonSearchViewModel = hiltViewModel()
     val states by viewModel.states.observeAsState(CommonStates())
     val keyboardController = LocalSoftwareKeyboardController.current
+    val gridState = rememberLazyGridState()
 
     DisposableMessage(states.message, onDismiss = viewModel::onDismiss)
 
@@ -50,32 +55,36 @@ fun PokemonSearchView(
             },
         )
 
-        Box(
-            Modifier.fillMaxSize()
+        if(states.isLoading){
+            LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+        }
+
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            state = gridState,
+            modifier = Modifier
+                .padding(horizontal = 8.dp)
+                .padding(top = 4.dp)
         ){
-            if(!states.isLoading){
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    modifier = Modifier
-                        .padding(horizontal = 8.dp)
-                        .padding(top = 4.dp)
-                ){
-                    items(viewModel.pokemonNames){pokemon ->
-                        ItemPokemonName(
-                            pokemon = pokemon,
-                            modifier = Modifier.clickable {
-                                navPokemon
-                                    .navigate(RoutesPokemon.PokemonDetails.getRoute(pokemon.name))
-                            }
-                        )
+            items(viewModel.pokemonNames){pokemon ->
+                ItemPokemonName(
+                    pokemon = pokemon,
+                    modifier = Modifier.clickable {
+                        navPokemon
+                            .navigate(RoutesPokemon.PokemonDetails.getRoute(pokemon.name))
                     }
-                    item { 
-                        Spacer(modifier = Modifier.height(8.dp))
-                    }
-                }
+                )
             }
+            item {
+                Spacer(modifier = Modifier.height(8.dp))
+            }
+        }
+
+        if(!gridState.canScrollForward){
+            Log.d("TAG", "PokemonSearchView: ${gridState.canScrollForward}")
+            viewModel.getNextPage()
         }
     }
 }

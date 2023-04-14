@@ -1,15 +1,11 @@
 package com.prior_dev.pokemonrroutejc.feature_pokemon.presentation.search
 
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
+import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.palette.graphics.Palette
 import com.prior_dev.pokemonrroutejc.core.CommonStates
 import com.prior_dev.pokemonrroutejc.core.handleResource
 import com.prior_dev.pokemonrroutejc.feature_pokemon.data.PokemonRepositoryImp
@@ -34,16 +30,7 @@ class PokemonSearchViewModel @Inject constructor(
 
     init {
         _states.value = states.value?.copy(isLoading = false)
-        viewModelScope.launch {
-            repository.getPokemonNamePaging(0).collect{ result ->
-                handleResource(result, _states = _states, states = states){
-                    result.data?.let {
-                        _pokemonNames.clear()
-                        _pokemonNames.addAll(it)
-                    }
-                }
-            }
-        }
+        getNextPage()
     }
 
     fun onSearchText(text: String){
@@ -52,14 +39,8 @@ class PokemonSearchViewModel @Inject constructor(
         searchJob = viewModelScope.launch {
             delay(500L)
             if(text.isBlank()){
-                repository.getPokemonNamePaging(0).collect{ result ->
-                    handleResource(result, _states, states){
-                        result.data?.let {
-                            _pokemonNames.clear()
-                            _pokemonNames.addAll(it)
-                        }
-                    }
-                }
+                _pokemonNames.clear()
+                getNextPage()
             }else{
                 repository.searchPokemonNameByMatch(text)
                     .collect{ result ->
@@ -77,5 +58,26 @@ class PokemonSearchViewModel @Inject constructor(
 
     fun onDismiss(){
         _states.value = states.value?.copy(message = "")
+    }
+
+    fun getNextPage(){
+        if(states.value!!.searchText.isNotBlank()){
+            return
+        }
+
+        val offset = pokemonNames.size
+
+        viewModelScope.launch {
+            repository.getPokemonNamePaging(offset).collect{ result ->
+                handleResource(result, _states = _states, states = states){
+                    result.data?.let {
+                        if(offset == 0){
+                            _pokemonNames.clear()
+                        }
+                        _pokemonNames.addAll(it)
+                    }
+                }
+            }
+        }
     }
 }
