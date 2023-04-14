@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -85,113 +86,128 @@ fun PokemonDetailsView(
             .background(
                 Brush.linearGradient(colorTypes)
             )
-    ) {
+    ){
         item{
-            Text(
-                text = pokemon.name.uppercase(),
-                style = MaterialTheme.typography.h4,
-                overflow = TextOverflow.Ellipsis,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(4.dp),
-                maxLines = 1,
-                textAlign = TextAlign.Center,
-                color = Color.Black,
-            )
-        }
-
-        item{
-            Row(
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                pokemon.types.forEach{
-                    ItemType(
-                        type = it,
-                        modifier = Modifier
-                            .width(100.dp)
-                    ){
-                        navPokemon.navigate(RoutesPokemon.TypeDetails.getRoute(it.id))
-                    }
-                }
-            }
-        }
-        
-        item {
             Box(modifier = Modifier.fillMaxWidth()){
+                Column {
+                    Spacer(modifier = Modifier.height(100.dp))
+                    Card(
+                        modifier = Modifier.padding(16.dp)
+                    ) {
+                        Column{
+                            Spacer(modifier = Modifier.height(110.dp))
+
+                            Text(
+                                text = pokemon.name.uppercase(),
+                                style = MaterialTheme.typography.h4,
+                                fontWeight = FontWeight.Black,
+                                overflow = TextOverflow.Ellipsis,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(4.dp),
+                                maxLines = 1,
+                                textAlign = TextAlign.Center,
+                            )
+                            Spacer(modifier = Modifier.height(16.dp))
+
+                            Row(
+                                horizontalArrangement = Arrangement.SpaceEvenly,
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                pokemon.types.forEach{
+                                    ItemType(
+                                        type = it,
+                                        modifier = Modifier
+                                            .width(100.dp)
+                                    ){
+                                        navPokemon.navigate(RoutesPokemon.TypeDetails.getRoute(it.id))
+                                    }
+                                }
+                            }
+
+                            Spacer(modifier = Modifier.height(16.dp))
+
+                            Text(
+                                text = stringResource(id = R.string.abilities),
+                                style = MaterialTheme.typography.h6,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 4.dp),
+                                textAlign = TextAlign.Center
+                            )
+                            pokemon.abilities.filter { !it.isHidden }.forEach{ ability ->
+                                Text(
+                                    text = ability.name,
+                                    style = MaterialTheme.typography.body1,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(horizontal = 4.dp)
+                                        .background(MaterialTheme.colors.background),
+                                    textAlign = TextAlign.Center,
+                                )
+                            }
+
+                            Spacer(modifier = Modifier.height(16.dp))
+
+                            Text(
+                                text = stringResource(id = R.string.hidden_ability),
+                                style = MaterialTheme.typography.h6,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 4.dp),
+                                textAlign = TextAlign.Center
+                            )
+                            pokemon.abilities.filter { it.isHidden }.forEach{ ability ->
+                                Text(
+                                    text = ability.name,
+                                    style = MaterialTheme.typography.body1,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(horizontal = 4.dp)
+                                        .background(MaterialTheme.colors.background),
+                                    textAlign = TextAlign.Center,
+                                )
+                            }
+
+                            Spacer(modifier = Modifier.height(16.dp))
+
+                            Text(
+                                text = stringResource(id = R.string.stats),
+                                style = MaterialTheme.typography.h6,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(4.dp),
+                                textAlign = TextAlign.Center
+                            )
+
+                            pokemon.stats.forEach{ stat ->
+                                MySimpleSlider(
+                                    label = stat.name,
+                                    value = stat.baseStat.toFloat(),
+                                    modifier = Modifier
+                                        .padding(horizontal = 4.dp),
+                                )
+                            }
+
+                            Spacer(modifier = Modifier.height(16.dp))
+
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
-                        .data(pokemon.sprites.frontDefault)
+                        .data("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.id}.png")
                         .crossfade(true)
                         .build(),
                     contentDescription = pokemon.name,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .size(200.dp)
-                        .align(Alignment.Center)
+                        .align(Alignment.TopCenter)
                 )
-            }
-        }
-
-        item {
-            Row(
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                AsyncImage(
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data(pokemon.sprites.frontShiny)
-                        .crossfade(true)
-                        .build(),
-                    contentDescription = pokemon.name,
-                    contentScale = ContentScale.Fit,
-                    modifier = Modifier
-                        .height(150.dp)
-                )
-                AsyncImage(
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data(pokemon.sprites.backShiny)
-                        .crossfade(true)
-                        .build(),
-                    contentDescription = pokemon.name,
-                    contentScale = ContentScale.Fit,
-                    modifier = Modifier
-                        .height(150.dp)
-                )
-            }
-        }
-
-        item {
-            Box(modifier = Modifier.padding(horizontal = 16.dp)){
-                Card{
-                    Column(
-                        Modifier
-                            .fillMaxSize()
-                            .background(MaterialTheme.colors.background)
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.abilities),
-                            style = MaterialTheme.typography.h6,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(16.dp),
-                            textAlign = TextAlign.Center
-                        )
-                        pokemon.abilities.filter { !it.isHidden }.forEach{ ability ->
-                            Text(
-                                text = ability.name,
-                                style = MaterialTheme.typography.body1,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(4.dp)
-                                    .background(MaterialTheme.colors.background),
-                                textAlign = TextAlign.Center,
-                            )
-                        }
-
-                        Spacer(modifier = Modifier.height(4.dp))
-                    }
-                }
             }
         }
 
@@ -199,77 +215,48 @@ fun PokemonDetailsView(
             Spacer(modifier = Modifier.height(16.dp))
         }
 
-        item {
-            Box(modifier = Modifier.padding(horizontal = 16.dp)){
-                Card{
-                    Column(
-                        Modifier
-                            .fillMaxSize()
-                            .background(MaterialTheme.colors.background)
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.hidden_ability),
-                            style = MaterialTheme.typography.h6,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(16.dp),
-                            textAlign = TextAlign.Center
-                        )
-                        pokemon.abilities.filter { it.isHidden }.forEach{ ability ->
-                            Text(
-                                text = ability.name,
-                                style = MaterialTheme.typography.body1,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(4.dp)
-                                    .background(MaterialTheme.colors.background),
-                                textAlign = TextAlign.Center,
-                            )
-                        }
-
-                        Spacer(modifier = Modifier.height(4.dp))
-                    }
-                }
-            }
-        }
-
         item{
-            Spacer(modifier = Modifier.height(16.dp))
-        }
+            Card (modifier = Modifier.padding(16.dp)){
+                Column {
+                    Text(
+                        text = stringResource(id = R.string.shiny),
+                        style = MaterialTheme.typography.h4,
+                        fontWeight = FontWeight.Black,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        maxLines = 1,
+                        textAlign = TextAlign.Center,
+                    )
 
-        item {
-            Box(modifier = Modifier.padding(horizontal = 16.dp)){
-                Card{
-                    Column(
-                        Modifier
-                            .fillMaxSize()
-                            .background(MaterialTheme.colors.background)
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceEvenly,
+                        modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text(
-                            text = stringResource(id = R.string.stats),
-                            style = MaterialTheme.typography.h6,
+                        AsyncImage(
+                            model = ImageRequest.Builder(LocalContext.current)
+                                .data(pokemon.sprites.frontShiny)
+                                .crossfade(true)
+                                .build(),
+                            contentDescription = pokemon.name,
+                            contentScale = ContentScale.Crop,
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(16.dp),
-                            textAlign = TextAlign.Center
+                                .weight(.5f)
                         )
-                        pokemon.stats.forEach{ stat ->
-                            MySimpleSlider(
-                                label = stat.name,
-                                value = stat.baseStat.toFloat(),
-                                modifier = Modifier
-                                    .padding(horizontal = 16.dp),
-                            )
-                        }
-
-                        Spacer(modifier = Modifier.height(4.dp))
+                        AsyncImage(
+                            model = ImageRequest.Builder(LocalContext.current)
+                                .data(pokemon.sprites.backShiny)
+                                .crossfade(true)
+                                .build(),
+                            contentDescription = pokemon.name,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .weight(.5f)
+                        )
                     }
                 }
             }
-        }
-
-        item {
-            Spacer(modifier = Modifier.height(16.dp))
         }
     }
+
 }

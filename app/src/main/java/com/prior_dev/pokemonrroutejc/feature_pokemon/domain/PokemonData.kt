@@ -5,6 +5,7 @@ import com.prior_dev.pokemonrroutejc.feature_types.domain.TypeData
 import com.prior_dev.pokemonrroutejc.feature_types.domain.toDomain
 
 data class PokemonData(
+    val id: Int = 0,
     val name: String = "",
     val sprites: SpritesData = SpritesData(),
     val abilities: List<AbilityData> = emptyList(),
@@ -31,6 +32,7 @@ data class StatData(
 
 fun PokemonResponse.toDomain(): PokemonData{
     return PokemonData(
+        id = id,
         name = name,
         sprites = spritesResponse.toDomain(),
         abilities = abilities.map { it.toDomain() },

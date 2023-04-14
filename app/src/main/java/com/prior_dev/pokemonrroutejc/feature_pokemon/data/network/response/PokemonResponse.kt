@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName
 import com.prior_dev.pokemonrroutejc.feature_types.data.network.response.TypeResponse
 
 data class PokemonResponse(
+    @SerializedName("id") val id: Int,
     @SerializedName("name") val name: String,
     @SerializedName("sprites") val spritesResponse: SpritesResponse,
     @SerializedName("abilities") val abilities: List<AbilityResponse>,
