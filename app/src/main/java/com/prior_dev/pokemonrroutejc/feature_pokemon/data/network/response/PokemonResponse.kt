@@ -16,6 +16,16 @@ data class SpritesResponse(
     @SerializedName("front_default") val frontDefault: String?,
     @SerializedName("front_shiny") val frontShiny: String?,
     @SerializedName("back_shiny") val backShiny: String?,
+    @SerializedName("other") val others: OthersSpritesResponse,
+)
+
+data class OthersSpritesResponse(
+    @SerializedName("official-artwork") val officialArtwork: OfficialArtWorkResponse
+)
+
+data class OfficialArtWorkResponse(
+    @SerializedName("front_default") val frontDefault: String?,
+    @SerializedName("front_shiny") val frontShiny: String?,
 )
 
 data class AbilityResponse(

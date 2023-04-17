@@ -37,3 +37,8 @@ val SteelColor = Color(0xFFB0BEC5)
 val FairyColor = Color(0xFFFF80AB)
 val UnknownColor = Color(0xFFfafafa)
 val ShadowColor = Color(0xFFB0BEC5)
+
+//Stats
+val LowStat = Color(0xFFFF3D00)
+val MiddleStat = Color(0xFFFFD600)
+val HighStat = Color(0xFF00C853)

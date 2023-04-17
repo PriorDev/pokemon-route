@@ -10,6 +10,7 @@ import com.prior_dev.pokemonrroutejc.feature_pokemon.data.network.PokemonService
 import com.prior_dev.pokemonrroutejc.feature_pokemon.data.network.response.PokemonResponse
 import com.prior_dev.pokemonrroutejc.feature_pokemon.domain.PokemonData
 import com.prior_dev.pokemonrroutejc.feature_pokemon.domain.PokemonNameData
+import com.prior_dev.pokemonrroutejc.feature_pokemon.domain.PokemonRepository
 import com.prior_dev.pokemonrroutejc.feature_pokemon.domain.toDomain
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -19,8 +20,8 @@ import javax.inject.Inject
 class PokemonRepositoryImp @Inject constructor(
     private val service: PokemonService,
     private val dao: PokemonDao,
-) {
-    suspend fun searchPokemonNameByMatch(name: String): Flow<Resource<List<PokemonNameData>>> {
+): PokemonRepository {
+    override suspend fun searchPokemonNameByMatch(name: String): Flow<Resource<List<PokemonNameData>>> {
         return flow {
             emit(Resource.Loading())
 
@@ -67,9 +68,9 @@ class PokemonRepositoryImp @Inject constructor(
         }
     }
 
-    suspend fun getListOfPokemon(
+    override suspend fun getListOfPokemon(
         pokemonsNames: List<PokemonNameData>
-    ): Flow<Resource<List<PokemonData>>>{
+    ): Flow<Resource<List<PokemonData>>> {
         return flow {
             emit(Resource.Loading())
 
@@ -96,7 +97,7 @@ class PokemonRepositoryImp @Inject constructor(
         }
     }
 
-    suspend fun getPokemon(pokemonName: String): Flow<Resource<PokemonData>>{
+    override suspend fun getPokemon(pokemonName: String): Flow<Resource<PokemonData>> {
         return flow {
             try{
                 emit(Resource.Loading())
@@ -115,7 +116,7 @@ class PokemonRepositoryImp @Inject constructor(
         }
     }
 
-    suspend fun getPokemonNamePaging(offSet: Int): Flow<Resource<List<PokemonNameData>>>{
+    override suspend fun getPokemonNamePaging(offSet: Int): Flow<Resource<List<PokemonNameData>>> {
         return flow {
             emit(Resource.Loading())
 

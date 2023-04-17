@@ -14,11 +14,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -33,6 +30,7 @@ import com.prior_dev.pokemonrroutejc.feature_pokemon.presentation.RoutesPokemon
 import com.prior_dev.pokemonrroutejc.feature_pokemon.presentation.components.ItemPokemon
 import com.prior_dev.pokemonrroutejc.feature_pokemon.presentation.components.ItemPokemonName
 import com.prior_dev.pokemonrroutejc.feature_pokemon.presentation.components.PokemonSearchTextField
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -43,13 +41,19 @@ fun PokemonSearchView(
     val states by viewModel.states.observeAsState(CommonStates())
     val keyboardController = LocalSoftwareKeyboardController.current
     val gridState = rememberLazyGridState()
+    val coroutineScope = rememberCoroutineScope()
 
     DisposableMessage(states.message, onDismiss = viewModel::onDismiss)
 
     Column {
         PokemonSearchTextField(
             value = states.searchText,
-            onValueChange = viewModel::onSearchText,
+            onValueChange = {
+                viewModel.onSearchText(it)
+                coroutineScope.launch {
+                    gridState.animateScrollToItem(0)
+                }
+            },
             onSearch = {
                 keyboardController?.hide()
             },

@@ -7,15 +7,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.prior_dev.pokemonrroutejc.core.CommonStates
 import com.prior_dev.pokemonrroutejc.core.Resource
-import com.prior_dev.pokemonrroutejc.feature_types.data.TypeRepositoryImp
 import com.prior_dev.pokemonrroutejc.feature_types.domain.TypeData
+import com.prior_dev.pokemonrroutejc.feature_types.domain.TypeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ListTypeViewModel @Inject constructor(
-    private val repository: TypeRepositoryImp
+    private val repository: TypeRepository
 ): ViewModel() {
     private val _states = MutableLiveData(CommonStates())
     val states: LiveData<CommonStates> = _states

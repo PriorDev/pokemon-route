@@ -3,13 +3,14 @@
     <string name="types">Types</string>
     <string name="damageX2">Damage x2</string>
     <string name="offensive">Offensive</string>
-    <string name="half_damage">Damage 1/2</string>
+    <string name="half_damage">Damage ½</string>
     <string name="no_damage">Damage x0</string>
     <string name="defensive">Defensive</string>
     <string name="pokemons">Pokemons</string>
     <string name="search">Search</string>
     <string name="abilities">Abilities</string>
     <string name="hidden_ability">Hiden Ability</string>
-    <string name="stats">Stats</string>
+    <string name="stats">Basic Stats</string>
     <string name="shiny">Shiny</string>
+    <string name="sprites">Sprites</string>
 </resources>

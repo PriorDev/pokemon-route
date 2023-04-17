@@ -39,7 +39,7 @@ class MainActivity : ComponentActivity() {
                             modifier = Modifier
                                 .padding(innerPadding),
                             navController = navMenu,
-                            startDestination = RoutesMenu.NavTypesRoute.route,
+                            startDestination = RoutesMenu.NavPokemonRoute.route,
                             route = RoutesMenu.ROUTE_NAME
                         ){
                             composable(RoutesMenu.NavTypesRoute.route){ TypeNav(navMenu) }

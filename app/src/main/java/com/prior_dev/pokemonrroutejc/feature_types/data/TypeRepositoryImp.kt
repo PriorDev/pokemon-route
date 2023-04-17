@@ -9,10 +9,7 @@ import com.prior_dev.pokemonrroutejc.feature_types.data.database.TypeDao
 import com.prior_dev.pokemonrroutejc.feature_types.data.database.toDB
 import com.prior_dev.pokemonrroutejc.feature_types.data.network.TypeService
 import com.prior_dev.pokemonrroutejc.feature_types.data.network.response.TypeDetailsResponse
-import com.prior_dev.pokemonrroutejc.feature_types.domain.DamageRelationsData
-import com.prior_dev.pokemonrroutejc.feature_types.domain.TypeData
-import com.prior_dev.pokemonrroutejc.feature_types.domain.TypeDetailsData
-import com.prior_dev.pokemonrroutejc.feature_types.domain.toDomain
+import com.prior_dev.pokemonrroutejc.feature_types.domain.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -20,8 +17,8 @@ import javax.inject.Inject
 class TypeRepositoryImp @Inject constructor(
     private val service: TypeService,
     private val dao: TypeDao,
-) {
-    suspend fun getAllTypes(): Flow<Resource<List<TypeData>>>{
+): TypeRepository {
+    override suspend fun getAllTypes(): Flow<Resource<List<TypeData>>>{
         return flow { 
             emit(Resource.Loading())
             
@@ -55,7 +52,7 @@ class TypeRepositoryImp @Inject constructor(
         }
     }
 
-    suspend fun getType(typeId: Int): Flow<Resource<TypeDetailsData>>{
+    override suspend fun getType(typeId: Int): Flow<Resource<TypeDetailsData>>{
         return flow {
             emit(Resource.Loading())
 

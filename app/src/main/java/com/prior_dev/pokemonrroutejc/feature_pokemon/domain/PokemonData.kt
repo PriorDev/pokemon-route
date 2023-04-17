@@ -17,6 +17,12 @@ data class SpritesData(
     val frontDefault: String? = "",
     val frontShiny: String? = "",
     val backShiny: String? = "",
+    val others: OthersSpritesData? = null,
+)
+
+data class OthersSpritesData(
+    val officialArtFrontDefault: String?,
+    val officialArtFrontShiny: String?,
 )
 
 data class AbilityData(
@@ -45,7 +51,11 @@ fun SpritesResponse.toDomain() =
     SpritesData(
         frontDefault = frontDefault,
         frontShiny = frontShiny,
-        backShiny = backShiny
+        backShiny = backShiny,
+        others = OthersSpritesData(
+            officialArtFrontDefault = others.officialArtwork.frontDefault,
+            officialArtFrontShiny = others.officialArtwork.frontShiny,
+        )
     )
 
 fun AbilityResponse.toDomain() = AbilityData(
@@ -53,8 +63,20 @@ fun AbilityResponse.toDomain() = AbilityData(
     isHidden = isHidden,
 )
 
-fun StatResponse.toDomain() = StatData(
-    baseStat = baseStat,
-    effort = effort,
-    name = stat.name.uppercase(),
-)
+fun StatResponse.toDomain(): StatData{
+    val nameAbbr = when(stat.name.lowercase()) {
+        "hp" -> "HP"
+        "attack" -> "Atk"
+        "defense" -> "Def"
+        "special-attack" -> "SpAtk"
+        "special-defense" -> "SpDef"
+        "speed" -> "Spd"
+        else -> ""
+    }
+
+    return StatData(
+        baseStat = baseStat,
+        effort = effort,
+        name = nameAbbr,
+    )
+}

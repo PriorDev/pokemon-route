@@ -1,6 +1,5 @@
 package com.prior_dev.pokemonrroutejc.feature_pokemon.presentation.search
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,8 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.prior_dev.pokemonrroutejc.core.CommonStates
 import com.prior_dev.pokemonrroutejc.core.handleResource
-import com.prior_dev.pokemonrroutejc.feature_pokemon.data.PokemonRepositoryImp
 import com.prior_dev.pokemonrroutejc.feature_pokemon.domain.PokemonNameData
+import com.prior_dev.pokemonrroutejc.feature_pokemon.domain.PokemonRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -18,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PokemonSearchViewModel @Inject constructor(
-    private val repository: PokemonRepositoryImp
+    private val repository: PokemonRepository
 ): ViewModel() {
     private val _states = MutableLiveData(CommonStates())
     val states: LiveData<CommonStates> = _states

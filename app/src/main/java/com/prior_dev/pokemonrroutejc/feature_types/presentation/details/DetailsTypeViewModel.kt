@@ -3,8 +3,8 @@ package com.prior_dev.pokemonrroutejc.feature_types.presentation.details
 import androidx.lifecycle.*
 import com.prior_dev.pokemonrroutejc.core.CommonStates
 import com.prior_dev.pokemonrroutejc.core.Resource
-import com.prior_dev.pokemonrroutejc.feature_types.data.TypeRepositoryImp
 import com.prior_dev.pokemonrroutejc.feature_types.domain.TypeDetailsData
+import com.prior_dev.pokemonrroutejc.feature_types.domain.TypeRepository
 import com.prior_dev.pokemonrroutejc.feature_types.presentation.RoutesType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailsTypeViewModel @Inject constructor(
-    private val repository: TypeRepositoryImp,
+    private val repository: TypeRepository,
     private val savedStateHandle: SavedStateHandle,
 ): ViewModel(){
     private val _states = MutableLiveData(CommonStates())

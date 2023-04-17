@@ -3,8 +3,8 @@ package com.prior_dev.pokemonrroutejc.feature_pokemon.presentation.details
 import androidx.lifecycle.*
 import com.prior_dev.pokemonrroutejc.core.CommonStates
 import com.prior_dev.pokemonrroutejc.core.handleResource
-import com.prior_dev.pokemonrroutejc.feature_pokemon.data.PokemonRepositoryImp
 import com.prior_dev.pokemonrroutejc.feature_pokemon.domain.PokemonData
+import com.prior_dev.pokemonrroutejc.feature_pokemon.domain.PokemonRepository
 import com.prior_dev.pokemonrroutejc.feature_pokemon.presentation.RoutesPokemon
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PokemonDetailsViewModel @Inject constructor(
-    private val repository: PokemonRepositoryImp,
+    private val repository: PokemonRepository,
     private val savedStateHandle: SavedStateHandle,
 ): ViewModel(){
     private val _states = MutableLiveData(CommonStates())
