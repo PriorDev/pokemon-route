@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace 'com.prior_dev.pokemonrroutejc'
+    namespace 'com.prior_dev.pokerroutejc'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.prior_dev.pokemonrroutejc"
+        applicationId "com.prior_dev.pokerroutejc"
         minSdk 24
         targetSdk 33
         versionCode 1
