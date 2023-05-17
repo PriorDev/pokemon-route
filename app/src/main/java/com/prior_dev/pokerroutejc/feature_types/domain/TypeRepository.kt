@@ -5,7 +5,11 @@ import kotlinx.coroutines.flow.Flow
 
 interface TypeRepository {
 
-    suspend fun getAllTypes(): Flow<Resource<List<TypeData>>>
+    suspend fun getAllTypesFlow(): Flow<Resource<List<TypeData>>>
 
-    suspend fun getType(typeId: Int): Flow<Resource<TypeDetailsData>>
+    suspend fun getTypeFlow(typeId: Int): Flow<Resource<TypeDetailsData>>
+
+    suspend fun getAllTypes(): Resource<List<TypeData>>
+
+    suspend fun getType(typeId: Int): Resource<TypeDetailsData>
 }

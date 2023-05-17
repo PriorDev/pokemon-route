@@ -13,5 +13,7 @@ import dagger.hilt.android.scopes.ViewModelScoped
 abstract class RepositoryModule {
     @Binds
     @ViewModelScoped
-    abstract fun providerPokemonRepository(pokemonRepository: PokemonRepositoryImp): PokemonRepository
+    abstract fun providerPokemonRepository(
+        pokemonRepository: PokemonRepositoryImp
+    ): PokemonRepository
 }

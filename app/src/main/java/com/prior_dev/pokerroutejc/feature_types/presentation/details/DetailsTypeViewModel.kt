@@ -24,7 +24,7 @@ class DetailsTypeViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             savedStateHandle.get<Int>(RoutesType.TypeDetails.argType)?.let { type ->
-                repository.getType(type)
+                repository.getTypeFlow(type)
                     .collect{ result ->
                         when(result){
                             is Resource.Error -> {

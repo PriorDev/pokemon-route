@@ -16,7 +16,7 @@ class TypeRepositoryImp @Inject constructor(
     private val service: TypeService,
     private val dao: TypeDao,
 ): TypeRepository {
-    override suspend fun getAllTypes(): Flow<Resource<List<TypeData>>>{
+    override suspend fun getAllTypesFlow(): Flow<Resource<List<TypeData>>>{
         return flow { 
             emit(Resource.Loading())
             
@@ -50,7 +50,7 @@ class TypeRepositoryImp @Inject constructor(
         }
     }
 
-    override suspend fun getType(typeId: Int): Flow<Resource<TypeDetailsData>>{
+    override suspend fun getTypeFlow(typeId: Int): Flow<Resource<TypeDetailsData>>{
         return flow {
             emit(Resource.Loading())
 
@@ -65,7 +65,6 @@ class TypeRepositoryImp @Inject constructor(
                 val response = service.getType(typeId)
 
                 response?.let { typeDetails ->
-
                     //Elimina datos anteriores
                     dao.deleteDamageRelation(typeDetails.id)
                     dao.insertDamageRelations(typeDetails.toDB())
@@ -73,7 +72,7 @@ class TypeRepositoryImp @Inject constructor(
                     emit(Resource.Loading())
                     emit(Resource.Success(typeDetails.toDomain()))
 
-                } ?: emit(Resource.Error("Error al obtener la información del servidor"))
+                } ?: emit(Resource.Error(SealedMyExceptions.serverError))
 
             }catch (ex: Exception){
                 Log.e(EnumTags.Error.tag, "getType: ${ex.message}")
@@ -86,4 +85,50 @@ class TypeRepositoryImp @Inject constructor(
             emit(Resource.Loading(false))
         }
     }
+
+    override suspend fun getAllTypes(): Resource<List<TypeData>> {
+        val typesEntity = dao.getAllTypes()
+
+        if(typesEntity.isNotEmpty()){
+            return Resource.Success(
+                typesEntity.map { it.toDomain() }
+            )
+        }
+
+        return try{
+            val typeResponse = service.getAllTypes()
+            typeResponse?.let { response ->
+                dao.insertTypes(
+                    response.types.map { it.toDB() }
+                )
+                Resource.Success(
+                    typeResponse.types.map { it.toDomain() }
+                )
+            } ?: Resource.Error(SealedMyExceptions.serverError)
+        }catch (e: Exception){
+            Log.e(EnumTags.Error.tag, "getAllTypes: ${e.message}")
+            Resource.Error(SealedMyExceptions.serverError)
+        }
+    }
+
+    override suspend fun getType(typeId: Int): Resource<TypeDetailsData> {
+        return try {
+            val response = service.getType(typeId)
+
+            response?.let { typeDetails ->
+                Resource.Success(typeDetails.toDomain())
+            } ?: Resource.Error(SealedMyExceptions.serverError)
+
+        }catch (ex: Exception){
+            Log.e(EnumTags.Error.tag, "getType: ${ex.message}")
+            return Resource.Error(SealedMyExceptions.serverError)
+        }
+    }
 }
+
+
+
+
+
+
+

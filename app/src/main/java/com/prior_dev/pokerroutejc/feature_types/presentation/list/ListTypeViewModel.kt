@@ -25,7 +25,7 @@ class ListTypeViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            repository.getAllTypes()
+            repository.getAllTypesFlow()
                 .collect{ result ->
                     when(result){
                         is Resource.Error -> {

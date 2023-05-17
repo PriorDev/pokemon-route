@@ -17,6 +17,11 @@ data class DamageRelationsData(
     val halfDamageTo: List<TypeData> = emptyList(),
     val noDamageFrom: List<TypeData> = emptyList(),
     val noDamageTo: List<TypeData> = emptyList(),
+
+    val x4DamageFrom: List<TypeData> = emptyList(),
+    val x4DamageTo: List<TypeData> = emptyList(),
+    val x1_4DamageFrom: List<TypeData> = emptyList(),
+    val x1_4DamageTo: List<TypeData> = emptyList(),
 )
 
 fun TypeDetailsResponse.toDomain() = TypeDetailsData(

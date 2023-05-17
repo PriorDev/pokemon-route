@@ -13,4 +13,8 @@
     <string name="stats">Basic Stats</string>
     <string name="shiny">Shiny</string>
     <string name="sprites">Sprites</string>
+    <string name="damagex4">Damage x4</string>
+    <string name="weakness_and_strengths">Weakness and strengths</string>
+    <string name="damage_x1_4">Damage 1/4</string>
+    <string name="weaknesses">Weaknesses</string>
 </resources>
