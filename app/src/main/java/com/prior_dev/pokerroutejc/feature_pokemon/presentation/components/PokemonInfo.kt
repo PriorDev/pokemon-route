@@ -1,7 +1,10 @@
 package com.prior_dev.pokerroutejc.feature_pokemon.presentation.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -24,13 +27,18 @@ import com.prior_dev.pokerroutejc.feature_pokemon.domain.PokemonData
 import com.prior_dev.pokerroutejc.feature_pokemon.presentation.RoutesPokemon
 
 @Composable
-fun PokemonBasicInfo(
+fun PokemonInfo(
     modifier: Modifier = Modifier,
     pokemon: PokemonData,
     navPokemon: NavHostController,
     cardPadding: PaddingValues,
 ) {
-    Box(modifier = modifier){
+    val scrollState = rememberScrollState()
+
+    Box(
+        modifier = modifier
+            .verticalScroll(scrollState)
+    ){
         Column {
             Spacer(modifier = Modifier.height(100.dp))
             Card(
@@ -43,11 +51,9 @@ fun PokemonBasicInfo(
                         text = "#${pokemon.id} ${pokemon.name.uppercase()}",
                         style = MaterialTheme.typography.h4,
                         fontWeight = FontWeight.Black,
-                        overflow = TextOverflow.Ellipsis,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(4.dp),
-                        maxLines = 1,
                         textAlign = TextAlign.Center,
                     )
                     Spacer(modifier = Modifier.height(16.dp))

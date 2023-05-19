@@ -8,6 +8,7 @@ data class PokemonResponse(
     @SerializedName("name") val name: String,
     @SerializedName("sprites") val spritesResponse: SpritesResponse,
     @SerializedName("abilities") val abilities: List<AbilityResponse>,
+    @SerializedName("moves") val moves: List<MoveResponse>,
     @SerializedName("stats") val stats: List<StatResponse>,
     @SerializedName("types") val types: List<TypeContainerResponse>,
 )

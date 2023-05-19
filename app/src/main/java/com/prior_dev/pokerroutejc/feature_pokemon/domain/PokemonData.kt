@@ -11,6 +11,7 @@ data class PokemonData(
     val abilities: List<AbilityData> = emptyList(),
     val stats: List<StatData> = emptyList(),
     val types: List<TypeData> = emptyList(),
+    val moves: List<MoveData> = emptyList()
 )
 
 data class SpritesData(
@@ -43,7 +44,8 @@ fun PokemonResponse.toDomain(): PokemonData{
         sprites = spritesResponse.toDomain(),
         abilities = abilities.map { it.toDomain() },
         stats = stats.map { it.toDomain() },
-        types = types.map { it.type.toDomain() }
+        types = types.map { it.type.toDomain() },
+        moves = moves.map { it.toDomain() }
     )
 }
 

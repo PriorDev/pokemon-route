@@ -61,7 +61,7 @@ fun ItemWeaknesses(
                     horizontalAlignment = CenterHorizontally
                 ) {
                     enemyTypes.forEach{
-                        ItemType(type = it, modifier = Modifier.padding(8.dp))
+
                     }
                 }
             }

@@ -3,6 +3,7 @@ package com.prior_dev.pokerroutejc.core
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import java.math.BigInteger
 
 fun<T> ViewModel.handleResource(
     result: Resource<T>,
@@ -28,4 +29,8 @@ fun String.getTypeColor() =
 
 fun String.getIdFromPokeUrl(): Int{
     return this.substring(0, this.length - 1).split("/").last().toInt()
+}
+
+fun String.getBigIdFromPokeUrl(): BigInteger{
+    return this.substring(0, this.length - 1).split("/").last().toBigInteger()
 }

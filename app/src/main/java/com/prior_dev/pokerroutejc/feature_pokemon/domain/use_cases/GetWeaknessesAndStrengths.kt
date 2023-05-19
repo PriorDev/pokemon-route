@@ -1,6 +1,5 @@
 package com.prior_dev.pokerroutejc.feature_pokemon.domain.use_cases
 
-import android.util.Log
 import com.prior_dev.pokerroutejc.core.Resource
 import com.prior_dev.pokerroutejc.feature_types.domain.DamageRelationsData
 import com.prior_dev.pokerroutejc.feature_types.domain.TypeData
@@ -109,6 +108,13 @@ class GetWeaknessesAndStrengths @Inject constructor(
                 list.add(enemyType)
                 outputDamage = inputDamage.copy(
                     x1_4DamageFrom = list
+                )
+            }
+            .0f -> {
+                val list = inputDamage.noDamageFrom.toMutableList()
+                list.add(enemyType)
+                outputDamage = inputDamage.copy(
+                    noDamageFrom = list
                 )
             }
         }

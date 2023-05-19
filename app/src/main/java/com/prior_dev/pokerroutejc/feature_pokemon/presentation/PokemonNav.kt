@@ -23,6 +23,7 @@ fun PokemonNav(
         route = RoutesPokemon.ROUTE_NAME
     ){
         composable(RoutesPokemon.SearchRoute.route){ PokemonSearchView(navPokemon) }
+
         composable(
             route = RoutesPokemon.PokemonDetails.route,
             arguments = listOf(
@@ -33,6 +34,7 @@ fun PokemonNav(
         ){
             PokemonDetailsView(navPokemon)
         }
+
         composable(
             route = RoutesPokemon.TypeDetails.route,
             arguments = listOf(

@@ -20,12 +20,15 @@ import com.prior_dev.pokerroutejc.feature_pokemon.domain.PokemonData
 import com.prior_dev.pokerroutejc.R
 
 @Composable
-fun Sprites(
+fun SpritesView(
     modifier: Modifier = Modifier,
     pokemon: PokemonData
 ) {
     Card (modifier = modifier){
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxSize()
+        ) {
             Text(
                 text = stringResource(id = R.string.sprites),
                 style = MaterialTheme.typography.h4,
@@ -45,8 +48,7 @@ fun Sprites(
                         .build(),
                     contentDescription = pokemon.name,
                     contentScale = ContentScale.Fit,
-                    modifier = Modifier
-                        .height(100.dp)
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
 
@@ -63,6 +65,7 @@ fun Sprites(
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .weight(.5f)
+                        .height(200.dp)
                 )
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
@@ -73,6 +76,7 @@ fun Sprites(
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .weight(.5f)
+                        .height(200.dp)
                 )
             }
         }

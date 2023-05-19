@@ -77,8 +77,8 @@ fun PokemonSearchView(
             }
         }
 
-        if(!gridState.canScrollForward){
-            Log.d("TAG", "PokemonSearchView: ${gridState.canScrollForward}")
+        if(!gridState.canScrollForward && viewModel.pokemonNames.isNotEmpty()){
+            //TODO
             viewModel.getNextPage()
         }
     }

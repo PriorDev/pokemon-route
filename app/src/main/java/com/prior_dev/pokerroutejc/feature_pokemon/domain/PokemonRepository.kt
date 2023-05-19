@@ -14,4 +14,6 @@ interface PokemonRepository {
     suspend fun getPokemon(pokemonName: String): Flow<Resource<PokemonData>>
 
     suspend fun getPokemonNamePaging(offSet: Int): Flow<Resource<List<PokemonNameData>>>
+
+    suspend fun getMoveDetails(moves: List<MoveData>): Flow<Resource<MoveDetailsData>>
 }

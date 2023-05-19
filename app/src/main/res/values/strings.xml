@@ -15,6 +15,17 @@
     <string name="sprites">Sprites</string>
     <string name="damagex4">Damage x4</string>
     <string name="weakness_and_strengths">Weakness and strengths</string>
-    <string name="damage_x1_4">Damage 1/4</string>
+    <string name="damage_x1_4">Damage ¼</string>
     <string name="weaknesses">Weaknesses</string>
+    <string name="power">Power</string>
+    <string name="accuracy">Accuracy</string>
+    <string name="pp">PP</string>
+    <string name="priority">Priority</string>
+    <string name="damage_type">Damage type</string>
+    <string name="learned_at">Learned at</string>
+    <string name="method">Method</string>
+    <string name="group">Group</string>
+    <string name="moves">Moves</string>
+    <string name="all">All</string>
+    <string name="filters">Filtros</string>
 </resources>
