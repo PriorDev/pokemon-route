@@ -1,4 +1,4 @@
-package com.prior_dev.pokerroutejc.feature_pokemon.presentation
+package com.prior_dev.pokerroutejc.core.routes
 
 sealed class RoutesPokemon(val route: String){
     object SearchRoute: RoutesPokemon("SearchView")

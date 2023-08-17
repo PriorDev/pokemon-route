@@ -17,9 +17,7 @@ class GetWeaknessesAndStrengths @Inject constructor(
     suspend operator fun invoke(
         pokemonTypes: List<TypeData>
     ): Resource<DamageRelationsData> {
-        val allTypesResource = repository.getAllTypes()
-
-        when(allTypesResource){
+        when(val allTypesResource = repository.getAllTypes()){
             is Resource.Error -> return Resource.Error(allTypesResource.message!!)
             is Resource.Loading -> { }
             is Resource.Success -> allTypes = allTypesResource.data!!

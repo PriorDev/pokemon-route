@@ -5,7 +5,7 @@ import com.prior_dev.pokerroutejc.core.CommonStates
 import com.prior_dev.pokerroutejc.core.Resource
 import com.prior_dev.pokerroutejc.feature_types.domain.TypeDetailsData
 import com.prior_dev.pokerroutejc.feature_types.domain.TypeRepository
-import com.prior_dev.pokerroutejc.feature_types.presentation.RoutesType
+import com.prior_dev.pokerroutejc.core.routes.RoutesType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -23,6 +23,7 @@ class DetailsTypeViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
+            val typeid = savedStateHandle.get<Int>(RoutesType.TypeDetails.argType)
             savedStateHandle.get<Int>(RoutesType.TypeDetails.argType)?.let { type ->
                 repository.getTypeFlow(type)
                     .collect{ result ->

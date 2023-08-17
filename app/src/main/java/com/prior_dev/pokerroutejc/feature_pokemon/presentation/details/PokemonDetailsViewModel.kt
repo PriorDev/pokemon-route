@@ -1,6 +1,5 @@
 package com.prior_dev.pokerroutejc.feature_pokemon.presentation.details
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.*
 import com.prior_dev.pokerroutejc.core.CommonStates
@@ -10,7 +9,7 @@ import com.prior_dev.pokerroutejc.feature_pokemon.domain.MoveDetailsData
 import com.prior_dev.pokerroutejc.feature_pokemon.domain.PokemonData
 import com.prior_dev.pokerroutejc.feature_pokemon.domain.PokemonRepository
 import com.prior_dev.pokerroutejc.feature_pokemon.domain.use_cases.PokemonUseCases
-import com.prior_dev.pokerroutejc.feature_pokemon.presentation.RoutesPokemon
+import com.prior_dev.pokerroutejc.core.routes.RoutesPokemon
 import com.prior_dev.pokerroutejc.feature_pokemon.presentation.utils.MoveViewStates
 import com.prior_dev.pokerroutejc.feature_types.domain.DamageRelationsData
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -27,7 +27,7 @@ import com.prior_dev.pokerroutejc.ui.theme.*
 
 @Composable
 fun DetailsTypeView(
-    viewModel: DetailsTypeViewModel = hiltViewModel(),
+    viewModel: DetailsTypeViewModel
 ) {
     val states by viewModel.states.observeAsState(CommonStates())
     val details by viewModel.details.observeAsState(TypeDetailsData())

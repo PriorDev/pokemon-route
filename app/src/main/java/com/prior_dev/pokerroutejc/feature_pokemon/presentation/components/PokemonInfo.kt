@@ -1,7 +1,6 @@
 package com.prior_dev.pokerroutejc.feature_pokemon.presentation.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -16,7 +15,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
@@ -24,7 +22,7 @@ import coil.request.ImageRequest
 import com.prior_dev.pokerroutejc.R
 import com.prior_dev.pokerroutejc.core.components.ItemType
 import com.prior_dev.pokerroutejc.feature_pokemon.domain.PokemonData
-import com.prior_dev.pokerroutejc.feature_pokemon.presentation.RoutesPokemon
+import com.prior_dev.pokerroutejc.core.routes.RoutesPokemon
 
 @Composable
 fun PokemonInfo(

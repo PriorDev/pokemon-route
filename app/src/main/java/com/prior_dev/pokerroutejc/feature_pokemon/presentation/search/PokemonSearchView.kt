@@ -1,6 +1,5 @@
 package com.prior_dev.pokerroutejc.feature_pokemon.presentation.search
 
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -18,7 +17,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.prior_dev.pokerroutejc.core.CommonStates
 import com.prior_dev.pokerroutejc.core.components.DisposableMessage
-import com.prior_dev.pokerroutejc.feature_pokemon.presentation.RoutesPokemon
+import com.prior_dev.pokerroutejc.core.routes.RoutesPokemon
 import com.prior_dev.pokerroutejc.feature_pokemon.presentation.components.ItemPokemonName
 import com.prior_dev.pokerroutejc.feature_pokemon.presentation.components.PokemonSearchTextField
 import kotlinx.coroutines.launch

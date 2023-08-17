@@ -9,11 +9,23 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
-import com.prior_dev.pokerroutejc.feature_pokemon.presentation.PokemonNav
-import com.prior_dev.pokerroutejc.feature_types.presentation.TypeNav
+import androidx.navigation.navArgument
+import com.prior_dev.pokerroutejc.core.routes.RoutesMenu
+import com.prior_dev.pokerroutejc.core.routes.RoutesPokemon
+import com.prior_dev.pokerroutejc.core.routes.RoutesType
+import com.prior_dev.pokerroutejc.feature_pokemon.presentation.details.PokemonDetailsView
+import com.prior_dev.pokerroutejc.feature_pokemon.presentation.search.PokemonSearchView
+import com.prior_dev.pokerroutejc.feature_types.presentation.details.DetailsTypeView
+import com.prior_dev.pokerroutejc.feature_types.presentation.details.DetailsTypeViewModel
+import com.prior_dev.pokerroutejc.feature_types.presentation.list.ListTypeView
 import com.prior_dev.pokerroutejc.ui.theme.PokemonRRouteJCTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -27,25 +39,89 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    val navMenu = rememberNavController()
+
+                    val navController = rememberNavController()
+
                     Scaffold(
                         bottomBar = {
-                            MenuBottomNavBar(navMenu = navMenu)
+                            MenuBottomNavBar(navController = navController)
                         }
                     ) { innerPadding ->
                         NavHost(
                             modifier = Modifier
                                 .padding(innerPadding),
-                            navController = navMenu,
-                            startDestination = RoutesMenu.NavPokemonRoute.route,
+                            navController = navController,
+                            startDestination = RoutesType.ROUTE_NAME,
                             route = RoutesMenu.ROUTE_NAME
                         ){
-                            composable(RoutesMenu.NavTypesRoute.route){ TypeNav(navMenu) }
-                            composable(RoutesMenu.NavPokemonRoute.route){ PokemonNav(navMenu) }
+                            pokemonNavigation(navController)
+
+                            typesNavigation(navController)
                         }
                     }
                 }
             }
+        }
+    }
+}
+
+private fun NavGraphBuilder.pokemonNavigation(
+    navController: NavHostController
+) {
+    navigation(
+        route = RoutesPokemon.ROUTE_NAME,
+        startDestination = RoutesPokemon.SearchRoute.route
+    ){
+        composable(RoutesPokemon.SearchRoute.route){
+            PokemonSearchView(navController)
+        }
+
+        composable(
+            route = RoutesPokemon.PokemonDetails.route,
+            arguments = listOf(
+                navArgument(RoutesPokemon.PokemonDetails.argPokemonName){
+                    type = NavType.StringType
+                }
+            )
+        ){
+            PokemonDetailsView(navController)
+        }
+
+        composable(
+            route = RoutesPokemon.TypeDetails.route,
+            arguments = listOf(
+                navArgument(name = RoutesPokemon.TypeDetails.argType){
+                    type = NavType.IntType
+                }
+            )
+        ){
+            val viewModel: DetailsTypeViewModel = hiltViewModel()
+            DetailsTypeView(viewModel)
+        }
+    }
+}
+
+private fun NavGraphBuilder.typesNavigation(
+    navController: NavHostController
+){
+    navigation(
+        startDestination = RoutesType.TypesList.route,
+        route = RoutesType.ROUTE_NAME
+    ){
+        composable(RoutesType.TypesList.route){
+            ListTypeView(navController)
+        }
+
+        composable(
+            route = RoutesType.TypeDetails.route,
+            arguments = listOf(
+                navArgument(name = RoutesType.TypeDetails.argType){
+                    type = NavType.IntType
+                }
+            )
+        ){
+            val viewModel: DetailsTypeViewModel = hiltViewModel()
+            DetailsTypeView(viewModel)
         }
     }
 }

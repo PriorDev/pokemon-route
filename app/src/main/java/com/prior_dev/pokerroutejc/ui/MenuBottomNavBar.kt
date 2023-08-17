@@ -1,44 +1,43 @@
 package com.prior_dev.pokerroutejc.ui
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.*
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.prior_dev.pokerroutejc.R
+import com.prior_dev.pokerroutejc.core.components.BottomNavIcons
+import com.prior_dev.pokerroutejc.core.routes.RoutesMenu
+import com.prior_dev.pokerroutejc.core.routes.RoutesPokemon
+import com.prior_dev.pokerroutejc.core.routes.RoutesType
 
 @Composable
 fun MenuBottomNavBar(
-    navMenu: NavHostController
+    navController: NavHostController
 ){
-    val navBackStackEntry by navMenu.currentBackStackEntryAsState()
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
-    val isTypeSelect = currentDestination?.hierarchy?.any{
-        it.route == RoutesMenu.NavTypesRoute.route
+    val isTypeSelected = currentDestination?.hierarchy?.any{
+        it.route == RoutesType.ROUTE_NAME
     } == true
 
-    val isPokemonsSelect = currentDestination?.hierarchy?.any{
-        it.route == RoutesMenu.NavPokemonRoute.route
+    val isPokemonsSelected = currentDestination?.hierarchy?.any{
+        it.route == RoutesPokemon.ROUTE_NAME
     } == true
 
     BottomNavigation(
         backgroundColor = MaterialTheme.colors.primary
     ){
         BottomNavigationItem(
-            selected = isTypeSelect,
+            selected = isTypeSelected,
             onClick = {
-                navMenu.navigate(RoutesMenu.NavTypesRoute.route){
-                    popUpTo(navMenu.graph.findStartDestination().id){
+                navController.navigate(RoutesType.ROUTE_NAME){
+                    popUpTo(navController.graph.findStartDestination().id){
                         saveState = true
                     }
                     launchSingleTop = true
@@ -46,27 +45,19 @@ fun MenuBottomNavBar(
                 }
             },
             icon = {
-                Column (
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.outline_radio_button_checked_24),
-                        contentDescription = stringResource(id = R.string.types),
-                    )
-                    if(isTypeSelect){
-                        Text(
-                            text = stringResource(id = R.string.types)
-                        )
-                    }
-                }
+                BottomNavIcons(
+                    painterResourceId = R.drawable.outline_radio_button_checked_24,
+                    contentDescriptionId = R.string.types,
+                    isSelected = isTypeSelected
+                )
             }
         )
 
         BottomNavigationItem(
-            selected = isPokemonsSelect,
+            selected = isPokemonsSelected,
             onClick = {
-                navMenu.navigate(RoutesMenu.NavPokemonRoute.route){
-                    popUpTo(navMenu.graph.findStartDestination().id){
+                navController.navigate(RoutesPokemon.ROUTE_NAME){
+                    popUpTo(navController.graph.findStartDestination().id){
                         saveState = true
                     }
                     launchSingleTop = true
@@ -74,20 +65,11 @@ fun MenuBottomNavBar(
                 }
             },
             icon = {
-                Column (
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.icon_pokeball),
-                        contentDescription = stringResource(id = R.string.types),
-                        modifier = Modifier.size(24.dp)
-                    )
-                    if(isPokemonsSelect){
-                        Text(
-                            text = stringResource(id = R.string.pokemons)
-                        )
-                    }
-                }
+                BottomNavIcons(
+                    painterResourceId = R.drawable.icon_pokeball,
+                    contentDescriptionId = R.string.pokemons,
+                    isSelected = isPokemonsSelected
+                )
             }
         )
     }

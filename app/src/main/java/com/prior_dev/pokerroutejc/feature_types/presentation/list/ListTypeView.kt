@@ -15,11 +15,11 @@ import androidx.navigation.NavHostController
 import com.prior_dev.pokerroutejc.core.CommonStates
 import com.prior_dev.pokerroutejc.core.components.CommonStatesView
 import com.prior_dev.pokerroutejc.core.components.ItemType
-import com.prior_dev.pokerroutejc.feature_types.presentation.RoutesType
+import com.prior_dev.pokerroutejc.core.routes.RoutesType
 
 @Composable
 fun ListTypeView(
-    nav: NavHostController,
+    navController: NavHostController,
     viewModel: ListTypeViewModel = hiltViewModel(),
 ) {
     val states by viewModel.states.observeAsState(CommonStates())
@@ -43,7 +43,7 @@ fun ListTypeView(
                 type = type,
                 style = MaterialTheme.typography.h4,
                 onClick = {
-                    nav.navigate(RoutesType.TypeDetails.getRoute(type.id))
+                    navController.navigate(RoutesType.TypeDetails.getRoute(type.id))
                 }
             )
         }
