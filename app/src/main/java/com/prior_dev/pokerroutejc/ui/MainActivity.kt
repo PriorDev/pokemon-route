@@ -114,7 +114,6 @@ private fun NavGraphBuilder.typesNavigation(navController: NavHostController){
             val commonStates = viewModel.commonStates.collectAsState()
             val states = viewModel.states.collectAsState()
 
-
             ListTypeView(
                 commonStates = commonStates.value,
                 states = states.value,
