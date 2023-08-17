@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
@@ -13,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.prior_dev.pokerroutejc.core.CommonStates
 import com.prior_dev.pokerroutejc.core.components.CommonStatesView
 import com.prior_dev.pokerroutejc.core.components.ItemType
+import com.prior_dev.pokerroutejc.core.components.PreviewTemplate
 import com.prior_dev.pokerroutejc.feature_types.domain.TypeData
 import com.prior_dev.pokerroutejc.ui.theme.PokemonRRouteJCTheme
 
@@ -51,7 +53,7 @@ fun ListTypeView(
 }
 
 @Composable
-@Preview
+@Preview(showBackground = true, showSystemUi = true)
 fun ListTypeViewPreview() {
     val types = listOf(
         TypeData(1, "Rock"),
@@ -60,17 +62,12 @@ fun ListTypeViewPreview() {
         TypeData(1, "Fire"),
     )
 
-    PokemonRRouteJCTheme {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colors.background
-        ) {
-            ListTypeView(
-                commonStates = CommonStates(isLoading = false),
-                states = ListTypeStates(types),
-                onEvent = { },
-                onUiEvent = { }
-            )
-        }
+    PreviewTemplate{
+        ListTypeView(
+            commonStates = CommonStates(isLoading = false),
+            states = ListTypeStates(types),
+            onEvent = { },
+            onUiEvent = { }
+        )
     }
 }
