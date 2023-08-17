@@ -6,25 +6,21 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import com.prior_dev.pokerroutejc.core.CommonStates
 import com.prior_dev.pokerroutejc.core.components.CommonStatesView
 import com.prior_dev.pokerroutejc.core.components.ItemType
-import com.prior_dev.pokerroutejc.core.routes.RoutesType
 
 @Composable
 fun ListTypeView(
-    navController: NavHostController,
-    viewModel: ListTypeViewModel = hiltViewModel(),
+    commonStates: CommonStates,
+    states: ListTypeStates,
+    onEvent: (ListTypesEvent) -> Unit,
+    onUiEvent: (ListTypesUiEvent.openTypesDetailScreen) -> Unit
 ) {
-    val states by viewModel.states.observeAsState(CommonStates())
-    CommonStatesView(onDismiss = viewModel::onDismiss, states = states)
-    if(states.isLoading)
+    CommonStatesView(onDismiss = { onEvent(ListTypesEvent.onDismiss) }, commonStates = commonStates)
+    if(commonStates.isLoading)
         return
 
     LazyVerticalGrid(
@@ -35,7 +31,7 @@ fun ListTypeView(
         verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ){
-        items(viewModel.types){ type ->
+        items(states.types){ type ->
             ItemType(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -43,7 +39,7 @@ fun ListTypeView(
                 type = type,
                 style = MaterialTheme.typography.h4,
                 onClick = {
-                    navController.navigate(RoutesType.TypeDetails.getRoute(type.id))
+                    onUiEvent(ListTypesUiEvent.openTypesDetailScreen(type.id))
                 }
             )
         }

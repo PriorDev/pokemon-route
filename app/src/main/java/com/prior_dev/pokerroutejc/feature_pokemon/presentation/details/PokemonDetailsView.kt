@@ -71,7 +71,7 @@ fun PokemonDetailsView(
         }
     }
 
-    CommonStatesView(onDismiss = viewModel::onDismiss, states = states)
+    CommonStatesView(onDismiss = viewModel::onDismiss, commonStates = states)
     if(states.isLoading)
         return
 

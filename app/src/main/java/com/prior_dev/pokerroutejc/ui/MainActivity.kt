@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
@@ -26,6 +27,8 @@ import com.prior_dev.pokerroutejc.feature_pokemon.presentation.search.PokemonSea
 import com.prior_dev.pokerroutejc.feature_types.presentation.details.DetailsTypeView
 import com.prior_dev.pokerroutejc.feature_types.presentation.details.DetailsTypeViewModel
 import com.prior_dev.pokerroutejc.feature_types.presentation.list.ListTypeView
+import com.prior_dev.pokerroutejc.feature_types.presentation.list.ListTypeViewModel
+import com.prior_dev.pokerroutejc.feature_types.presentation.list.ListTypesUiEvent
 import com.prior_dev.pokerroutejc.ui.theme.PokemonRRouteJCTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -101,15 +104,23 @@ private fun NavGraphBuilder.pokemonNavigation(
     }
 }
 
-private fun NavGraphBuilder.typesNavigation(
-    navController: NavHostController
-){
+private fun NavGraphBuilder.typesNavigation(navController: NavHostController){
     navigation(
         startDestination = RoutesType.TypesList.route,
         route = RoutesType.ROUTE_NAME
     ){
         composable(RoutesType.TypesList.route){
-            ListTypeView(navController)
+            val viewModel = hiltViewModel<ListTypeViewModel>()
+            val commonStates = viewModel.commonStates.collectAsState()
+            val states = viewModel.states.collectAsState()
+
+
+            ListTypeView(
+                commonStates = commonStates.value,
+                states = states.value,
+                onEvent = viewModel::onEvent,
+                onUiEvent = { onListTypeUIEvent(it, navController) }
+            )
         }
 
         composable(
@@ -122,6 +133,14 @@ private fun NavGraphBuilder.typesNavigation(
         ){
             val viewModel: DetailsTypeViewModel = hiltViewModel()
             DetailsTypeView(viewModel)
+        }
+    }
+}
+
+private fun onListTypeUIEvent(event: ListTypesUiEvent, navController: NavHostController){
+    when(event){
+        is ListTypesUiEvent.openTypesDetailScreen -> {
+            navController.navigate(RoutesType.TypeDetails.getRoute(event.typeId))
         }
     }
 }

@@ -10,6 +10,8 @@ import com.prior_dev.pokerroutejc.core.Resource
 import com.prior_dev.pokerroutejc.feature_types.domain.TypeData
 import com.prior_dev.pokerroutejc.feature_types.domain.TypeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -17,11 +19,11 @@ import javax.inject.Inject
 class ListTypeViewModel @Inject constructor(
     private val repository: TypeRepository
 ): ViewModel() {
-    private val _states = MutableLiveData(CommonStates())
-    val states: LiveData<CommonStates> = _states
+    private val _states = MutableStateFlow(ListTypeStates())
+    val states = _states.asStateFlow()
 
-    private val _types = mutableStateListOf<TypeData>()
-    val types: List<TypeData>  = _types
+    private val _commonStates = MutableStateFlow(CommonStates())
+    val commonStates = _commonStates.asStateFlow()
 
     init {
         viewModelScope.launch {
@@ -29,21 +31,28 @@ class ListTypeViewModel @Inject constructor(
                 .collect{ result ->
                     when(result){
                         is Resource.Error -> {
-                            _states.value = states.value?.copy(message = result.message ?: "")
+                            _commonStates.value = commonStates.value.copy(message = result.message ?: "")
                         }
                         is Resource.Loading -> {
-                            _states.value = states.value?.copy(isLoading = result.isLoading)
+                            _commonStates.value = commonStates.value.copy(isLoading = result.isLoading)
                         }
                         is Resource.Success -> {
-                            _types.clear()
-                            _types.addAll(result.data ?: emptyList())
+                            _states.value = states.value.copy(
+                                types = result.data ?: emptyList()
+                            )
                         }
                     }
                 }
         }
     }
 
+    fun onEvent(event: ListTypesEvent){
+        when(event){
+            ListTypesEvent.onDismiss -> onDismiss()
+        }
+    }
+
     fun onDismiss(){
-        _states.value = states.value?.copy(message = "")
+        _commonStates.value = commonStates.value.copy(message = "")
     }
 }

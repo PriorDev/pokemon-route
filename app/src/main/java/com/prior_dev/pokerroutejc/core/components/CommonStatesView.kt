@@ -11,9 +11,9 @@ import com.prior_dev.pokerroutejc.core.CommonStates
 @Composable
 fun CommonStatesView(
     onDismiss: () -> Unit,
-    states: CommonStates,
+    commonStates: CommonStates,
 ){
-    if(states.isLoading){
+    if(commonStates.isLoading){
         Box(
             Modifier.fillMaxSize()
         ){
@@ -23,5 +23,5 @@ fun CommonStatesView(
         }
     }
 
-    DisposableMessage(message = states.message, onDismiss = onDismiss)
+    DisposableMessage(message = commonStates.message, onDismiss = onDismiss)
 }

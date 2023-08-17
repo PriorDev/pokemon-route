@@ -15,7 +15,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.prior_dev.pokerroutejc.R
 import com.prior_dev.pokerroutejc.core.CommonStates
@@ -61,7 +60,7 @@ fun DetailsTypeView(
             )
         },
     ) { innerPadding ->
-        CommonStatesView(onDismiss = viewModel::onDismiss, states = states)
+        CommonStatesView(onDismiss = viewModel::onDismiss, commonStates = states)
         if(states.isLoading)
             return@Scaffold
 
