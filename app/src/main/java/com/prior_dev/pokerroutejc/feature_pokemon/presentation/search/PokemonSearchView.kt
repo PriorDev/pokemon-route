@@ -8,16 +8,16 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import com.prior_dev.pokerroutejc.core.CommonStates
 import com.prior_dev.pokerroutejc.core.components.DisposableMessage
-import com.prior_dev.pokerroutejc.core.routes.RoutesPokemon
+import com.prior_dev.pokerroutejc.core.components.PreviewTemplate
+import com.prior_dev.pokerroutejc.feature_pokemon.domain.PokemonNameData
 import com.prior_dev.pokerroutejc.feature_pokemon.presentation.components.ItemPokemonName
 import com.prior_dev.pokerroutejc.feature_pokemon.presentation.components.PokemonSearchTextField
 import kotlinx.coroutines.launch
@@ -25,21 +25,22 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun PokemonSearchView(
-    navPokemon: NavHostController
+    commonStates: CommonStates,
+    states: PokemonSearchStates,
+    onEvent: (PokemonSearchEvent) -> Unit,
+    onUIEvent: (PokemonSearchUiEvent) -> Unit
 ) {
-    val viewModel: PokemonSearchViewModel = hiltViewModel()
-    val states by viewModel.states.observeAsState(CommonStates())
     val keyboardController = LocalSoftwareKeyboardController.current
     val gridState = rememberLazyGridState()
     val coroutineScope = rememberCoroutineScope()
 
-    DisposableMessage(states.message, onDismiss = viewModel::onDismiss)
+    DisposableMessage(commonStates.message, onDismiss = { onEvent(PokemonSearchEvent.onDismiss) })
 
     Column {
         PokemonSearchTextField(
-            value = states.searchText,
+            value = commonStates.searchText,
             onValueChange = {
-                viewModel.onSearchText(it)
+                onEvent(PokemonSearchEvent.OnSearchText(it))
                 coroutineScope.launch {
                     gridState.animateScrollToItem(0)
                 }
@@ -49,8 +50,10 @@ fun PokemonSearchView(
             },
         )
 
-        if(states.isLoading){
+        if(commonStates.isLoading){
             LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+        }else{
+            Spacer(modifier = Modifier.height(ProgressIndicatorDefaults.StrokeWidth))
         }
 
         LazyVerticalGrid(
@@ -62,12 +65,11 @@ fun PokemonSearchView(
                 .padding(horizontal = 8.dp)
                 .padding(top = 4.dp)
         ){
-            items(viewModel.pokemonNames){pokemon ->
+            items(states.pokemons){ pokemon ->
                 ItemPokemonName(
                     pokemon = pokemon,
                     modifier = Modifier.clickable {
-                        navPokemon
-                            .navigate(RoutesPokemon.PokemonDetails.getRoute(pokemon.name))
+                        onUIEvent(PokemonSearchUiEvent.openPokemonDetailsView(pokemon.name))
                     }
                 )
             }
@@ -76,9 +78,33 @@ fun PokemonSearchView(
             }
         }
 
-        if(!gridState.canScrollForward && viewModel.pokemonNames.isNotEmpty()){
-            //TODO
-            viewModel.getNextPage()
+        if(!gridState.canScrollForward && states.pokemons.isNotEmpty()){
+            onEvent(PokemonSearchEvent.getNextPage)
         }
+    }
+}
+
+
+@Preview(showSystemUi = true, showBackground = true)
+@Composable
+fun PokemonSearchViewPreview() {
+    PreviewTemplate {
+        val pokemons = listOf(
+            PokemonNameData(1, "Charmander", ""),
+            PokemonNameData(1, "Totodile", ""),
+            PokemonNameData(1, "Croconawa", ""),
+            PokemonNameData(1, "Mew", ""),
+            PokemonNameData(1, "Mewtwo", ""),
+            PokemonNameData(1, "Fuecoco", ""),
+            PokemonNameData(1, "Sprigatito", ""),
+        )
+        val states = PokemonSearchStates(pokemons)
+
+        PokemonSearchView(
+            commonStates = CommonStates(isLoading = true, searchText = "Buscando ando"),
+            states = states,
+            onEvent = { },
+            onUIEvent = { }
+        )
     }
 }

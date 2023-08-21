@@ -6,16 +6,18 @@ import androidx.compose.runtime.Composable
 
 @Composable
 fun DisposableMessage(
-    message: String,
+    message: String?,
     onDismiss: () -> Unit
 ) {
-    if(message.isNotEmpty()){
-        AlertDialog(
-            onDismissRequest = { onDismiss() },
-            confirmButton = { },
-            text = {
-                Text(text = message)
-            },
-        )
+    message?.let {
+        if(it.isNotEmpty()){
+            AlertDialog(
+                onDismissRequest = { onDismiss() },
+                confirmButton = { },
+                text = {
+                    Text(text = it)
+                },
+            )
+        }
     }
 }

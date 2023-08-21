@@ -1,17 +1,16 @@
 package com.prior_dev.pokerroutejc.feature_pokemon.presentation.search
 
-import androidx.compose.runtime.mutableStateListOf
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.prior_dev.pokerroutejc.core.CommonStates
-import com.prior_dev.pokerroutejc.core.handleResource
+import com.prior_dev.pokerroutejc.core.Resource
 import com.prior_dev.pokerroutejc.feature_pokemon.domain.PokemonNameData
 import com.prior_dev.pokerroutejc.feature_pokemon.domain.PokemonRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,64 +18,87 @@ import javax.inject.Inject
 class PokemonSearchViewModel @Inject constructor(
     private val repository: PokemonRepository
 ): ViewModel() {
-    private val _states = MutableLiveData(CommonStates())
-    val states: LiveData<CommonStates> = _states
+    private val _commonStates = MutableStateFlow(CommonStates())
+    val commonStates = _commonStates.asStateFlow()
 
-    private val _pokemonNames = mutableStateListOf<PokemonNameData>()
-    val pokemonNames: List<PokemonNameData> = _pokemonNames
+    private val _states = MutableStateFlow(PokemonSearchStates())
+    val states = _states.asStateFlow()
 
     private var searchJob: Job? = null
 
     init {
-        _states.value = states.value?.copy(isLoading = false)
+        _commonStates.value = commonStates.value.copy(isLoading = false)
         getNextPage()
     }
 
-    fun onSearchText(text: String){
-        _states.value = states.value?.copy(searchText = text)
+    fun onEvent(event: PokemonSearchEvent){
+        when(event){
+            is PokemonSearchEvent.OnSearchText -> onSearchText(event.text)
+            PokemonSearchEvent.getNextPage -> getNextPage()
+            PokemonSearchEvent.onDismiss -> onDismiss()
+        }
+    }
+
+    private fun onSearchText(text: String){
+        //TODO:hacer la carga de pokemons mas suave, y arreglar la paginación
+        _commonStates.value = commonStates.value.copy(searchText = text)
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
             delay(500L)
             if(text.isBlank()){
-                _pokemonNames.clear()
+                _states.value = states.value.copy(pokemons = emptyList())
                 getNextPage()
             }else{
                 repository.searchPokemonNameByMatch(text)
                     .collect{ result ->
-                        handleResource(result, _states, states){
-                            result.data?.let {
-                                _pokemonNames.clear()
-                                _pokemonNames.addAll(it)
+                        when(result){
+                            is Resource.Error -> showErrorDialog(result.message)
+                            is Resource.Loading -> handleLoadingWheel(result.isLoading)
+                            is Resource.Success -> {
+                                _states.value = states.value.copy(
+                                    pokemons = result.data ?: emptyList()
+                                )
                             }
                         }
                     }
             }
-
         }
     }
 
-    fun onDismiss(){
-        _states.value = states.value?.copy(message = "")
+    private fun onDismiss(){
+        _commonStates.value = commonStates.value.copy(message = "")
     }
 
-    fun getNextPage(){
-        if(states.value!!.searchText.isNotBlank()){
+    private fun getNextPage(){
+        if(commonStates.value.searchText.isNotBlank()){
             return
         }
 
-        val offset = pokemonNames.size
+        val offset = states.value.pokemons.size
 
         viewModelScope.launch {
             repository.getPokemonNamePaging(offset).collect{ result ->
-                handleResource(result, _states = _states, states = states){
-                    result.data?.let {
+                when(result){
+                    is Resource.Error -> showErrorDialog(result.message)
+                    is Resource.Loading -> handleLoadingWheel(result.isLoading)
+                    is Resource.Success -> {
                         if(offset == 0){
-                            _pokemonNames.clear()
+                            _states.value = states.value.copy(pokemons = result.data ?: emptyList())
+                        }else{
+                            val list = states.value.pokemons + (result.data as List<PokemonNameData>)
+                            _states.value = states.value.copy(pokemons = list)
                         }
-                        _pokemonNames.addAll(it)
                     }
                 }
             }
         }
+    }
+
+    private fun showErrorDialog(message: String?){
+        _commonStates.value = commonStates.value.copy(message = message)
+    }
+
+    private fun handleLoadingWheel(isLoading: Boolean){
+        _commonStates.value = commonStates.value.copy(isLoading = isLoading)
     }
 }

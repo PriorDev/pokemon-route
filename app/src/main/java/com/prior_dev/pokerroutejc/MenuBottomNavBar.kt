@@ -1,4 +1,4 @@
-package com.prior_dev.pokerroutejc.ui
+package com.prior_dev.pokerroutejc
 
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
@@ -9,9 +9,7 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.prior_dev.pokerroutejc.R
 import com.prior_dev.pokerroutejc.core.components.BottomNavIcons
-import com.prior_dev.pokerroutejc.core.routes.RoutesMenu
 import com.prior_dev.pokerroutejc.core.routes.RoutesPokemon
 import com.prior_dev.pokerroutejc.core.routes.RoutesType
 

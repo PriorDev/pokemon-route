@@ -64,6 +64,7 @@ dependencies {
 
     //lifecycle
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
+    implementation 'androidx.lifecycle:lifecycle-runtime-compose:2.6.1'
     //Life data
     implementation 'androidx.compose.runtime:runtime-livedata:1.2.1'
     //SerializedName

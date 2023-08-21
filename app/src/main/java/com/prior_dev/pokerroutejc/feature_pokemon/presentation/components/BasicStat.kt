@@ -36,7 +36,8 @@ fun BasicStat(
         targetValue = if(animationPlayed){
             value / maxValue.toFloat()
         } else 0f,
-        animationSpec = tween(animDuration, animDelay)
+        animationSpec = tween(animDuration, animDelay),
+        label = ""
     )
 
     val currentStat = (curPercent.value * maxValue).toInt()
