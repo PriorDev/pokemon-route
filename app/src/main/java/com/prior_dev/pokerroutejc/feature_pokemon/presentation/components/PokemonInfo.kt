@@ -1,7 +1,17 @@
 package com.prior_dev.pokerroutejc.feature_pokemon.presentation.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
@@ -16,22 +26,22 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.prior_dev.pokerroutejc.R
 import com.prior_dev.pokerroutejc.core.components.ItemType
-import com.prior_dev.pokerroutejc.feature_pokemon.domain.PokemonData
-import com.prior_dev.pokerroutejc.core.routes.RoutesPokemon
+import com.prior_dev.pokerroutejc.feature_pokemon.presentation.details.PokemonDetailsStates
+import com.prior_dev.pokerroutejc.feature_pokemon.presentation.details.PokemonDetailsUiEvents
 
 @Composable
 fun PokemonInfo(
     modifier: Modifier = Modifier,
-    pokemon: PokemonData,
-    navPokemon: NavHostController,
+    states: PokemonDetailsStates,
+    onUiEvents: (PokemonDetailsUiEvents) -> Unit,
     cardPadding: PaddingValues,
 ) {
     val scrollState = rememberScrollState()
+    val pokemon = states.pokemon
 
     Box(
         modifier = modifier
@@ -64,10 +74,9 @@ fun PokemonInfo(
                             ItemType(
                                 type = it,
                                 modifier = Modifier
-                                    .width(100.dp)
-                            ){
-                                navPokemon.navigate(RoutesPokemon.TypeDetails.getRoute(it.id))
-                            }
+                                    .width(100.dp),
+                                onClick = { onUiEvents(PokemonDetailsUiEvents.OpenTypeDetails(it.id)) }
+                            )
                         }
                     }
 

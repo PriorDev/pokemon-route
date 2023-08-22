@@ -22,31 +22,31 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.prior_dev.pokerroutejc.R
-import com.prior_dev.pokerroutejc.feature_pokemon.presentation.details.PokemonDetailsViewModel
-import com.prior_dev.pokerroutejc.feature_pokemon.presentation.utils.MoveViewStates
+import com.prior_dev.pokerroutejc.feature_pokemon.domain.MoveDetailsData
+import com.prior_dev.pokerroutejc.feature_pokemon.presentation.details.PokemonDetailsEvents
+import com.prior_dev.pokerroutejc.feature_pokemon.presentation.details.PokemonDetailsStates
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun MovesView() {
-    val viewModel: PokemonDetailsViewModel = hiltViewModel()
+fun MovesView(
+    states: PokemonDetailsStates,
+    movesList: List<MoveDetailsData>,
+    onEvents: (PokemonDetailsEvents) -> Unit
+) {
     val cardPadding  = PaddingValues(horizontal = 32.dp, vertical = 16.dp)
-    val moveStates by viewModel.moveStates.observeAsState(MoveViewStates())
 
     Column(Modifier.fillMaxSize()) {
-        if(moveStates.isLoading){
+        if(states.isLoading){
             LinearProgressIndicator(Modifier.fillMaxWidth())
         }
-        LazyColumn() {
+        LazyColumn{
             item{
                 Box(modifier = Modifier
                     .fillMaxWidth()
@@ -63,7 +63,7 @@ fun MovesView() {
                     )
 
                     androidx.compose.animation.AnimatedVisibility(
-                        visible = !moveStates.isLoading,
+                        visible = !states.isLoading,
                         enter = slideInHorizontally(
                             initialOffsetX = { it }
                         ),
@@ -74,7 +74,7 @@ fun MovesView() {
                                 .align(Alignment.BottomEnd)
                                 .padding(0.dp)
                                 .background(MaterialTheme.colors.primary),
-                            onClick = viewModel::onToggleFilterVisibility
+                            onClick = { onEvents(PokemonDetailsEvents.onToggleFilterVisibility) }
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Menu,
@@ -85,11 +85,11 @@ fun MovesView() {
                 }
             }
             item {
-                AnimatedVisibility(visible = moveStates.isFiltersExpanded) {
-                    Filters()
+                AnimatedVisibility(visible = states.isFiltersExpanded) {
+                    Filters(states = states, moveList = movesList, onEvents = onEvents)
                 }
             }
-            items(viewModel.moves){ move ->
+            items(movesList){ move ->
                 if(move.isVisible){
                     ItemMove(
                         move = move,

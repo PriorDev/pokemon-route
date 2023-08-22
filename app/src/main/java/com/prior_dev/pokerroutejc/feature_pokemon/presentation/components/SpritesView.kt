@@ -18,12 +18,15 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.prior_dev.pokerroutejc.feature_pokemon.domain.PokemonData
 import com.prior_dev.pokerroutejc.R
+import com.prior_dev.pokerroutejc.feature_pokemon.presentation.details.PokemonDetailsStates
 
 @Composable
 fun SpritesView(
     modifier: Modifier = Modifier,
-    pokemon: PokemonData
+    states: PokemonDetailsStates
 ) {
+    val pokemon = states.pokemon
+
     Card (modifier = modifier){
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,

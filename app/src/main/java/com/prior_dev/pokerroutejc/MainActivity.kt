@@ -23,7 +23,9 @@ import androidx.navigation.navArgument
 import com.prior_dev.pokerroutejc.core.routes.RoutesMenu
 import com.prior_dev.pokerroutejc.core.routes.RoutesPokemon
 import com.prior_dev.pokerroutejc.core.routes.RoutesType
+import com.prior_dev.pokerroutejc.feature_pokemon.presentation.details.PokemonDetailsUiEvents
 import com.prior_dev.pokerroutejc.feature_pokemon.presentation.details.PokemonDetailsView
+import com.prior_dev.pokerroutejc.feature_pokemon.presentation.details.PokemonDetailsViewModel
 import com.prior_dev.pokerroutejc.feature_pokemon.presentation.search.PokemonSearchUiEvent
 import com.prior_dev.pokerroutejc.feature_pokemon.presentation.search.PokemonSearchView
 import com.prior_dev.pokerroutejc.feature_pokemon.presentation.search.PokemonSearchViewModel
@@ -100,7 +102,18 @@ class MainActivity : ComponentActivity() {
                     }
                 )
             ){
-                PokemonDetailsView(navController)
+                val viewModel = hiltViewModel<PokemonDetailsViewModel>()
+                val commonStates = viewModel.commonStates.collectAsStateWithLifecycle()
+                val states = viewModel.states.collectAsStateWithLifecycle()
+                val moveList = viewModel.moves
+
+                PokemonDetailsView(
+                    commonStates = commonStates.value,
+                    states = states.value,
+                    movesList =  moveList,
+                    onEvents = viewModel::onEvent,
+                    onUiEvents = ::onPokemonDetailsUiEvent
+                )
             }
 
             composable(
@@ -122,6 +135,13 @@ class MainActivity : ComponentActivity() {
             is PokemonSearchUiEvent.openPokemonDetailsView -> {
                 navController.navigate(RoutesPokemon.PokemonDetails.getRoute(event.pokemon))
             }
+        }
+    }
+
+    private fun onPokemonDetailsUiEvent(event: PokemonDetailsUiEvents){
+        when(event){
+            is PokemonDetailsUiEvents.OpenTypeDetails ->
+                navController.navigate(RoutesPokemon.TypeDetails.getRoute(event.typeId))
         }
     }
 

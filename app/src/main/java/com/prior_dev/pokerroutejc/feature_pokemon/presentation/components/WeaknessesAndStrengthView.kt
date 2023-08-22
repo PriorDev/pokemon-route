@@ -3,15 +3,12 @@ package com.prior_dev.pokerroutejc.feature_pokemon.presentation.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
-import androidx.compose.foundation.lazy.grid.LazyGridItemSpanScope
-import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.Card
@@ -24,18 +21,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.prior_dev.pokerroutejc.R
 import com.prior_dev.pokerroutejc.core.components.ItemType
-import com.prior_dev.pokerroutejc.feature_types.domain.DamageRelationsData
-import com.prior_dev.pokerroutejc.feature_types.domain.TypeData
+import com.prior_dev.pokerroutejc.feature_pokemon.presentation.details.PokemonDetailsStates
 
 @Composable
 fun WeaknessesAndStrengthView(
     modifier: Modifier = Modifier,
-    weaknessesAndStrengths: DamageRelationsData
+    states: PokemonDetailsStates
 ) {
+    val weaknessesAndStrengths = states.weaknessesAndStrengths
     val cellCount = 2
 
     Card(modifier = modifier) {
@@ -145,21 +141,3 @@ fun WeaknessesAndStrengthView(
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-private fun Preview(){
-    val cardPadding  = PaddingValues(horizontal = 32.dp, vertical = 16.dp)
-
-    val damageRelationsData = DamageRelationsData(
-        x4DamageFrom = listOf(
-            TypeData(id = 1, name = "Rock"),
-            TypeData(id = 2, name = "Water"),
-        )
-    )
-
-    WeaknessesAndStrengthView(
-        Modifier
-            .padding(cardPadding),
-        weaknessesAndStrengths = damageRelationsData
-    )
-}

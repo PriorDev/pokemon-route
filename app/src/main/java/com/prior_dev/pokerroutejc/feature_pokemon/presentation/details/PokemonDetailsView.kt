@@ -9,20 +9,16 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.prior_dev.pokerroutejc.core.CommonStates
 import com.prior_dev.pokerroutejc.core.EnumColorTypes
 import com.prior_dev.pokerroutejc.core.components.CommonStatesView
-import com.prior_dev.pokerroutejc.feature_pokemon.domain.PokemonData
+import com.prior_dev.pokerroutejc.feature_pokemon.domain.MoveDetailsData
 import com.prior_dev.pokerroutejc.feature_pokemon.presentation.components.PokemonInfo
 import com.prior_dev.pokerroutejc.feature_pokemon.presentation.components.MovesView
 import com.prior_dev.pokerroutejc.feature_pokemon.presentation.components.SpritesView
@@ -34,26 +30,25 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PokemonDetailsView(
-    navPokemon: NavHostController
+    commonStates: CommonStates,
+    states: PokemonDetailsStates,
+    movesList: List<MoveDetailsData>,
+    onEvents: (PokemonDetailsEvents) -> Unit,
+    onUiEvents: (PokemonDetailsUiEvents) -> Unit,
 ) {
-    val viewModel: PokemonDetailsViewModel = hiltViewModel()
-    val states by viewModel.states.observeAsState(CommonStates())
-    val pokemon by viewModel.pokemon.observeAsState(PokemonData())
-    val weaknessesAndStrengths by viewModel.weaknessesAndStrengths.observeAsState()
-
     val cardPadding  = PaddingValues(horizontal = 32.dp, vertical = 16.dp)
     val scope = rememberCoroutineScope()
     val systemUiController = rememberSystemUiController()
 
-    val colorTypes = if(pokemon.types.isEmpty()){
+    val colorTypes = if(states.pokemon.types.isEmpty()){
         listOf(
             EnumColorTypes.Normal.color,
             EnumColorTypes.Normal.color,
         )
     }else{
         listOf(
-            pokemon.types.first().getColor(),
-            pokemon.types.last().getColor()
+            states.pokemon.types.first().getColor(),
+            states.pokemon.types.last().getColor()
         )
     }
 
@@ -71,8 +66,12 @@ fun PokemonDetailsView(
         }
     }
 
-    CommonStatesView(onDismiss = viewModel::onDismiss, commonStates = states)
-    if(states.isLoading)
+    CommonStatesView(
+        onDismiss = { onEvents(PokemonDetailsEvents.onDismiss) },
+        commonStates = commonStates
+    )
+
+    if(commonStates.isLoading)
         return
 
     val pageCount = 4
@@ -117,16 +116,31 @@ fun PokemonDetailsView(
                 .offset(y = 30.dp)
         ) { page ->
             when(page){
-                0 -> PokemonInfo(Modifier.fillMaxWidth(), pokemon, navPokemon, cardPadding)
-                1 -> weaknessesAndStrengths?.let {
-                    WeaknessesAndStrengthView(
-                        weaknessesAndStrengths = it,
+                0 -> PokemonInfo(
+                        modifier = Modifier.fillMaxWidth(),
+                        states = states,
+                        onUiEvents = onUiEvents,
+                        cardPadding = cardPadding
+                    )
+                1 -> WeaknessesAndStrengthView(
+                        states = states,
                         modifier = Modifier.padding(cardPadding)
                     )
-                }
-                2 -> MovesView()
-                3 -> SpritesView(Modifier.padding(cardPadding), pokemon)
-                else -> PokemonInfo(Modifier.fillMaxWidth(), pokemon, navPokemon, cardPadding)
+                2 -> MovesView(
+                    states = states,
+                    movesList = movesList,
+                    onEvents = onEvents
+                )
+                3 -> SpritesView(
+                        modifier = Modifier.padding(cardPadding),
+                        states = states
+                    )
+                else -> PokemonInfo(
+                    modifier = Modifier.fillMaxWidth(),
+                    states = states,
+                    onUiEvents = onUiEvents,
+                    cardPadding = cardPadding
+                )
             }
         }
     }
