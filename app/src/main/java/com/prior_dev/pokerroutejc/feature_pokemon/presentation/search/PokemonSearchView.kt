@@ -10,7 +10,6 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -26,7 +25,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun PokemonSearchView(
     commonStates: CommonStates,
-    states: PokemonSearchStates,
+    pokemonList: List<PokemonNameData>,
     onEvent: (PokemonSearchEvent) -> Unit,
     onUIEvent: (PokemonSearchUiEvent) -> Unit
 ) {
@@ -65,7 +64,7 @@ fun PokemonSearchView(
                 .padding(horizontal = 8.dp)
                 .padding(top = 4.dp)
         ){
-            items(states.pokemons){ pokemon ->
+            items(pokemonList){ pokemon ->
                 ItemPokemonName(
                     pokemon = pokemon,
                     modifier = Modifier.clickable {
@@ -78,7 +77,7 @@ fun PokemonSearchView(
             }
         }
 
-        if(!gridState.canScrollForward && states.pokemons.isNotEmpty()){
+        if(!gridState.canScrollForward && pokemonList.isNotEmpty()){
             onEvent(PokemonSearchEvent.getNextPage)
         }
     }
@@ -98,11 +97,10 @@ fun PokemonSearchViewPreview() {
             PokemonNameData(1, "Fuecoco", ""),
             PokemonNameData(1, "Sprigatito", ""),
         )
-        val states = PokemonSearchStates(pokemons)
 
         PokemonSearchView(
             commonStates = CommonStates(isLoading = true, searchText = "Buscando ando"),
-            states = states,
+            pokemonList = pokemons,
             onEvent = { },
             onUIEvent = { }
         )

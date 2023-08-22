@@ -49,7 +49,6 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-
                     navController = rememberNavController()
 
                     Scaffold(
@@ -64,9 +63,9 @@ class MainActivity : ComponentActivity() {
                             startDestination = RoutesType.ROUTE_NAME,
                             route = RoutesMenu.ROUTE_NAME
                         ){
-                            pokemonNavigation(navController)
+                            pokemonNavigation()
 
-                            typesNavigation(navController)
+                            typesNavigation()
                         }
                     }
                 }
@@ -74,9 +73,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun NavGraphBuilder.pokemonNavigation(
-        navController: NavHostController
-    ) {
+    private fun NavGraphBuilder.pokemonNavigation() {
         navigation(
             route = RoutesPokemon.ROUTE_NAME,
             startDestination = RoutesPokemon.SearchRoute.route
@@ -84,11 +81,11 @@ class MainActivity : ComponentActivity() {
             composable(RoutesPokemon.SearchRoute.route){
                 val viewModel = hiltViewModel<PokemonSearchViewModel>()
                 val commonStates = viewModel.commonStates.collectAsStateWithLifecycle()
-                val states = viewModel.states.collectAsStateWithLifecycle()
+                val pokemonList = viewModel.pokemonList
 
                 PokemonSearchView(
                     commonStates = commonStates.value,
-                    states = states.value,
+                    pokemonList = pokemonList,
                     onEvent = viewModel::onEvent,
                     onUIEvent = ::onPokemonSearchUiEvent
                 )
@@ -145,7 +142,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun NavGraphBuilder.typesNavigation(navController: NavHostController){
+    private fun NavGraphBuilder.typesNavigation(){
         navigation(
             startDestination = RoutesType.TypesList.route,
             route = RoutesType.ROUTE_NAME
@@ -159,7 +156,7 @@ class MainActivity : ComponentActivity() {
                     commonStates = commonStates.value,
                     states = states.value,
                     onEvent = viewModel::onEvent,
-                    onUiEvent = { onListTypeUIEvent(it, navController) }
+                    onUiEvent = ::onListTypeUIEvent
                 )
             }
 
@@ -177,7 +174,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun onListTypeUIEvent(event: ListTypesUiEvent, navController: NavHostController){
+    private fun onListTypeUIEvent(event: ListTypesUiEvent){
         when(event){
             is ListTypesUiEvent.openTypesDetailScreen -> {
                 navController.navigate(RoutesType.TypeDetails.getRoute(event.typeId))

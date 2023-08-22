@@ -1,5 +1,6 @@
 package com.prior_dev.pokerroutejc.feature_pokemon.presentation.search
 
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.prior_dev.pokerroutejc.core.CommonStates
@@ -18,16 +19,15 @@ import javax.inject.Inject
 class PokemonSearchViewModel @Inject constructor(
     private val repository: PokemonRepository
 ): ViewModel() {
-    private val _commonStates = MutableStateFlow(CommonStates())
+    private val _commonStates = MutableStateFlow(CommonStates(isLoading = false))
     val commonStates = _commonStates.asStateFlow()
 
-    private val _states = MutableStateFlow(PokemonSearchStates())
-    val states = _states.asStateFlow()
+    private val _pokemonList = mutableStateListOf<PokemonNameData>()
+    val pokemonList: List<PokemonNameData> = _pokemonList
 
     private var searchJob: Job? = null
 
     init {
-        _commonStates.value = commonStates.value.copy(isLoading = false)
         getNextPage()
     }
 
@@ -40,24 +40,22 @@ class PokemonSearchViewModel @Inject constructor(
     }
 
     private fun onSearchText(text: String){
-        //TODO:hacer la carga de pokemons mas suave, y arreglar la paginación
         _commonStates.value = commonStates.value.copy(searchText = text)
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
             delay(500L)
             if(text.isBlank()){
-                _states.value = states.value.copy(pokemons = emptyList())
+                _pokemonList.clear()
                 getNextPage()
             }else{
                 repository.searchPokemonNameByMatch(text)
-                    .collect{ result ->
-                        when(result){
-                            is Resource.Error -> showErrorDialog(result.message)
-                            is Resource.Loading -> handleLoadingWheel(result.isLoading)
+                    .collect{ resource ->
+                        when(resource){
+                            is Resource.Error -> showErrorDialog(resource.message)
+                            is Resource.Loading -> handleLoadingWheel(resource.isLoading)
                             is Resource.Success -> {
-                                _states.value = states.value.copy(
-                                    pokemons = result.data ?: emptyList()
-                                )
+                                _pokemonList.clear()
+                                _pokemonList.addAll(resource.data ?: emptyList())
                             }
                         }
                     }
@@ -65,28 +63,34 @@ class PokemonSearchViewModel @Inject constructor(
         }
     }
 
-    private fun onDismiss(){
+    fun onDismiss(){
         _commonStates.value = commonStates.value.copy(message = "")
     }
 
     private fun getNextPage(){
+        //If searchTest has a value that means the user is searching for a pokemon
+        //what means no pagination
         if(commonStates.value.searchText.isNotBlank()){
             return
         }
 
-        val offset = states.value.pokemons.size
+        //One way to avoid adding repetitive pages when the job is no finish yet
+        if(commonStates.value.isLoading)
+            return
+
+        val offset = pokemonList.size
 
         viewModelScope.launch {
-            repository.getPokemonNamePaging(offset).collect{ result ->
-                when(result){
-                    is Resource.Error -> showErrorDialog(result.message)
-                    is Resource.Loading -> handleLoadingWheel(result.isLoading)
-                    is Resource.Success -> {
+            repository.getPokemonNamePaging(offset).collect{ resource ->
+                when(resource){
+                    is Resource.Error -> showErrorDialog(resource.message)
+                    is Resource.Loading -> handleLoadingWheel(resource.isLoading)
+                    is Resource.Success -> resource.data?.let { pokemons ->
                         if(offset == 0){
-                            _states.value = states.value.copy(pokemons = result.data ?: emptyList())
-                        }else{
-                            val list = states.value.pokemons + (result.data as List<PokemonNameData>)
-                            _states.value = states.value.copy(pokemons = list)
+                            _pokemonList.clear()
+                        }
+                        pokemons.map{
+                            _pokemonList.add(it)
                         }
                     }
                 }
