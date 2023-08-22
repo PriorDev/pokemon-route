@@ -33,7 +33,7 @@ fun PokemonSearchView(
     val gridState = rememberLazyGridState()
     val coroutineScope = rememberCoroutineScope()
 
-    DisposableMessage(commonStates.message, onDismiss = { onEvent(PokemonSearchEvent.onDismiss) })
+    DisposableMessage(commonStates.uiMessages, onDismiss = { onEvent(PokemonSearchEvent.onDismiss) })
 
     Column {
         PokemonSearchTextField(

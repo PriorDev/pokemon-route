@@ -23,5 +23,5 @@ fun CommonStatesView(
         }
     }
 
-    DisposableMessage(message = commonStates.message, onDismiss = onDismiss)
+    DisposableMessage(uiMessages = commonStates.uiMessages, onDismiss = onDismiss)
 }

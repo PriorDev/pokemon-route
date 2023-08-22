@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.prior_dev.pokerroutejc.core.CommonStates
 import com.prior_dev.pokerroutejc.core.Resource
+import com.prior_dev.pokerroutejc.core.UiMessages
 import com.prior_dev.pokerroutejc.feature_pokemon.domain.PokemonNameData
 import com.prior_dev.pokerroutejc.feature_pokemon.domain.PokemonRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -51,7 +52,7 @@ class PokemonSearchViewModel @Inject constructor(
                 repository.searchPokemonNameByMatch(text)
                     .collect{ resource ->
                         when(resource){
-                            is Resource.Error -> showErrorDialog(resource.message)
+                            is Resource.Error -> showErrorDialog(resource.uiMessages)
                             is Resource.Loading -> handleLoadingWheel(resource.isLoading)
                             is Resource.Success -> {
                                 _pokemonList.clear()
@@ -64,7 +65,7 @@ class PokemonSearchViewModel @Inject constructor(
     }
 
     fun onDismiss(){
-        _commonStates.value = commonStates.value.copy(message = "")
+        _commonStates.value = commonStates.value.copy(uiMessages = null)
     }
 
     private fun getNextPage(){
@@ -83,7 +84,7 @@ class PokemonSearchViewModel @Inject constructor(
         viewModelScope.launch {
             repository.getPokemonNamePaging(offset).collect{ resource ->
                 when(resource){
-                    is Resource.Error -> showErrorDialog(resource.message)
+                    is Resource.Error -> showErrorDialog(resource.uiMessages)
                     is Resource.Loading -> handleLoadingWheel(resource.isLoading)
                     is Resource.Success -> resource.data?.let { pokemons ->
                         if(offset == 0){
@@ -98,8 +99,8 @@ class PokemonSearchViewModel @Inject constructor(
         }
     }
 
-    private fun showErrorDialog(message: String?){
-        _commonStates.value = commonStates.value.copy(message = message)
+    private fun showErrorDialog(uiMessages: UiMessages){
+        _commonStates.value = commonStates.value.copy(uiMessages = uiMessages)
     }
 
     private fun handleLoadingWheel(isLoading: Boolean){

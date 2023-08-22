@@ -1,13 +1,9 @@
 package com.prior_dev.pokerroutejc.feature_types.presentation.list
 
-import androidx.compose.runtime.mutableStateListOf
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.prior_dev.pokerroutejc.core.CommonStates
 import com.prior_dev.pokerroutejc.core.Resource
-import com.prior_dev.pokerroutejc.feature_types.domain.TypeData
 import com.prior_dev.pokerroutejc.feature_types.domain.TypeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,7 +27,7 @@ class ListTypeViewModel @Inject constructor(
                 .collect{ result ->
                     when(result){
                         is Resource.Error -> {
-                            _commonStates.value = commonStates.value.copy(message = result.message ?: "")
+                            //_commonStates.value = commonStates.value.copy(uiMessages = result.uiMessages ?: "")
                         }
                         is Resource.Loading -> {
                             _commonStates.value = commonStates.value.copy(isLoading = result.isLoading)
@@ -53,6 +49,6 @@ class ListTypeViewModel @Inject constructor(
     }
 
     fun onDismiss(){
-        _commonStates.value = commonStates.value.copy(message = "")
+        _commonStates.value = commonStates.value.copy(uiMessages = null)
     }
 }

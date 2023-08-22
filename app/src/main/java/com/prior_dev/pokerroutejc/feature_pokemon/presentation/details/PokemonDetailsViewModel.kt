@@ -4,6 +4,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.*
 import com.prior_dev.pokerroutejc.core.CommonStates
 import com.prior_dev.pokerroutejc.core.Resource
+import com.prior_dev.pokerroutejc.core.UiMessages
 import com.prior_dev.pokerroutejc.feature_pokemon.domain.MoveDetailsData
 import com.prior_dev.pokerroutejc.feature_pokemon.domain.PokemonRepository
 import com.prior_dev.pokerroutejc.feature_pokemon.domain.use_cases.PokemonUseCases
@@ -18,7 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PokemonDetailsViewModel @Inject constructor(
     private val repository: PokemonRepository,
-    private val savedStateHandle: SavedStateHandle,
+    savedStateHandle: SavedStateHandle,
     private val useCases: PokemonUseCases
 ): ViewModel(){
     private val _commonStates = MutableStateFlow(CommonStates())
@@ -37,7 +38,7 @@ class PokemonDetailsViewModel @Inject constructor(
             pokemonName?.let {
                 repository.getPokemon(pokemonName).collect{ resource ->
                     when(resource){
-                        is Resource.Error -> showErrorMessage(resource.message)
+                        is Resource.Error -> showErrorMessage(resource.uiMessages)
                         is Resource.Loading -> handleLoadingWheel(resource.isLoading)
                         is Resource.Success -> {
                             _states.value = states.value.copy(pokemon = resource.data!!)
@@ -66,10 +67,10 @@ class PokemonDetailsViewModel @Inject constructor(
     }
 
     fun onDismiss(){
-        _commonStates.value = commonStates.value.copy(message = "")
+        _commonStates.value = commonStates.value.copy(uiMessages = null)
     }
 
-    fun onGenerationSelect(generation: String){
+    private fun onGenerationSelect(generation: String){
         _states.value = states.value.copy(
             selectedGeneration = generation
         )
@@ -77,7 +78,7 @@ class PokemonDetailsViewModel @Inject constructor(
         filterMoves()
     }
 
-    fun onTypeSelect(typeId: Int){
+    private fun onTypeSelect(typeId: Int){
         _states.value = states.value.copy(
             selectedTypeId = typeId
         )
@@ -85,7 +86,7 @@ class PokemonDetailsViewModel @Inject constructor(
         filterMoves()
     }
 
-    fun onToggleFilterVisibility(){
+    private fun onToggleFilterVisibility(){
         _states.value = states.value.let { states ->
             states.copy(
                 isFiltersExpanded = !states.isFiltersExpanded
@@ -112,7 +113,7 @@ class PokemonDetailsViewModel @Inject constructor(
         )
 
         when(resource){
-            is Resource.Error -> showErrorMessage(resource.message)
+            is Resource.Error -> showErrorMessage(resource.uiMessages)
             is Resource.Loading -> handleLoadingWheel(resource.isLoading)
             is Resource.Success -> {
                 _states.value = states.value.copy(
@@ -126,9 +127,7 @@ class PokemonDetailsViewModel @Inject constructor(
         _moves.clear()
         repository.getMoveDetails(states.value.pokemon.moves).collect{ resource ->
             when(resource){
-                is Resource.Error -> {
-                    _states.value = states.value.copy(message = resource.message ?: "")
-                }
+                is Resource.Error -> showErrorMessage(resource.uiMessages)
                 is Resource.Loading -> {
                     _states.value = states.value.copy(isLoading = resource.isLoading)
                 }
@@ -141,8 +140,8 @@ class PokemonDetailsViewModel @Inject constructor(
         }
     }
 
-    private fun showErrorMessage(message: String?){
-        _commonStates.value = commonStates.value.copy(message = message)
+    private fun showErrorMessage(uiMessages: UiMessages?){
+        _commonStates.value = commonStates.value.copy(uiMessages = uiMessages)
     }
 
     private fun handleLoadingWheel(isLoading: Boolean){

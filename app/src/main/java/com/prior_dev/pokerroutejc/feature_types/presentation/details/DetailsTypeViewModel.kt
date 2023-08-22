@@ -29,7 +29,7 @@ class DetailsTypeViewModel @Inject constructor(
                     .collect{ result ->
                         when(result){
                             is Resource.Error -> {
-                                _states.value = states.value?.copy(message = result.message ?: "")
+                                //_states.value = states.value?.copy(message = result.message ?: "")
                             }
                             is Resource.Loading -> {
                                 _states.value = states.value?.copy(isLoading = result.isLoading)
@@ -44,6 +44,6 @@ class DetailsTypeViewModel @Inject constructor(
     }
 
     fun onDismiss(){
-        _states.value = states.value?.copy(message = "")
+        //_states.value = states.value?.copy(message = "")
     }
 }

@@ -28,4 +28,6 @@
     <string name="moves">Moves</string>
     <string name="all">All</string>
     <string name="filters">Filtros</string>
+    <string name="error_trying_to_reach_remote_source">Error on trying to reach remote source, check your internet connection</string>
+    <string name="unexpected_error">Unexpected error</string>
 </resources>

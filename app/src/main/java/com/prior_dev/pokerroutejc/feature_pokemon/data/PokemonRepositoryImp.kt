@@ -2,7 +2,6 @@ package com.prior_dev.pokerroutejc.feature_pokemon.data
 
 import com.prior_dev.pokerroutejc.core.EnumTags
 import com.prior_dev.pokerroutejc.core.Resource
-import com.prior_dev.pokerroutejc.core.components.SealedMyExceptions
 import com.prior_dev.pokerroutejc.feature_pokemon.data.database.PokemonDao
 import com.prior_dev.pokerroutejc.feature_pokemon.data.database.toDB
 import com.prior_dev.pokerroutejc.feature_pokemon.domain.MoveData

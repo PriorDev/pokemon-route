@@ -3,21 +3,31 @@ package com.prior_dev.pokerroutejc.core.components
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
+import com.prior_dev.pokerroutejc.core.UiMessages
 
 @Composable
 fun DisposableMessage(
-    message: String?,
+    uiMessages: UiMessages?,
     onDismiss: () -> Unit
 ) {
-    message?.let {
-        if(it.isNotEmpty()){
-            AlertDialog(
-                onDismissRequest = { onDismiss() },
-                confirmButton = { },
-                text = {
-                    Text(text = it)
-                },
-            )
+    uiMessages?.let {
+        AlertDialog(
+            onDismissRequest = { onDismiss() },
+            confirmButton = { },
+            text = {
+                Text(text = uiMessages.asString())
+            },
+        )
+    }
+}
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun DisposableMessagePreview() {
+    PreviewTemplate {
+        DisposableMessage(uiMessages = UiMessages.DynamicMessage("Mensaje de error")) {
+            
         }
     }
 }
