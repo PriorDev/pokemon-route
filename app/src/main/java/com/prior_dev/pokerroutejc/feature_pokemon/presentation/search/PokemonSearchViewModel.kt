@@ -19,7 +19,7 @@ import javax.inject.Inject
 class PokemonSearchViewModel @Inject constructor(
     private val repository: PokemonRepository
 ): ViewModel() {
-    private val _commonStates = MutableStateFlow(CommonStates(isLoading = false))
+    private val _commonStates = MutableStateFlow(CommonStates())
     val commonStates = _commonStates.asStateFlow()
 
     private val _pokemonList = mutableStateListOf<PokemonNameData>()
@@ -74,11 +74,11 @@ class PokemonSearchViewModel @Inject constructor(
             return
         }
 
-        //One way to avoid adding repetitive pages when the job is no finish yet
-        if(commonStates.value.isLoading)
-            return
-
         val offset = pokemonList.size
+
+        //One way to avoid adding repetitive pages when the job is no finish yet
+        if(commonStates.value.isLoading && offset > 0)
+            return
 
         viewModelScope.launch {
             repository.getPokemonNamePaging(offset).collect{ resource ->
