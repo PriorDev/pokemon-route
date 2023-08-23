@@ -1,6 +1,8 @@
 package com.prior_dev.pokerroutejc.feature_pokemon.di
 
 import com.prior_dev.pokerroutejc.feature_pokemon.data.PokemonRepositoryImp
+import com.prior_dev.pokerroutejc.feature_pokemon.data.PokemonService
+import com.prior_dev.pokerroutejc.feature_pokemon.data.network.PokemonServiceImp
 import com.prior_dev.pokerroutejc.feature_pokemon.domain.PokemonRepository
 import dagger.Binds
 import dagger.Module
@@ -16,4 +18,8 @@ abstract class RepositoryModule {
     abstract fun providerPokemonRepository(
         pokemonRepository: PokemonRepositoryImp
     ): PokemonRepository
+
+    @Binds
+    @ViewModelScoped
+    abstract fun provicesPokemonService(service: PokemonServiceImp): PokemonService
 }

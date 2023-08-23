@@ -10,7 +10,7 @@ import java.math.BigInteger
 data class MoveDetailsData(
     var isVisible: Boolean = true,
     val name: String,
-    val id: BigInteger,
+    val id: Long,
     val versionGroupDetails: List<VersionGroupDetailData>,
     val accuracy: Int,
     val power: Int,

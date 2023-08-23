@@ -125,20 +125,20 @@ private fun ItemMovePreview(){
     val move = MoveDetailsData(
         isVisible = true,
         name = "Nombre",
-        id = "0".toBigInteger(),
+        id = "0".toLong(),
         versionGroupDetails = listOf(
             VersionGroupDetailData(
                 levelLearnedAt = 1,
-                moveLearnMethodId = "0".toBigInteger(),
+                moveLearnMethodId = "0".toLong(),
                 moveLearnMethodName = "Subir de nivel",
-                versionGroupId = "0".toBigInteger(),
+                versionGroupId = "0".toLong(),
                 versionGroupName = "Version Gold"
             ),
             VersionGroupDetailData(
                 levelLearnedAt = 1,
-                moveLearnMethodId = "0".toBigInteger(),
+                moveLearnMethodId = "0".toLong(),
                 moveLearnMethodName = "Subir de nivel",
-                versionGroupId = "0".toBigInteger(),
+                versionGroupId = "0".toLong(),
                 versionGroupName = "Version Gold"
             ),
         ),

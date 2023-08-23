@@ -1,12 +1,11 @@
 package com.prior_dev.pokerroutejc.feature_types.data
 
-import android.util.Log
 import com.prior_dev.pokerroutejc.core.EnumTags
 import com.prior_dev.pokerroutejc.core.Resource
 import com.prior_dev.pokerroutejc.core.components.SealedMyExceptions
 import com.prior_dev.pokerroutejc.feature_types.data.database.TypeDao
 import com.prior_dev.pokerroutejc.feature_types.data.database.toDB
-import com.prior_dev.pokerroutejc.feature_types.data.network.TypeService
+import com.prior_dev.pokerroutejc.feature_types.data.network.TypeServiceImp
 import com.prior_dev.pokerroutejc.feature_types.domain.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -42,7 +41,7 @@ class TypeRepositoryImp @Inject constructor(
                     dao.getAllTypes().map { it.toDomain() }
                 ))
             }catch (e: Exception){
-                Log.e(EnumTags.Error.tag, "getAllTypes: ${e.message}")
+                println("Error")
                 emit(Resource.Error(SealedMyExceptions.serverError))
             }
 
@@ -59,6 +58,7 @@ class TypeRepositoryImp @Inject constructor(
             if(damageRelationFromDB.isNotEmpty()){
                 emit(Resource.Success(damageRelationFromDB.toDomain()))
                 emit(Resource.Loading(false))
+                return@flow
             }
 
             try {
@@ -69,13 +69,11 @@ class TypeRepositoryImp @Inject constructor(
                     dao.deleteDamageRelation(typeDetails.id)
                     dao.insertDamageRelations(typeDetails.toDB())
 
-                    emit(Resource.Loading())
                     emit(Resource.Success(typeDetails.toDomain()))
 
                 } ?: emit(Resource.Error(SealedMyExceptions.serverError))
 
             }catch (ex: Exception){
-                Log.e(EnumTags.Error.tag, "getType: ${ex.message}")
 
                 if(damageRelationFromDB.isEmpty()){
                     emit(Resource.Error(SealedMyExceptions.serverError))
@@ -106,7 +104,6 @@ class TypeRepositoryImp @Inject constructor(
                 )
             } ?: Resource.Error(SealedMyExceptions.serverError)
         }catch (e: Exception){
-            Log.e(EnumTags.Error.tag, "getAllTypes: ${e.message}")
             Resource.Error(SealedMyExceptions.serverError)
         }
     }
@@ -120,7 +117,6 @@ class TypeRepositoryImp @Inject constructor(
             } ?: Resource.Error(SealedMyExceptions.serverError)
 
         }catch (ex: Exception){
-            Log.e(EnumTags.Error.tag, "getType: ${ex.message}")
             return Resource.Error(SealedMyExceptions.serverError)
         }
     }

@@ -1,12 +1,10 @@
 package com.prior_dev.pokerroutejc.feature_pokemon.data
 
-import android.util.Log
 import com.prior_dev.pokerroutejc.core.EnumTags
 import com.prior_dev.pokerroutejc.core.Resource
 import com.prior_dev.pokerroutejc.core.components.SealedMyExceptions
 import com.prior_dev.pokerroutejc.feature_pokemon.data.database.PokemonDao
 import com.prior_dev.pokerroutejc.feature_pokemon.data.database.toDB
-import com.prior_dev.pokerroutejc.feature_pokemon.data.network.PokemonService
 import com.prior_dev.pokerroutejc.feature_pokemon.domain.MoveData
 import com.prior_dev.pokerroutejc.feature_pokemon.domain.MoveDetailsData
 import com.prior_dev.pokerroutejc.feature_pokemon.domain.PokemonData
@@ -56,7 +54,6 @@ class PokemonRepositoryImp @Inject constructor(
                     }
                     offset += limit
                 }catch (e: java.lang.Exception){
-                    Log.e(EnumTags.Error.tag, "searchPokemonNameByMatch: ${e.message}")
                     emit(Resource.Error(SealedMyExceptions.serverError))
                     existsNextPage = false
                 }
@@ -65,35 +62,6 @@ class PokemonRepositoryImp @Inject constructor(
             val pokemonDB = dao.getPokemonNameByMatch(likeName)
             emit(Resource.Success(pokemonDB.map { it.toDomain() }.sortedBy { it.name }))
             emit(Resource.Loading(false))
-        }
-    }
-
-    override suspend fun getListOfPokemon(
-        pokemonsNames: List<PokemonNameData>
-    ): Flow<Resource<List<PokemonData>>> {
-        return flow {
-            emit(Resource.Loading())
-
-            val pokemonList = mutableListOf<PokemonData>()
-
-            try{
-                pokemonsNames.forEach { pokemonName ->
-                    val pokemon = service.getPokemon(pokemonName.name)
-
-                    pokemon?.let {
-                        pokemonList.add(it.toDomain())
-                    }
-                }
-
-                emit(Resource.Success(pokemonList.sortedBy { it.name }))
-            }catch (e: Exception){
-                Log.e(EnumTags.Error.tag, "getListOfPokemon: ${e.message}" )
-                emit(Resource.Error(SealedMyExceptions.serverError))
-                emit(Resource.Success(pokemonList.sortedBy { it.name }))
-                return@flow
-            }finally {
-                emit(Resource.Loading(false))
-            }
         }
     }
 
@@ -109,7 +77,6 @@ class PokemonRepositoryImp @Inject constructor(
 
             }catch (e: Exception){
                 e.printStackTrace()
-                Log.e(EnumTags.Error.tag, "getListOfPokemon: ${e.message}" )
                 emit(Resource.Error(SealedMyExceptions.serverError))
             }finally {
                 emit(Resource.Loading(false))
@@ -130,7 +97,6 @@ class PokemonRepositoryImp @Inject constructor(
                 emit(Resource.Success(pokemonNames?.pokemons?.map { it.toDomain() }))
             }catch (e: Exception){
                 e.printStackTrace()
-                Log.e(EnumTags.Error.tag, "getListOfPokemon: ${e.message}" )
                 emit(Resource.Error(SealedMyExceptions.serverError))
             }
 
@@ -146,12 +112,10 @@ class PokemonRepositoryImp @Inject constructor(
                     val moveDetails = service.getMoveDetails(move.id)
 
                     moveDetails?.let {
-                        Log.d(EnumTags.JobInspection.tag, "getMoveDetails: ${it.name}")
                         emit(Resource.Success(it.toDomain(move)))
                     }
                 }catch (e: Exception){
                     e.printStackTrace()
-                    Log.e(EnumTags.Error.tag, "getMoveDetails: ${e.message}" )
                 }
             }
             emit(Resource.Loading(false))
