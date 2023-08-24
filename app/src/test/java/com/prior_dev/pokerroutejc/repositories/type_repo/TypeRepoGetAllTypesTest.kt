@@ -11,13 +11,16 @@ import com.prior_dev.pokerroutejc.feature_types.data.network.response.ContainerT
 import com.prior_dev.pokerroutejc.feature_types.data.network.response.DamageRelationsResponse
 import com.prior_dev.pokerroutejc.feature_types.data.network.response.TypeDetailsResponse
 import com.prior_dev.pokerroutejc.feature_types.data.network.response.TypeResponse
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class TypeRepoGetAllTypesTest {
     @Test
-    fun getAllTypesFlowTestSuccessWithNoDataInDb(): Unit = runBlocking{
+    fun getAllTypesFlowTestSuccessWithNoDataInDb() = runTest {
         class FakeService: TypeService {
             override suspend fun getAllTypes(): ContainerTypeResponse {
                 return ContainerTypeResponse(
@@ -98,11 +101,12 @@ class TypeRepoGetAllTypesTest {
 
         val service = FakeService()
         val dao = FakeDao()
+        val testDispatcher = StandardTestDispatcher(testScheduler)
 
         val repo = TypeRepositoryImp(
             service = service,
             dao = dao,
-            makeNetworkCall = MakeNetworkCall()
+            makeNetworkCall = MakeNetworkCall(testDispatcher)
         )
 
         val resource = repo.getAllTypes()
@@ -115,7 +119,7 @@ class TypeRepoGetAllTypesTest {
     }
 
     @Test
-    fun getAllTypesFlowTestSuccessWithDataInDb(): Unit = runBlocking{
+    fun getAllTypesFlowTestSuccessWithDataInDb() = runTest{
         class FakeService: TypeService {
             override suspend fun getAllTypes(): ContainerTypeResponse {
                 return ContainerTypeResponse(
@@ -176,11 +180,12 @@ class TypeRepoGetAllTypesTest {
 
         val service = FakeService()
         val dao = FakeDao()
+        val testDispatcher = StandardTestDispatcher(testScheduler)
 
         val repo = TypeRepositoryImp(
             service = service,
             dao = dao,
-            makeNetworkCall = MakeNetworkCall()
+            makeNetworkCall = MakeNetworkCall(testDispatcher)
         )
 
         val resource = repo.getAllTypes()
@@ -193,7 +198,7 @@ class TypeRepoGetAllTypesTest {
     }
 
     @Test
-    fun getAllTypesFlowTestFailWithNoDataInDb(): Unit = runBlocking{
+    fun getAllTypesFlowTestFailWithNoDataInDb() = runTest {
         class FakeService: TypeService {
             override suspend fun getAllTypes(): ContainerTypeResponse {
                 throw Exception("Error")
@@ -245,11 +250,12 @@ class TypeRepoGetAllTypesTest {
 
         val service = FakeService()
         val dao = FakeDao()
+        val testDispatcher = StandardTestDispatcher(testScheduler)
 
         val repo = TypeRepositoryImp(
             service = service,
             dao = dao,
-            makeNetworkCall = MakeNetworkCall()
+            makeNetworkCall = MakeNetworkCall(testDispatcher)
         )
 
         val resource = repo.getAllTypes()
@@ -259,7 +265,7 @@ class TypeRepoGetAllTypesTest {
     }
 
     @Test
-    fun getAllTypesFlowTestFailWithDataInDb(): Unit = runBlocking{
+    fun getAllTypesFlowTestFailWithDataInDb() = runTest {
         class FakeService: TypeService {
             override suspend fun getAllTypes(): ContainerTypeResponse {
                 throw Exception("Error")
@@ -311,11 +317,12 @@ class TypeRepoGetAllTypesTest {
 
         val service = FakeService()
         val dao = FakeDao()
+        val testDispatcher = StandardTestDispatcher(testScheduler)
 
         val repo = TypeRepositoryImp(
             service = service,
             dao = dao,
-            makeNetworkCall = MakeNetworkCall()
+            makeNetworkCall = MakeNetworkCall(testDispatcher)
         )
 
         val resource = repo.getAllTypes()

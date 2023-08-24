@@ -10,14 +10,17 @@ import com.prior_dev.pokerroutejc.feature_pokemon.data.network.response.Containe
 import com.prior_dev.pokerroutejc.feature_pokemon.data.network.response.MoveDetailsResponse
 import com.prior_dev.pokerroutejc.feature_pokemon.data.network.response.PokemonNameResponse
 import com.prior_dev.pokerroutejc.feature_pokemon.data.network.response.PokemonResponse
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class PokeRepoSearchByNameTest {
     @Test
-    fun searchPokemonNameByMatchSuccessWithNoLocalData(): Unit = runBlocking {
+    fun searchPokemonNameByMatchSuccessWithNoLocalData() = runTest {
         class FakeService: PokemonService{
             override suspend fun getAllPokemons(urlLimitOffset: String): ContainerPokemonNameResponse? {
                 return ContainerPokemonNameResponse(
@@ -63,8 +66,9 @@ class PokeRepoSearchByNameTest {
             }
         }
         val dao = FakeDao()
+        val testDispatcher = StandardTestDispatcher(testScheduler)
 
-        val repo = PokemonRepositoryImp(service, dao, MakeNetworkCall())
+        val repo = PokemonRepositoryImp(service, dao, MakeNetworkCall(testDispatcher))
 
         val resourceFlow = repo.searchPokemonNameByMatch("test").toList()
 
@@ -81,7 +85,7 @@ class PokeRepoSearchByNameTest {
     }
 
     @Test
-    fun searchPokemonNameByMatchSuccessWithLocalData(): Unit = runBlocking {
+    fun searchPokemonNameByMatchSuccessWithLocalData() = runTest {
         class FakeService: PokemonService{
             override suspend fun getAllPokemons(urlLimitOffset: String): ContainerPokemonNameResponse? {
                 return ContainerPokemonNameResponse(
@@ -123,8 +127,9 @@ class PokeRepoSearchByNameTest {
             }
         }
         val dao = FakeDao()
+        val testDispatcher = StandardTestDispatcher(testScheduler)
 
-        val repo = PokemonRepositoryImp(service, dao, MakeNetworkCall())
+        val repo = PokemonRepositoryImp(service, dao, MakeNetworkCall(testDispatcher))
 
         val resourceFlow = repo.searchPokemonNameByMatch("test").toList()
 
@@ -142,7 +147,7 @@ class PokeRepoSearchByNameTest {
     }
 
     @Test
-    fun searchPokemonNameByMatchFailWithLocalData(): Unit = runBlocking {
+    fun searchPokemonNameByMatchFailWithLocalData() = runTest {
         class FakeService: PokemonService{
             override suspend fun getAllPokemons(urlLimitOffset: String): ContainerPokemonNameResponse? {
                 throw Exception("Error")
@@ -177,8 +182,9 @@ class PokeRepoSearchByNameTest {
             }
         }
         val dao = FakeDao()
+        val testDispatcher = StandardTestDispatcher(testScheduler)
 
-        val repo = PokemonRepositoryImp(service, dao, MakeNetworkCall())
+        val repo = PokemonRepositoryImp(service, dao, MakeNetworkCall(testDispatcher))
 
         val resourceFlow = repo.searchPokemonNameByMatch("test").toList()
 
@@ -196,7 +202,7 @@ class PokeRepoSearchByNameTest {
     }
 
     @Test
-    fun searchPokemonNameByMatchFailWithNoLocalData(): Unit = runBlocking {
+    fun searchPokemonNameByMatchFailWithNoLocalData() = runTest {
         class FakeService: PokemonService{
             override suspend fun getAllPokemons(urlLimitOffset: String): ContainerPokemonNameResponse? {
                 throw Exception("")
@@ -227,8 +233,9 @@ class PokeRepoSearchByNameTest {
             }
         }
         val dao = FakeDao()
+        val testDispatcher = StandardTestDispatcher(testScheduler)
 
-        val repo = PokemonRepositoryImp(service, dao, MakeNetworkCall())
+        val repo = PokemonRepositoryImp(service, dao, MakeNetworkCall(testDispatcher))
 
         val resourceFlow = repo.searchPokemonNameByMatch("test").toList()
 

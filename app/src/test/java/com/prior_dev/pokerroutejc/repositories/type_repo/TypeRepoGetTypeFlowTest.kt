@@ -11,14 +11,18 @@ import com.prior_dev.pokerroutejc.feature_types.data.network.response.ContainerT
 import com.prior_dev.pokerroutejc.feature_types.data.network.response.DamageRelationsResponse
 import com.prior_dev.pokerroutejc.feature_types.data.network.response.TypeDetailsResponse
 import com.prior_dev.pokerroutejc.feature_types.data.network.response.TypeResponse
+import com.prior_dev.pokerroutejc.feature_types.domain.toDomain
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class TypeRepoGetTypeFlowTest {
     @Test
-    fun getTypeSuccessWithNoDataInDb(): Unit = runBlocking {
+    fun getTypeSuccessWithNoDataInDb() = runTest {
         class FakeService: TypeService{
             override suspend fun getAllTypes(): ContainerTypeResponse? {
                 return null
@@ -80,8 +84,9 @@ class TypeRepoGetTypeFlowTest {
         }
 
         val dao = FakeDao()
+        val testDispatcher = StandardTestDispatcher(testScheduler)
 
-        val repo = TypeRepositoryImp(service, dao, MakeNetworkCall())
+        val repo = TypeRepositoryImp(service, dao, MakeNetworkCall(testDispatcher))
 
         val resourceFlow = repo.getTypeFlow(1).toList()
 
@@ -90,17 +95,17 @@ class TypeRepoGetTypeFlowTest {
         assertEquals(true, firstIsLoading.isLoading)
         assertEquals(false, lastIsNotLoading.isLoading)
 
-        val resourceSucess = resourceFlow.filter { it is Resource.Success }
-        assertEquals(1, resourceSucess.count())
+        val resourceSuccess = resourceFlow.filter { it is Resource.Success }
+        assertEquals(1, resourceSuccess.count())
         assertEquals(true, dao.insert)
 
-        //TODO:
-//        val damageFroBb = dao.getDamageRelationByTypeId(1)
-//        assertEquals(resourceList.first().data, damageFroBb.toDomain())
+        val damageFromBb = dao.getDamageRelationByTypeId(1)
+        val damageFromResource = (resourceSuccess.first() as Resource.Success).data
+        assertEquals(damageFromResource, damageFromBb.toDomain())
     }
 
     @Test
-    fun getTypeSuccessWithDataInDb(): Unit = runBlocking {
+    fun getTypeSuccessWithDataInDb() = runTest {
         class FakeService: TypeService{
             override suspend fun getAllTypes(): ContainerTypeResponse? {
                 return null
@@ -166,8 +171,9 @@ class TypeRepoGetTypeFlowTest {
         }
 
         val dao = FakeDao()
+        val testDispatcher = StandardTestDispatcher(testScheduler)
 
-        val repo = TypeRepositoryImp(service, dao, MakeNetworkCall())
+        val repo = TypeRepositoryImp(service, dao, MakeNetworkCall(testDispatcher))
 
         val resourceFlow = repo.getTypeFlow(1).toList()
 
@@ -178,16 +184,15 @@ class TypeRepoGetTypeFlowTest {
 
         val resourceSuccess = resourceFlow.filter { it is Resource.Success }
         assertEquals(1, resourceSuccess.count())
-        //TODO:
-        //assertEquals(true, dao.insert)
+        assertEquals(true, dao.insert)
 
-        //TODO:
-//        val damageFroBb = dao.getDamageRelationByTypeId(1)
-//        assertEquals(resourceList.first().data, damageFroBb.toDomain())
+        val damageFromBb = dao.getDamageRelationByTypeId(1)
+        val damageFromResource = (resourceSuccess.first() as Resource.Success).data
+        assertEquals(damageFromResource, damageFromBb.toDomain())
     }
 
     @Test
-    fun getTypeFailWithNoDataInDb(): Unit = runBlocking {
+    fun getTypeFailWithNoDataInDb() = runTest {
         class FakeService: TypeService{
             override suspend fun getAllTypes(): ContainerTypeResponse? {
                 return null
@@ -225,8 +230,9 @@ class TypeRepoGetTypeFlowTest {
         }
 
         val dao = FakeDao()
+        val testDispatcher = StandardTestDispatcher(testScheduler)
 
-        val repo = TypeRepositoryImp(service, dao, MakeNetworkCall())
+        val repo = TypeRepositoryImp(service, dao, MakeNetworkCall(testDispatcher))
 
         val resourceFlow = repo.getTypeFlow(1).toList()
 
@@ -241,7 +247,7 @@ class TypeRepoGetTypeFlowTest {
     }
 
     @Test
-    fun getTypeFailWithDataInDb(): Unit = runBlocking {
+    fun getTypeFailWithDataInDb() = runTest {
         class FakeService: TypeService{
             override suspend fun getAllTypes(): ContainerTypeResponse? {
                 return null
@@ -291,8 +297,9 @@ class TypeRepoGetTypeFlowTest {
         }
 
         val dao = FakeDao()
+        val testDispatcher = StandardTestDispatcher(testScheduler)
 
-        val repo = TypeRepositoryImp(service, dao, MakeNetworkCall())
+        val repo = TypeRepositoryImp(service, dao, MakeNetworkCall(testDispatcher))
 
         val resourceFlow = repo.getTypeFlow(1).toList()
 
@@ -305,9 +312,9 @@ class TypeRepoGetTypeFlowTest {
         assertEquals(1, resourceSuccess.count())
         assertEquals(false, dao.insert)
 
-        //TODO:
-//        val damageFroBb = dao.getDamageRelationByTypeId(1)
-//        assertEquals(resourceList.first().data, damageFroBb.toDomain())
+        val damageFromBb = dao.getDamageRelationByTypeId(1)
+        val damageFromResource = (resourceSuccess.first() as Resource.Success).data
+        assertEquals(damageFromResource, damageFromBb.toDomain())
     }
 
 }

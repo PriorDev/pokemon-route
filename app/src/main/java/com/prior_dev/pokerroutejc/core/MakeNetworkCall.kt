@@ -1,16 +1,18 @@
 package com.prior_dev.pokerroutejc.core
 
 import com.prior_dev.pokerroutejc.R
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import javax.inject.Inject
 
-class MakeNetworkCall @Inject constructor() {
+class MakeNetworkCall @Inject constructor(
+    private val dispatcher: CoroutineDispatcher
+) {
     suspend operator fun <T>invoke(
         call: suspend () -> T
     ): Resource<T>{
-        return withContext(Dispatchers.IO){
+        return withContext(dispatcher){
             try{
                 Resource.Success(call())
             }catch (e: HttpException){

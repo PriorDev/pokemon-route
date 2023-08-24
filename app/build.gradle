@@ -87,4 +87,6 @@ dependencies {
     implementation 'io.coil-kt:coil-compose:2.2.2'
 
     implementation 'androidx.palette:palette:1.0.0'
+    //Test coroutines
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4"
 }

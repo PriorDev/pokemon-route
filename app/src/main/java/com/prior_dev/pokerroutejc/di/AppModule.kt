@@ -8,6 +8,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.Dispatchers
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -28,4 +29,8 @@ object AppModule {
     @Provides
     fun providesDataBase(@ApplicationContext context: Context) =
         Room.databaseBuilder(context, MyDataBase::class.java, MyDataBase.DATABASE_NAME).build()
+
+    @Provides
+    @Singleton
+    fun providesIoDispatcher() = Dispatchers.IO
 }

@@ -11,13 +11,16 @@ import com.prior_dev.pokerroutejc.feature_types.data.network.response.ContainerT
 import com.prior_dev.pokerroutejc.feature_types.data.network.response.DamageRelationsResponse
 import com.prior_dev.pokerroutejc.feature_types.data.network.response.TypeDetailsResponse
 import com.prior_dev.pokerroutejc.feature_types.data.network.response.TypeResponse
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class TypeRepoGetTypeTest {
     @Test
-    fun getTypeSuccess(): Unit = runBlocking {
+    fun getTypeSuccess() = runTest {
         class FakeService: TypeService {
             override suspend fun getAllTypes(): ContainerTypeResponse? {
                 return null
@@ -71,8 +74,9 @@ class TypeRepoGetTypeTest {
         }
 
         val dao = FakeDao()
+        val testDispatcher = StandardTestDispatcher(testScheduler)
 
-        val repo = TypeRepositoryImp(service, dao, MakeNetworkCall())
+        val repo = TypeRepositoryImp(service, dao, MakeNetworkCall(testDispatcher))
 
         val resource = repo.getType(1)
         assert(resource is Resource.Success)
@@ -82,7 +86,7 @@ class TypeRepoGetTypeTest {
     }
 
     @Test
-    fun getTypeFail(): Unit = runBlocking {
+    fun getTypeFail() = runTest {
         class FakeService: TypeService {
             override suspend fun getAllTypes(): ContainerTypeResponse? {
                 return null
@@ -118,8 +122,9 @@ class TypeRepoGetTypeTest {
 
         }
         val dao = FakeDao()
+        val testDispatcher = StandardTestDispatcher(testScheduler)
 
-        val repo = TypeRepositoryImp(service, dao, MakeNetworkCall())
+        val repo = TypeRepositoryImp(service, dao, MakeNetworkCall(testDispatcher))
 
         val resource = repo.getType(1)
         assert(resource is Resource.Error)

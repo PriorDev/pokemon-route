@@ -10,14 +10,17 @@ import com.prior_dev.pokerroutejc.feature_pokemon.data.network.response.Containe
 import com.prior_dev.pokerroutejc.feature_pokemon.data.network.response.MoveDetailsResponse
 import com.prior_dev.pokerroutejc.feature_pokemon.data.network.response.PokemonResponse
 import com.prior_dev.pokerroutejc.feature_pokemon.domain.MoveData
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class PokeRepoGetMoveDetails {
     @Test
-    fun getMoveDetailsSucess(): Unit = runBlocking {
+    fun getMoveDetailsSuccess() = runTest {
         class FakeService: PokemonService {
             override suspend fun getAllPokemons(urlLimitOffset: String): ContainerPokemonNameResponse? {
                 TODO("Not yet implemented")
@@ -63,8 +66,9 @@ class PokeRepoGetMoveDetails {
 
         }
         val dao = FakeDao()
+        val testDispatcher = StandardTestDispatcher(testScheduler)
 
-        val repo = PokemonRepositoryImp(service, dao, MakeNetworkCall())
+        val repo = PokemonRepositoryImp(service, dao, MakeNetworkCall(testDispatcher))
 
         val moveList = listOf(
             MoveData("Teraexplosion", 1L, versionGroupDetails = emptyList()),
@@ -85,7 +89,7 @@ class PokeRepoGetMoveDetails {
     }
 
     @Test
-    fun getMoveDetailsFail(): Unit = runBlocking {
+    fun getMoveDetailsFail() = runTest {
         class FakeService: PokemonService {
             override suspend fun getAllPokemons(urlLimitOffset: String): ContainerPokemonNameResponse? {
                 TODO("Not yet implemented")
@@ -116,8 +120,9 @@ class PokeRepoGetMoveDetails {
 
         }
         val dao = FakeDao()
+        val testDispatcher = StandardTestDispatcher(testScheduler)
 
-        val repo = PokemonRepositoryImp(service, dao, MakeNetworkCall())
+        val repo = PokemonRepositoryImp(service, dao, MakeNetworkCall(testDispatcher))
 
         val moveList = listOf(
             MoveData("Teraexplosion", 1L, versionGroupDetails = emptyList()),

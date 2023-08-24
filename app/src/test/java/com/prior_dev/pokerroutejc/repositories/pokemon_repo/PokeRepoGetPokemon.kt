@@ -12,14 +12,17 @@ import com.prior_dev.pokerroutejc.feature_pokemon.data.network.response.Official
 import com.prior_dev.pokerroutejc.feature_pokemon.data.network.response.OthersSpritesResponse
 import com.prior_dev.pokerroutejc.feature_pokemon.data.network.response.PokemonResponse
 import com.prior_dev.pokerroutejc.feature_pokemon.data.network.response.SpritesResponse
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class PokeRepoGetPokemon {
     @Test
-    fun getPokemonSuccess(): Unit = runBlocking {
+    fun getPokemonSuccess() = runTest {
         class FakeDao: PokemonDao{
             override suspend fun insert(pokemons: List<PokemonNameEntity>) {
                 TODO("Not yet implemented")
@@ -65,8 +68,9 @@ class PokeRepoGetPokemon {
             }
         }
         val service = FakeService()
+        val testDispatcher = StandardTestDispatcher(testScheduler)
 
-        val repo = PokemonRepositoryImp(service, dao, MakeNetworkCall())
+        val repo = PokemonRepositoryImp(service, dao, MakeNetworkCall(testDispatcher))
 
         val resourceFlow = repo.getPokemon("").toList()
 
@@ -81,7 +85,7 @@ class PokeRepoGetPokemon {
     }
 
     @Test
-    fun getPokemonFail(): Unit = runBlocking {
+    fun getPokemonFail() = runTest {
         class FakeDao: PokemonDao{
             override suspend fun insert(pokemons: List<PokemonNameEntity>) {
                 TODO("Not yet implemented")
@@ -112,8 +116,9 @@ class PokeRepoGetPokemon {
             }
         }
         val service = FakeService()
+        val testDispatcher = StandardTestDispatcher(testScheduler)
 
-        val repo = PokemonRepositoryImp(service, dao, MakeNetworkCall())
+        val repo = PokemonRepositoryImp(service, dao, MakeNetworkCall(testDispatcher))
 
         val resourceFlow = repo.getPokemon("").toList()
 

@@ -11,14 +11,17 @@ import com.prior_dev.pokerroutejc.feature_types.data.network.response.ContainerT
 import com.prior_dev.pokerroutejc.feature_types.data.network.response.DamageRelationsResponse
 import com.prior_dev.pokerroutejc.feature_types.data.network.response.TypeDetailsResponse
 import com.prior_dev.pokerroutejc.feature_types.data.network.response.TypeResponse
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class TypeRepoGetAllTypesFlowTest {
     @Test
-    fun getAllTypesFlowTestSuccessWithNoDataInDb(): Unit = runBlocking{
+    fun getAllTypesFlowTestSuccessWithNoDataInDb() = runTest {
         class FakeService: TypeService {
             override suspend fun getAllTypes(): ContainerTypeResponse {
                 return ContainerTypeResponse(
@@ -93,11 +96,12 @@ class TypeRepoGetAllTypesFlowTest {
 
         val service = FakeService()
         val dao = FakeDao()
+        val testDispatcher = StandardTestDispatcher(testScheduler)
 
         val repo = TypeRepositoryImp(
             service = service,
             dao = dao,
-            makeNetworkCall = MakeNetworkCall()
+            makeNetworkCall = MakeNetworkCall(testDispatcher)
         )
 
         val resourceFlow = repo.getAllTypesFlow().toList()
@@ -116,7 +120,7 @@ class TypeRepoGetAllTypesFlowTest {
     }
 
     @Test
-    fun getAllTypesFlowTestSuccessWithDataInLocalBb(): Unit = runBlocking{
+    fun getAllTypesFlowTestSuccessWithDataInLocalBb() = runTest {
         class FakeService: TypeService {
             override suspend fun getAllTypes(): ContainerTypeResponse {
                 return ContainerTypeResponse(
@@ -194,11 +198,12 @@ class TypeRepoGetAllTypesFlowTest {
 
         val service = FakeService()
         val dao = FakeDao()
+        val testDispatcher = StandardTestDispatcher(testScheduler)
 
         val repo = TypeRepositoryImp(
             service = service,
             dao = dao,
-            makeNetworkCall = MakeNetworkCall()
+            makeNetworkCall = MakeNetworkCall(testDispatcher)
         )
 
         val resourceFlow = repo.getAllTypesFlow().toList()
@@ -214,7 +219,7 @@ class TypeRepoGetAllTypesFlowTest {
     }
 
     @Test
-    fun getAllTypesFlowTestFailServiceWithNoDataLocalDb(): Unit = runBlocking{
+    fun getAllTypesFlowTestFailServiceWithNoDataLocalDb() = runTest {
         class FakeService: TypeService {
             override suspend fun getAllTypes(): ContainerTypeResponse {
                 throw Exception("Error")
@@ -263,11 +268,12 @@ class TypeRepoGetAllTypesFlowTest {
 
         val service = FakeService()
         val dao = FakeDao()
+        val testDispatcher = StandardTestDispatcher(testScheduler)
 
         val repo = TypeRepositoryImp(
             service = service,
             dao = dao,
-            makeNetworkCall = MakeNetworkCall()
+            makeNetworkCall = MakeNetworkCall(testDispatcher)
         )
 
         val resourceFlow = repo.getAllTypesFlow().toList()
@@ -282,7 +288,7 @@ class TypeRepoGetAllTypesFlowTest {
     }
 
     @Test
-    fun getAllTypesFlowTestFailServiceWithDataInLocalDb(): Unit = runBlocking{
+    fun getAllTypesFlowTestFailServiceWithDataInLocalDb() = runTest {
         class FakeService: TypeService {
             override suspend fun getAllTypes(): ContainerTypeResponse {
                 throw Exception("Error")
@@ -335,11 +341,12 @@ class TypeRepoGetAllTypesFlowTest {
 
         val service = FakeService()
         val dao = FakeDao()
+        val testDispatcher = StandardTestDispatcher(testScheduler)
 
         val repo = TypeRepositoryImp(
             service = service,
             dao = dao,
-            makeNetworkCall = MakeNetworkCall()
+            makeNetworkCall = MakeNetworkCall(testDispatcher)
         )
 
         val resourceFlow = repo.getAllTypesFlow().toList()

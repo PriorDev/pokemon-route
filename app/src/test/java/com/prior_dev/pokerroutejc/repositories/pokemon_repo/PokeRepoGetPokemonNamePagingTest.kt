@@ -10,14 +10,17 @@ import com.prior_dev.pokerroutejc.feature_pokemon.data.network.response.Containe
 import com.prior_dev.pokerroutejc.feature_pokemon.data.network.response.MoveDetailsResponse
 import com.prior_dev.pokerroutejc.feature_pokemon.data.network.response.PokemonNameResponse
 import com.prior_dev.pokerroutejc.feature_pokemon.data.network.response.PokemonResponse
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class PokeRepoGetPokemonNamePagingTest {
     @Test
-    fun getPokemonNamePagingSuccess(): Unit = runBlocking{
+    fun getPokemonNamePagingSuccess() = runTest {
         class FakeService: PokemonService{
             override suspend fun getAllPokemons(urlLimitOffset: String): ContainerPokemonNameResponse? {
                 return ContainerPokemonNameResponse(
@@ -56,8 +59,9 @@ class PokeRepoGetPokemonNamePagingTest {
 
         }
         val dao = FakeDao()
+        val testDispatcher = StandardTestDispatcher(testScheduler)
 
-        val repo = PokemonRepositoryImp(service, dao, MakeNetworkCall())
+        val repo = PokemonRepositoryImp(service, dao, MakeNetworkCall(testDispatcher))
 
         val resourceFlow = repo.getPokemonNamePaging(10).toList()
 
@@ -75,7 +79,7 @@ class PokeRepoGetPokemonNamePagingTest {
     }
 
     @Test
-    fun getPokemonNamePagingFail(): Unit = runBlocking{
+    fun getPokemonNamePagingFail() = runTest {
         class FakeService: PokemonService{
             override suspend fun getAllPokemons(urlLimitOffset: String): ContainerPokemonNameResponse? {
                 throw Exception("")
@@ -107,8 +111,9 @@ class PokeRepoGetPokemonNamePagingTest {
 
         }
         val dao = FakeDao()
+        val testDispatcher = StandardTestDispatcher(testScheduler)
 
-        val repo = PokemonRepositoryImp(service, dao, MakeNetworkCall())
+        val repo = PokemonRepositoryImp(service, dao, MakeNetworkCall(testDispatcher))
 
         val resourceFlow = repo.getPokemonNamePaging(10).toList()
 
