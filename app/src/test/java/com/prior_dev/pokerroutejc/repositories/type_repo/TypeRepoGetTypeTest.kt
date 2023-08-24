@@ -1,5 +1,6 @@
 package com.prior_dev.pokerroutejc.repositories.type_repo
 
+import com.prior_dev.pokerroutejc.core.MakeNetworkCall
 import com.prior_dev.pokerroutejc.core.Resource
 import com.prior_dev.pokerroutejc.feature_types.data.TypeRepositoryImp
 import com.prior_dev.pokerroutejc.feature_types.data.TypeService
@@ -71,7 +72,7 @@ class TypeRepoGetTypeTest {
 
         val dao = FakeDao()
 
-        val repo = TypeRepositoryImp(service, dao)
+        val repo = TypeRepositoryImp(service, dao, MakeNetworkCall())
 
         val resource = repo.getType(1)
         assert(resource is Resource.Success)
@@ -118,7 +119,7 @@ class TypeRepoGetTypeTest {
         }
         val dao = FakeDao()
 
-        val repo = TypeRepositoryImp(service, dao)
+        val repo = TypeRepositoryImp(service, dao, MakeNetworkCall())
 
         val resource = repo.getType(1)
         assert(resource is Resource.Error)

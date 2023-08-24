@@ -1,5 +1,6 @@
 package com.prior_dev.pokerroutejc.repositories.pokemon_repo
 
+import com.prior_dev.pokerroutejc.core.MakeNetworkCall
 import com.prior_dev.pokerroutejc.core.Resource
 import com.prior_dev.pokerroutejc.feature_pokemon.data.PokemonRepositoryImp
 import com.prior_dev.pokerroutejc.feature_pokemon.data.PokemonService
@@ -18,7 +19,7 @@ import org.junit.Test
 
 class PokeRepoGetPokemon {
     @Test
-    fun GetPokemonSuccess(): Unit = runBlocking {
+    fun getPokemonSuccess(): Unit = runBlocking {
         class FakeDao: PokemonDao{
             override suspend fun insert(pokemons: List<PokemonNameEntity>) {
                 TODO("Not yet implemented")
@@ -65,7 +66,7 @@ class PokeRepoGetPokemon {
         }
         val service = FakeService()
 
-        val repo = PokemonRepositoryImp(service, dao)
+        val repo = PokemonRepositoryImp(service, dao, MakeNetworkCall())
 
         val resourceFlow = repo.getPokemon("").toList()
 
@@ -80,7 +81,7 @@ class PokeRepoGetPokemon {
     }
 
     @Test
-    fun GetPokemonFail(): Unit = runBlocking {
+    fun getPokemonFail(): Unit = runBlocking {
         class FakeDao: PokemonDao{
             override suspend fun insert(pokemons: List<PokemonNameEntity>) {
                 TODO("Not yet implemented")
@@ -112,7 +113,7 @@ class PokeRepoGetPokemon {
         }
         val service = FakeService()
 
-        val repo = PokemonRepositoryImp(service, dao)
+        val repo = PokemonRepositoryImp(service, dao, MakeNetworkCall())
 
         val resourceFlow = repo.getPokemon("").toList()
 

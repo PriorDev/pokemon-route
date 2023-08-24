@@ -1,5 +1,6 @@
 package com.prior_dev.pokerroutejc.repositories.pokemon_repo
 
+import com.prior_dev.pokerroutejc.core.MakeNetworkCall
 import com.prior_dev.pokerroutejc.core.Resource
 import com.prior_dev.pokerroutejc.feature_pokemon.data.PokemonRepositoryImp
 import com.prior_dev.pokerroutejc.feature_pokemon.data.PokemonService
@@ -13,7 +14,6 @@ import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Test
-import java.math.BigInteger
 
 class PokeRepoGetPokemonNamePagingTest {
     @Test
@@ -57,7 +57,7 @@ class PokeRepoGetPokemonNamePagingTest {
         }
         val dao = FakeDao()
 
-        val repo = PokemonRepositoryImp(service, dao)
+        val repo = PokemonRepositoryImp(service, dao, MakeNetworkCall())
 
         val resourceFlow = repo.getPokemonNamePaging(10).toList()
 
@@ -108,7 +108,7 @@ class PokeRepoGetPokemonNamePagingTest {
         }
         val dao = FakeDao()
 
-        val repo = PokemonRepositoryImp(service, dao)
+        val repo = PokemonRepositoryImp(service, dao, MakeNetworkCall())
 
         val resourceFlow = repo.getPokemonNamePaging(10).toList()
 

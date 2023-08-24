@@ -1,5 +1,6 @@
 package com.prior_dev.pokerroutejc.repositories.type_repo
 
+import com.prior_dev.pokerroutejc.core.MakeNetworkCall
 import com.prior_dev.pokerroutejc.core.Resource
 import com.prior_dev.pokerroutejc.feature_types.data.TypeRepositoryImp
 import com.prior_dev.pokerroutejc.feature_types.data.TypeService
@@ -57,7 +58,15 @@ class TypeRepoGetTypeFlowTest {
             }
 
             override suspend fun getDamageRelationByTypeId(typeId: Int): List<DamageRelationsEntity> {
-                return emptyList()
+                return if(insert)
+                {
+                    listOf(
+                        DamageRelationsEntity(ownTypeId = 1, ownType = "")
+                    )
+                }else{
+                    emptyList()
+                }
+
             }
 
             override suspend fun insertDamageRelations(damageRelationsEntity: List<DamageRelationsEntity>) {
@@ -72,7 +81,7 @@ class TypeRepoGetTypeFlowTest {
 
         val dao = FakeDao()
 
-        val repo = TypeRepositoryImp(service, dao)
+        val repo = TypeRepositoryImp(service, dao, MakeNetworkCall())
 
         val resourceFlow = repo.getTypeFlow(1).toList()
 
@@ -158,7 +167,7 @@ class TypeRepoGetTypeFlowTest {
 
         val dao = FakeDao()
 
-        val repo = TypeRepositoryImp(service, dao)
+        val repo = TypeRepositoryImp(service, dao, MakeNetworkCall())
 
         val resourceFlow = repo.getTypeFlow(1).toList()
 
@@ -217,7 +226,7 @@ class TypeRepoGetTypeFlowTest {
 
         val dao = FakeDao()
 
-        val repo = TypeRepositoryImp(service, dao)
+        val repo = TypeRepositoryImp(service, dao, MakeNetworkCall())
 
         val resourceFlow = repo.getTypeFlow(1).toList()
 
@@ -283,7 +292,7 @@ class TypeRepoGetTypeFlowTest {
 
         val dao = FakeDao()
 
-        val repo = TypeRepositoryImp(service, dao)
+        val repo = TypeRepositoryImp(service, dao, MakeNetworkCall())
 
         val resourceFlow = repo.getTypeFlow(1).toList()
 

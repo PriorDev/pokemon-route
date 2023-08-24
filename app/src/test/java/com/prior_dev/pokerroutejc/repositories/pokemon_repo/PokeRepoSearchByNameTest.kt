@@ -1,5 +1,6 @@
 package com.prior_dev.pokerroutejc.repositories.pokemon_repo
 
+import com.prior_dev.pokerroutejc.core.MakeNetworkCall
 import com.prior_dev.pokerroutejc.core.Resource
 import com.prior_dev.pokerroutejc.feature_pokemon.data.PokemonRepositoryImp
 import com.prior_dev.pokerroutejc.feature_pokemon.data.PokemonService
@@ -13,7 +14,6 @@ import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import java.math.BigInteger
 
 class PokeRepoSearchByNameTest {
     @Test
@@ -47,7 +47,15 @@ class PokeRepoSearchByNameTest {
             }
 
             override suspend fun getPokemonNameByMatch(name: String): List<PokemonNameEntity> {
-                return emptyList()
+                return if(insert){
+                    listOf(
+                        PokemonNameEntity(1, ""),
+                        PokemonNameEntity(1, ""),
+                        PokemonNameEntity(1, ""),
+                    )
+                }else{
+                    emptyList()
+                }
             }
 
             override suspend fun eraseNames() {
@@ -56,7 +64,7 @@ class PokeRepoSearchByNameTest {
         }
         val dao = FakeDao()
 
-        val repo = PokemonRepositoryImp(service, dao)
+        val repo = PokemonRepositoryImp(service, dao, MakeNetworkCall())
 
         val resourceFlow = repo.searchPokemonNameByMatch("test").toList()
 
@@ -116,7 +124,7 @@ class PokeRepoSearchByNameTest {
         }
         val dao = FakeDao()
 
-        val repo = PokemonRepositoryImp(service, dao)
+        val repo = PokemonRepositoryImp(service, dao, MakeNetworkCall())
 
         val resourceFlow = repo.searchPokemonNameByMatch("test").toList()
 
@@ -125,9 +133,6 @@ class PokeRepoSearchByNameTest {
 
         val isNotLoadingResource = resourceFlow.last() as Resource.Loading
         assertEquals(false, isNotLoadingResource.isLoading)
-
-        //TODO:
-//        assertEquals(true, dao.insert)
 
         val responseSuccess = resourceFlow.filter { it is Resource.Success }
         assertEquals(1, responseSuccess.count())
@@ -173,7 +178,7 @@ class PokeRepoSearchByNameTest {
         }
         val dao = FakeDao()
 
-        val repo = PokemonRepositoryImp(service, dao)
+        val repo = PokemonRepositoryImp(service, dao, MakeNetworkCall())
 
         val resourceFlow = repo.searchPokemonNameByMatch("test").toList()
 
@@ -182,9 +187,6 @@ class PokeRepoSearchByNameTest {
 
         val isNotLoadingResource = resourceFlow.last() as Resource.Loading
         assertEquals(false, isNotLoadingResource.isLoading)
-
-        //TODO:
-//        assertEquals(true, dao.insert)
 
         val responseSuccess = resourceFlow.filter { it is Resource.Success }
         assertEquals(1, responseSuccess.count())
@@ -226,7 +228,7 @@ class PokeRepoSearchByNameTest {
         }
         val dao = FakeDao()
 
-        val repo = PokemonRepositoryImp(service, dao)
+        val repo = PokemonRepositoryImp(service, dao, MakeNetworkCall())
 
         val resourceFlow = repo.searchPokemonNameByMatch("test").toList()
 
@@ -238,7 +240,7 @@ class PokeRepoSearchByNameTest {
 
         assertEquals(false, dao.insert)
 
-        val responseError = resourceFlow.filter { it is Resource.Error }
-        assertEquals(1, responseError.count())
+        val response = resourceFlow.filter { it is Resource.Error || it is Resource.Success }
+        assertEquals(0, response.count())
     }
 }

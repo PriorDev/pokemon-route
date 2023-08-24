@@ -1,6 +1,5 @@
 package com.prior_dev.pokerroutejc.core
 
-import android.util.Log
 import com.prior_dev.pokerroutejc.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -15,16 +14,12 @@ class MakeNetworkCall @Inject constructor() {
             try{
                 Resource.Success(call())
             }catch (e: HttpException){
-                Log.e(TAG, "HttpException: ${e.printStackTrace()}" )
+                println(e.printStackTrace())
                 Resource.Error(UiMessages.StringResource(R.string.error_trying_to_reach_remote_source))
             }catch (e: Exception){
-                Log.e(TAG, "Exception: ${e.printStackTrace()}" )
+                println(e.printStackTrace())
                 Resource.Error(UiMessages.StringResource(R.string.unexpected_error))
             }
         }
-    }
-
-    companion object{
-        const val TAG = "MakeNetworkCall"
     }
 }

@@ -1,5 +1,6 @@
 package com.prior_dev.pokerroutejc.repositories.type_repo
 
+import com.prior_dev.pokerroutejc.core.MakeNetworkCall
 import com.prior_dev.pokerroutejc.core.Resource
 import com.prior_dev.pokerroutejc.feature_types.data.TypeRepositoryImp
 import com.prior_dev.pokerroutejc.feature_types.data.TypeService
@@ -55,7 +56,15 @@ class TypeRepoGetAllTypesTest {
         class FakeDao: TypeDao {
             var insert = false
             override suspend fun getAllTypes(): List<TypeEntity> {
-                return emptyList()
+                return if(insert){
+                    listOf(
+                        TypeEntity(1, "ice"),
+                        TypeEntity(2, "fire"),
+                        TypeEntity(3, "poison"),
+                    )
+                }else{
+                    emptyList()
+                }
             }
 
             override suspend fun insertTypes(types: List<TypeEntity>) {
@@ -93,6 +102,7 @@ class TypeRepoGetAllTypesTest {
         val repo = TypeRepositoryImp(
             service = service,
             dao = dao,
+            makeNetworkCall = MakeNetworkCall()
         )
 
         val resource = repo.getAllTypes()
@@ -101,7 +111,7 @@ class TypeRepoGetAllTypesTest {
         assert(resource is Resource.Success)
         val resourceSuccess = resource as Resource.Success
 
-        assertEquals(5, resourceSuccess.data!!.count())
+        assertEquals(3, resourceSuccess.data!!.count())
     }
 
     @Test
@@ -170,12 +180,12 @@ class TypeRepoGetAllTypesTest {
         val repo = TypeRepositoryImp(
             service = service,
             dao = dao,
+            makeNetworkCall = MakeNetworkCall()
         )
 
         val resource = repo.getAllTypes()
 
-        //TODO:
-        //assertEquals(true, dao.insert)
+        assertEquals(true, dao.insert)
         assert(resource is Resource.Success)
         val resourceSuccess = resource as Resource.Success
 
@@ -221,19 +231,7 @@ class TypeRepoGetAllTypesTest {
             }
 
             override suspend fun getDamageRelationByTypeId(typeId: Int): List<DamageRelationsEntity> {
-                return listOf(
-                    DamageRelationsEntity(
-                        id = 1,
-                        ownType = "ice",
-                        ownTypeId = 1,
-                        doubleDamageTo = null,
-                        doubleDamageFrom = null,
-                        halfDamageTo = null,
-                        halfDamageFrom = null,
-                        noDamageTo = null,
-                        noDamageFrom = null
-                    )
-                )
+                return emptyList()
             }
 
             override suspend fun insertDamageRelations(damageRelationsEntity: List<DamageRelationsEntity>) {
@@ -251,6 +249,7 @@ class TypeRepoGetAllTypesTest {
         val repo = TypeRepositoryImp(
             service = service,
             dao = dao,
+            makeNetworkCall = MakeNetworkCall()
         )
 
         val resource = repo.getAllTypes()
@@ -316,6 +315,7 @@ class TypeRepoGetAllTypesTest {
         val repo = TypeRepositoryImp(
             service = service,
             dao = dao,
+            makeNetworkCall = MakeNetworkCall()
         )
 
         val resource = repo.getAllTypes()

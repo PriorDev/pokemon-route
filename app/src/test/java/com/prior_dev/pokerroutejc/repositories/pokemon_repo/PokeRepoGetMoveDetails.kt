@@ -1,5 +1,6 @@
 package com.prior_dev.pokerroutejc.repositories.pokemon_repo
 
+import com.prior_dev.pokerroutejc.core.MakeNetworkCall
 import com.prior_dev.pokerroutejc.core.Resource
 import com.prior_dev.pokerroutejc.feature_pokemon.data.PokemonRepositoryImp
 import com.prior_dev.pokerroutejc.feature_pokemon.data.PokemonService
@@ -63,7 +64,7 @@ class PokeRepoGetMoveDetails {
         }
         val dao = FakeDao()
 
-        val repo = PokemonRepositoryImp(service, dao)
+        val repo = PokemonRepositoryImp(service, dao, MakeNetworkCall())
 
         val moveList = listOf(
             MoveData("Teraexplosion", 1L, versionGroupDetails = emptyList()),
@@ -116,7 +117,7 @@ class PokeRepoGetMoveDetails {
         }
         val dao = FakeDao()
 
-        val repo = PokemonRepositoryImp(service, dao)
+        val repo = PokemonRepositoryImp(service, dao, MakeNetworkCall())
 
         val moveList = listOf(
             MoveData("Teraexplosion", 1L, versionGroupDetails = emptyList()),

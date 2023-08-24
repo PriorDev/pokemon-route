@@ -1,13 +1,13 @@
 package com.prior_dev.pokerroutejc.feature_types.data
 
-import android.util.Log
-import com.prior_dev.pokerroutejc.core.EnumTags
 import com.prior_dev.pokerroutejc.core.MakeNetworkCall
 import com.prior_dev.pokerroutejc.core.Resource
 import com.prior_dev.pokerroutejc.feature_types.data.database.TypeDao
 import com.prior_dev.pokerroutejc.feature_types.data.database.toDB
-import com.prior_dev.pokerroutejc.feature_types.data.network.TypeService
-import com.prior_dev.pokerroutejc.feature_types.domain.*
+import com.prior_dev.pokerroutejc.feature_types.domain.TypeData
+import com.prior_dev.pokerroutejc.feature_types.domain.TypeDetailsData
+import com.prior_dev.pokerroutejc.feature_types.domain.TypeRepository
+import com.prior_dev.pokerroutejc.feature_types.domain.toDomain
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -38,9 +38,9 @@ class TypeRepositoryImp @Inject constructor(
             if(typeList.isEmpty()){
                 val error = (response as Resource.Error).uiMessages
                 emit(Resource.Error(error))
+            }else{
+                emit(Resource.Success(typeList))
             }
-
-            emit(Resource.Success(typeList))
 
             emit(Resource.Loading(false))
         }
@@ -67,51 +67,49 @@ class TypeRepositoryImp @Inject constructor(
             if(damageRelationEntity.isEmpty()){
                 val error = (response as Resource.Error).uiMessages
                 emit(Resource.Error(error))
+            }else{
+                emit(Resource.Success(damageRelationEntity.toDomain()))
             }
-
-            emit(Resource.Success(damageRelationEntity.toDomain()))
 
             emit(Resource.Loading(false))
         }
     }
 
     override suspend fun getAllTypes(): Resource<List<TypeData>> {
+        val response = makeNetworkCall {
+            service.getAllTypes()
+        }
+
+        if(response is Resource.Success){
+            response.data?.let { typesContainer ->
+                dao.insertTypes(typesContainer.types.map { it.toDB() })
+            }
+        }
+
         val typesEntity = dao.getAllTypes()
 
-        if(typesEntity.isNotEmpty()){
-            return Resource.Success(
-                typesEntity.map { it.toDomain() }
-            )
+        if(typesEntity.isEmpty()){
+            val error = (response as Resource.Error).uiMessages
+            return Resource.Error(error)
         }
 
-        return try{
-            val typeResponse = service.getAllTypes()
-            typeResponse?.let { response ->
-                dao.insertTypes(
-                    response.types.map { it.toDB() }
-                )
-                Resource.Success(
-                    typeResponse.types.map { it.toDomain() }
-                )
-            } ?: Resource.Error(SealedMyExceptions.serverError)
-        }catch (e: Exception){
-            Log.e(EnumTags.Error.tag, "getAllTypes: ${e.message}")
-            Resource.Error(SealedMyExceptions.serverError)
-        }
+        val typesList = typesEntity.map { it.toDomain() }
+        return Resource.Success(typesList)
     }
 
     override suspend fun getType(typeId: Int): Resource<TypeDetailsData> {
-        return try {
-            val response = service.getType(typeId)
-
-            response?.let { typeDetails ->
-                Resource.Success(typeDetails.toDomain())
-            } ?: Resource.Error(SealedMyExceptions.serverError)
-
-        }catch (ex: Exception){
-            Log.e(EnumTags.Error.tag, "getType: ${ex.message}")
-            return Resource.Error(SealedMyExceptions.serverError)
+        val response = makeNetworkCall{
+            service.getType(typeId)
         }
+
+        if(response is Resource.Success){
+            response.data?.let {
+                return Resource.Success(it.toDomain())
+            }
+        }
+
+        val error = (response as Resource.Error).uiMessages
+        return Resource.Error(error)
     }
 }
 

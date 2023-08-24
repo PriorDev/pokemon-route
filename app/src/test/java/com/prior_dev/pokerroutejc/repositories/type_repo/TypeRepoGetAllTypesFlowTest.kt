@@ -1,5 +1,6 @@
 package com.prior_dev.pokerroutejc.repositories.type_repo
 
+import com.prior_dev.pokerroutejc.core.MakeNetworkCall
 import com.prior_dev.pokerroutejc.core.Resource
 import com.prior_dev.pokerroutejc.feature_types.data.TypeRepositoryImp
 import com.prior_dev.pokerroutejc.feature_types.data.TypeService
@@ -96,18 +97,22 @@ class TypeRepoGetAllTypesFlowTest {
         val repo = TypeRepositoryImp(
             service = service,
             dao = dao,
+            makeNetworkCall = MakeNetworkCall()
         )
 
         val resourceFlow = repo.getAllTypesFlow().toList()
-        val firstIsLoading = resourceFlow.first() as Resource.Loading
-        val lastIsNotLoading = resourceFlow.last() as Resource.Loading
-        val resourceSuccess = resourceFlow.filter { it is Resource.Success }
-        val types = resourceSuccess.first()
 
+        val firstIsLoading = resourceFlow.first() as Resource.Loading
         assertEquals(true, firstIsLoading.isLoading)
-        assertEquals(1, resourceSuccess.count())
-        assertEquals(dao.getAllTypes().count(), types.data!!.count())
+
+        val lastIsNotLoading = resourceFlow.last() as Resource.Loading
         assertEquals(false, lastIsNotLoading.isLoading)
+
+        val resourceSuccess = resourceFlow.filter { it is Resource.Success }
+        val types = (resourceSuccess.first() as Resource.Success).data!!
+
+        assertEquals(1, resourceSuccess.count())
+        assertEquals(dao.getAllTypes().count(), types.count())
     }
 
     @Test
@@ -193,17 +198,18 @@ class TypeRepoGetAllTypesFlowTest {
         val repo = TypeRepositoryImp(
             service = service,
             dao = dao,
+            makeNetworkCall = MakeNetworkCall()
         )
 
         val resourceFlow = repo.getAllTypesFlow().toList()
         val firstIsLoading = resourceFlow.first() as Resource.Loading
         val lastIsNotLoading = resourceFlow.last() as Resource.Loading
         val resourceSuccess = resourceFlow.filter { it is Resource.Success }
-        val types = resourceSuccess.first()
+        val types = (resourceSuccess.first() as Resource.Success).data!!
 
         assertEquals(true, firstIsLoading.isLoading)
         assertEquals(1, resourceSuccess.count())
-        assertEquals(dao.getAllTypes().count(), types.data!!.count())
+        assertEquals(dao.getAllTypes().count(), types.count())
         assertEquals(false, lastIsNotLoading.isLoading)
     }
 
@@ -261,6 +267,7 @@ class TypeRepoGetAllTypesFlowTest {
         val repo = TypeRepositoryImp(
             service = service,
             dao = dao,
+            makeNetworkCall = MakeNetworkCall()
         )
 
         val resourceFlow = repo.getAllTypesFlow().toList()
@@ -332,6 +339,7 @@ class TypeRepoGetAllTypesFlowTest {
         val repo = TypeRepositoryImp(
             service = service,
             dao = dao,
+            makeNetworkCall = MakeNetworkCall()
         )
 
         val resourceFlow = repo.getAllTypesFlow().toList()
@@ -343,7 +351,7 @@ class TypeRepoGetAllTypesFlowTest {
         val resources = resourceFlow.filter { it is Resource.Success }
         assertEquals(1, resources.count())
 
-        val types = resources.first().data
-        assertEquals(dao.getAllTypes().count(), types!!.count())
+        val types = (resources.first() as Resource.Success).data!!
+        assertEquals(dao.getAllTypes().count(), types.count())
     }
 }
