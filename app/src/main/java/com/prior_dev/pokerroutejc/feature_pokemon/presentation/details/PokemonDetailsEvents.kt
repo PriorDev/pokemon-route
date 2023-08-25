@@ -1,8 +1,10 @@
 package com.prior_dev.pokerroutejc.feature_pokemon.presentation.details
 
 sealed class PokemonDetailsEvents{
-    object onDismiss: PokemonDetailsEvents()
-    class  onGenerationSelect(val generation: String): PokemonDetailsEvents()
-    class  onTypeSelect(val typeId: Int): PokemonDetailsEvents()
-    object onToggleFilterVisibility: PokemonDetailsEvents()
+    object OnDismiss: PokemonDetailsEvents()
+    class  OnGenerationSelect(val generation: String): PokemonDetailsEvents()
+    class  OnTypeSelect(val typeId: Int): PokemonDetailsEvents()
+    object OnToggleFilterVisibility: PokemonDetailsEvents()
+    class OnAbilityClick(val ability: String) : PokemonDetailsEvents()
+    object OnAbilityDismiss: PokemonDetailsEvents()
 }

@@ -23,29 +23,9 @@ data class DamageClassResponse(
     val url: String
 )
 
-data class EffectEntryResponse(
-    val effect: String,
-    val language: LanguageResponse,
-    val short_effect: String
-)
-
 data class FlavorTextEntryResponse(
     val flavor_text: String,
     val language: LanguageResponse,
     val version_group: VersionGroupResponse
 )
 
-data class MoveNamesResponse(
-    val language: LanguageResponse,
-    val name: String
-)
-
-data class PastValueResponse(
-    val accuracy: Int,
-    val effect_chance: Any,
-    val effect_entries: List<Any>,
-    val power: Any,
-    val pp: Any,
-    val type: Any,
-    val version_group: VersionGroupResponse
-)

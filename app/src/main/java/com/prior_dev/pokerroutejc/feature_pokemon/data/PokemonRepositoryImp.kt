@@ -4,6 +4,7 @@ import com.prior_dev.pokerroutejc.core.MakeNetworkCall
 import com.prior_dev.pokerroutejc.core.Resource
 import com.prior_dev.pokerroutejc.feature_pokemon.data.database.PokemonDao
 import com.prior_dev.pokerroutejc.feature_pokemon.data.database.toDB
+import com.prior_dev.pokerroutejc.feature_pokemon.domain.AbilityDetailsData
 import com.prior_dev.pokerroutejc.feature_pokemon.domain.MoveData
 import com.prior_dev.pokerroutejc.feature_pokemon.domain.MoveDetailsData
 import com.prior_dev.pokerroutejc.feature_pokemon.domain.PokemonData
@@ -128,8 +129,27 @@ class PokemonRepositoryImp @Inject constructor(
         }
     }
 
+    override suspend fun getAbility(ability: String): Flow<Resource<AbilityDetailsData>> = flow {
+        emit(Resource.Loading())
+
+        val response = makeNetworkCall{
+           service.getAbility(ability)
+        }
+
+
+        if(response is Resource.Success){
+            response.data?.let {
+                emit(Resource.Success(it.toDomain()))
+            }
+        }else if(response is Resource.Error){
+            val error = response.uiMessages
+            emit(Resource.Error(error))
+        }
+
+        emit(Resource.Loading(false))
+    }
+
     companion object {
         private const val PAGINATION_POKEMON = 20
     }
-
 }

@@ -6,6 +6,7 @@ import com.prior_dev.pokerroutejc.feature_pokemon.data.PokemonRepositoryImp
 import com.prior_dev.pokerroutejc.feature_pokemon.data.PokemonService
 import com.prior_dev.pokerroutejc.feature_pokemon.data.database.PokemonDao
 import com.prior_dev.pokerroutejc.feature_pokemon.data.database.PokemonNameEntity
+import com.prior_dev.pokerroutejc.feature_pokemon.data.network.response.AbilityDetailsResponse
 import com.prior_dev.pokerroutejc.feature_pokemon.data.network.response.ContainerPokemonNameResponse
 import com.prior_dev.pokerroutejc.feature_pokemon.data.network.response.MoveDetailsResponse
 import com.prior_dev.pokerroutejc.feature_pokemon.data.network.response.PokemonNameResponse
@@ -38,6 +39,10 @@ class PokeRepoGetPokemonNamePagingTest {
             }
 
             override suspend fun getMoveDetails(move: Long): MoveDetailsResponse? {
+                TODO("Not yet implemented")
+            }
+
+            override suspend fun getAbility(abilty: String): AbilityDetailsResponse? {
                 TODO("Not yet implemented")
             }
 
@@ -90,6 +95,10 @@ class PokeRepoGetPokemonNamePagingTest {
             }
 
             override suspend fun getMoveDetails(move: Long): MoveDetailsResponse? {
+                TODO("Not yet implemented")
+            }
+
+            override suspend fun getAbility(abilty: String): AbilityDetailsResponse? {
                 TODO("Not yet implemented")
             }
 

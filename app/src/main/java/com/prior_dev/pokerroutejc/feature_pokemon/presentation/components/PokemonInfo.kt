@@ -1,6 +1,5 @@
 package com.prior_dev.pokerroutejc.feature_pokemon.presentation.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,10 +10,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
+import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -25,23 +26,39 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.prior_dev.pokerroutejc.R
-import com.prior_dev.pokerroutejc.core.components.ItemType
+import com.prior_dev.pokerroutejc.core.components.PreviewTemplate
+import com.prior_dev.pokerroutejc.feature_pokemon.domain.AbilityData
+import com.prior_dev.pokerroutejc.feature_pokemon.domain.AbilityDetailsData
+import com.prior_dev.pokerroutejc.feature_pokemon.domain.PokemonData
+import com.prior_dev.pokerroutejc.feature_pokemon.presentation.details.PokemonDetailsEvents
 import com.prior_dev.pokerroutejc.feature_pokemon.presentation.details.PokemonDetailsStates
 import com.prior_dev.pokerroutejc.feature_pokemon.presentation.details.PokemonDetailsUiEvents
+import com.prior_dev.pokerroutejc.feature_types.domain.TypeData
+import com.prior_dev.pokerroutejc.feature_types.domain.getColor
 
 @Composable
 fun PokemonInfo(
     modifier: Modifier = Modifier,
     states: PokemonDetailsStates,
     onUiEvents: (PokemonDetailsUiEvents) -> Unit,
+    onEvents: (PokemonDetailsEvents) -> Unit,
     cardPadding: PaddingValues,
 ) {
     val scrollState = rememberScrollState()
     val pokemon = states.pokemon
+
+    states.isAbilityLoading?.let { isLoading ->
+        AbilityDialog(
+            ability = states.visibleAbilityDetails ?: AbilityDetailsData(),
+            onDismiss = { onEvents(PokemonDetailsEvents.OnAbilityDismiss) },
+            isLoading = isLoading
+        )
+    }
 
     Box(
         modifier = modifier
@@ -52,7 +69,7 @@ fun PokemonInfo(
             Card(
                 modifier = Modifier.padding(cardPadding)
             ) {
-                Column{
+                Column(horizontalAlignment = Alignment.CenterHorizontally){
                     Spacer(modifier = Modifier.height(110.dp))
 
                     Text(
@@ -67,88 +84,29 @@ fun PokemonInfo(
                     Spacer(modifier = Modifier.height(16.dp))
 
                     Row(
-                        horizontalArrangement = Arrangement.SpaceEvenly,
-                        modifier = Modifier.fillMaxWidth()
+                        horizontalArrangement = Arrangement.Center,
+                        modifier = Modifier.fillMaxWidth(),
                     ) {
                         pokemon.types.forEach{
-                            ItemType(
-                                type = it,
-                                modifier = Modifier
-                                    .width(100.dp),
-                                onClick = { onUiEvents(PokemonDetailsUiEvents.OpenTypeDetails(it.id)) }
-                            )
+                            Button(
+                                onClick = {
+                                    onUiEvents(PokemonDetailsUiEvents.OpenTypeDetails(it.id))
+                                },
+                                colors = ButtonDefaults.buttonColors(backgroundColor = it.getColor()),
+                                modifier = Modifier.padding(horizontal = 16.dp)
+                            ) {
+                                Text(text = it.name.uppercase())
+                            }
                         }
                     }
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    Text(
-                        text = stringResource(id = R.string.abilities),
-                        style = MaterialTheme.typography.h6,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 4.dp),
-                        textAlign = TextAlign.Center
-                    )
-                    pokemon.abilities.filter { !it.isHidden }.forEach{ ability ->
-                        Text(
-                            text = ability.name,
-                            style = MaterialTheme.typography.body1,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 4.dp)
-                                .background(MaterialTheme.colors.background),
-                            textAlign = TextAlign.Center,
-                        )
-                    }
+                    PokemonAbilities(pokemon, onEvents)
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    Text(
-                        text = stringResource(id = R.string.hidden_ability),
-                        style = MaterialTheme.typography.h6,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 4.dp),
-                        textAlign = TextAlign.Center
-                    )
-                    pokemon.abilities.filter { it.isHidden }.forEach{ ability ->
-                        Text(
-                            text = ability.name,
-                            style = MaterialTheme.typography.body1,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 4.dp)
-                                .background(MaterialTheme.colors.background),
-                            textAlign = TextAlign.Center,
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    Text(
-                        text = stringResource(id = R.string.stats),
-                        style = MaterialTheme.typography.h6,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(4.dp),
-                        textAlign = TextAlign.Center
-                    )
-
-                    Column(modifier = Modifier.padding(horizontal = 8.dp)){
-
-                        pokemon.stats.forEach{ stat ->
-                            val animDelay = 100 * pokemon.stats.indexOf(stat)
-
-                            BasicStat(
-                                name = stat.name,
-                                value = stat.baseStat,
-                                animDelay = animDelay
-                            )
-
-                            Spacer(modifier = Modifier.height(8.dp))
-                        }
-                    }
+                    PokemonBasicStats(pokemon)
                 }
             }
 
@@ -165,6 +123,120 @@ fun PokemonInfo(
             modifier = Modifier
                 .size(200.dp)
                 .align(Alignment.TopCenter)
+        )
+    }
+}
+
+@Composable
+private fun PokemonBasicStats(pokemon: PokemonData) {
+    Text(
+        text = stringResource(id = R.string.stats),
+        style = MaterialTheme.typography.h6,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(4.dp),
+        textAlign = TextAlign.Center
+    )
+
+    Column(modifier = Modifier.padding(horizontal = 8.dp)) {
+
+        pokemon.stats.forEach { stat ->
+            val animDelay = 100 * pokemon.stats.indexOf(stat)
+
+            BasicStat(
+                name = stat.name,
+                value = stat.baseStat,
+                animDelay = animDelay
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+        }
+    }
+}
+
+@Composable
+private fun PokemonAbilities(
+    pokemon: PokemonData,
+    onEvent: (PokemonDetailsEvents) -> Unit
+) {
+    Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.weight(1f)
+        ) {
+            Text(
+                text = stringResource(id = R.string.abilities),
+                style = MaterialTheme.typography.h6,
+                modifier = Modifier
+                    .padding(horizontal = 4.dp),
+                textAlign = TextAlign.Center
+            )
+
+            Divider(Modifier.fillMaxWidth(.8f))
+
+            pokemon.abilities.filter { !it.isHidden }.forEach { ability ->
+                val color = pokemon.types.first().getColor()
+                Button(
+                    onClick = { onEvent(PokemonDetailsEvents.OnAbilityClick(ability.name) ) },
+                    colors = ButtonDefaults.buttonColors(backgroundColor = color)
+                ) {
+                    Text(text = ability.name)
+                }
+            }
+        }
+
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.weight(1f)
+        ) {
+            Text(
+                text = stringResource(id = R.string.hidden_ability),
+                style = MaterialTheme.typography.h6,
+                modifier = Modifier
+            )
+
+            Divider(Modifier.fillMaxWidth(.8f))
+
+            pokemon.abilities.filter { it.isHidden }.forEach { ability ->
+                val color = pokemon.types.first().getColor()
+                Button(
+                    onClick = { onEvent(PokemonDetailsEvents.OnAbilityClick(ability.name) ) },
+                    colors = ButtonDefaults.buttonColors(backgroundColor = color)
+                ) {
+                    Text(text = ability.name)
+                }
+            }
+        }
+    }
+}
+
+@Preview(
+    showSystemUi = true,
+//    uiMode = UI_MODE_NIGHT_YES
+)
+@Composable
+fun PokemonInfoPreview() {
+    PreviewTemplate {
+        val states = PokemonDetailsStates(
+            pokemon = PokemonData(
+                name = "TOTODILE",
+                abilities = listOf(
+                    AbilityData("Hidratacion", isHidden = false),
+                    AbilityData("Hidratacion", isHidden = false),
+                    AbilityData("Absorbe Agua", isHidden = true),
+                ),
+                types = listOf(
+                    TypeData(1, "Normal"),
+                    TypeData(1, "Ice"),
+                )
+            )
+        )
+        val cardPadding = PaddingValues()
+        PokemonInfo(
+            states = states,
+            onUiEvents = {},
+            onEvents = {},
+            cardPadding = cardPadding
         )
     }
 }

@@ -1,6 +1,9 @@
 package com.prior_dev.pokerroutejc.feature_pokemon.domain
 
-import com.prior_dev.pokerroutejc.feature_pokemon.data.network.response.*
+import com.prior_dev.pokerroutejc.feature_pokemon.data.network.response.AbilityResponse
+import com.prior_dev.pokerroutejc.feature_pokemon.data.network.response.PokemonResponse
+import com.prior_dev.pokerroutejc.feature_pokemon.data.network.response.SpritesResponse
+import com.prior_dev.pokerroutejc.feature_pokemon.data.network.response.StatResponse
 import com.prior_dev.pokerroutejc.feature_types.domain.TypeData
 import com.prior_dev.pokerroutejc.feature_types.domain.toDomain
 

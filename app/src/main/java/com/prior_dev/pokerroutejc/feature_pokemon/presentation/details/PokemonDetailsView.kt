@@ -19,8 +19,8 @@ import com.prior_dev.pokerroutejc.core.CommonStates
 import com.prior_dev.pokerroutejc.core.EnumColorTypes
 import com.prior_dev.pokerroutejc.core.components.CommonStatesView
 import com.prior_dev.pokerroutejc.feature_pokemon.domain.MoveDetailsData
-import com.prior_dev.pokerroutejc.feature_pokemon.presentation.components.PokemonInfo
 import com.prior_dev.pokerroutejc.feature_pokemon.presentation.components.MovesView
+import com.prior_dev.pokerroutejc.feature_pokemon.presentation.components.PokemonInfo
 import com.prior_dev.pokerroutejc.feature_pokemon.presentation.components.SpritesView
 import com.prior_dev.pokerroutejc.feature_pokemon.presentation.components.WeaknessesAndStrengthView
 import com.prior_dev.pokerroutejc.feature_types.domain.getColor
@@ -67,7 +67,7 @@ fun PokemonDetailsView(
     }
 
     CommonStatesView(
-        onDismiss = { onEvents(PokemonDetailsEvents.onDismiss) },
+        onDismiss = { onEvents(PokemonDetailsEvents.OnDismiss) },
         commonStates = commonStates
     )
 
@@ -120,6 +120,7 @@ fun PokemonDetailsView(
                         modifier = Modifier.fillMaxWidth(),
                         states = states,
                         onUiEvents = onUiEvents,
+                        onEvents = onEvents,
                         cardPadding = cardPadding
                     )
                 1 -> WeaknessesAndStrengthView(
@@ -139,7 +140,8 @@ fun PokemonDetailsView(
                     modifier = Modifier.fillMaxWidth(),
                     states = states,
                     onUiEvents = onUiEvents,
-                    cardPadding = cardPadding
+                    cardPadding = cardPadding,
+                    onEvents = onEvents,
                 )
             }
         }

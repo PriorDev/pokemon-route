@@ -74,7 +74,7 @@ fun MovesView(
                                 .align(Alignment.BottomEnd)
                                 .padding(0.dp)
                                 .background(MaterialTheme.colors.primary),
-                            onClick = { onEvents(PokemonDetailsEvents.onToggleFilterVisibility) }
+                            onClick = { onEvents(PokemonDetailsEvents.OnToggleFilterVisibility) }
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Menu,

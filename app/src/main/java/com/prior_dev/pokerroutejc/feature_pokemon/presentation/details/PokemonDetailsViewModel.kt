@@ -1,14 +1,17 @@
 package com.prior_dev.pokerroutejc.feature_pokemon.presentation.details
 
 import androidx.compose.runtime.mutableStateListOf
-import androidx.lifecycle.*
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.prior_dev.pokerroutejc.core.CommonStates
 import com.prior_dev.pokerroutejc.core.Resource
 import com.prior_dev.pokerroutejc.core.UiMessages
+import com.prior_dev.pokerroutejc.core.routes.RoutesPokemon
+import com.prior_dev.pokerroutejc.feature_pokemon.domain.AbilityDetailsData
 import com.prior_dev.pokerroutejc.feature_pokemon.domain.MoveDetailsData
 import com.prior_dev.pokerroutejc.feature_pokemon.domain.PokemonRepository
 import com.prior_dev.pokerroutejc.feature_pokemon.domain.use_cases.PokemonUseCases
-import com.prior_dev.pokerroutejc.core.routes.RoutesPokemon
 import com.prior_dev.pokerroutejc.feature_types.domain.DamageRelationsData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -59,10 +62,41 @@ class PokemonDetailsViewModel @Inject constructor(
 
     fun onEvent(event: PokemonDetailsEvents){
         when(event){
-            PokemonDetailsEvents.onDismiss -> onDismiss()
-            is PokemonDetailsEvents.onGenerationSelect -> onGenerationSelect(event.generation)
-            PokemonDetailsEvents.onToggleFilterVisibility -> onToggleFilterVisibility()
-            is PokemonDetailsEvents.onTypeSelect -> onTypeSelect(event.typeId)
+            PokemonDetailsEvents.OnDismiss -> onDismiss()
+            is PokemonDetailsEvents.OnGenerationSelect -> onGenerationSelect(event.generation)
+            PokemonDetailsEvents.OnToggleFilterVisibility -> onToggleFilterVisibility()
+            is PokemonDetailsEvents.OnTypeSelect -> onTypeSelect(event.typeId)
+            is PokemonDetailsEvents.OnAbilityClick -> onAbilityClick(event.ability)
+            PokemonDetailsEvents.OnAbilityDismiss -> onAbilityDismiss()
+        }
+    }
+
+    private fun onAbilityDismiss() {
+        _states.value = states.value.copy(
+            visibleAbilityDetails = null,
+            isAbilityLoading = null
+        )
+    }
+
+    private fun onAbilityClick(ability: String) {
+        viewModelScope.launch {
+            repository.getAbility(ability).collect { resource ->
+                when(resource){
+                    is Resource.Error -> {
+                        _states.value = states.value.copy(
+                            visibleAbilityDetails = AbilityDetailsData(
+                                effect = resource.uiMessages.toString()
+                            )
+                        )
+                    }
+                    is Resource.Loading -> {
+                        _states.value = states.value.copy(isAbilityLoading = resource.isLoading)
+                    }
+                    is Resource.Success -> {
+                        _states.value = states.value.copy(visibleAbilityDetails = resource.data)
+                    }
+                }
+            }
         }
     }
 
@@ -147,4 +181,6 @@ class PokemonDetailsViewModel @Inject constructor(
     private fun handleLoadingWheel(isLoading: Boolean){
         _commonStates.value = commonStates.value.copy(isLoading = isLoading)
     }
+
+
 }

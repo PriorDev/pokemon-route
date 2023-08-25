@@ -10,7 +10,7 @@ import com.prior_dev.pokerroutejc.feature_pokemon.data.network.response.AbilityD
 import com.prior_dev.pokerroutejc.feature_pokemon.data.network.response.ContainerPokemonNameResponse
 import com.prior_dev.pokerroutejc.feature_pokemon.data.network.response.MoveDetailsResponse
 import com.prior_dev.pokerroutejc.feature_pokemon.data.network.response.PokemonResponse
-import com.prior_dev.pokerroutejc.feature_pokemon.domain.MoveData
+import com.prior_dev.pokerroutejc.feature_pokemon.domain.toDomain
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -19,10 +19,14 @@ import org.junit.Assert
 import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class PokeRepoGetMoveDetails {
+class PokeRepoGetAbility {
     @Test
-    fun getMoveDetailsSuccess() = runTest {
-        class FakeService: PokemonService {
+    fun getAbilitySuccess() = runTest{
+        class FakeService: PokemonService{
+            val ability = AbilityDetailsResponse(
+                name = "",
+                effect_entries = emptyList()
+            )
             override suspend fun getAllPokemons(urlLimitOffset: String): ContainerPokemonNameResponse? {
                 TODO("Not yet implemented")
             }
@@ -32,31 +36,16 @@ class PokeRepoGetMoveDetails {
             }
 
             override suspend fun getMoveDetails(move: Long): MoveDetailsResponse? {
-                return MoveDetailsResponse(
-                    id = 1,
-                    name = "",
-                    accuracy = null,
-                    damage_class = null,
-                    effect_entries = null,
-                    flavor_text_entries = null,
-                    generation = null,
-                    moveNamesResponses = null,
-                    pastValues = null,
-                    power = null,
-                    pp = null,
-                    priority = null,
-                    type = null
-                )
-            }
-
-            override suspend fun getAbility(abilty: String): AbilityDetailsResponse? {
                 TODO("Not yet implemented")
             }
 
+            override suspend fun getAbility(abilty: String): AbilityDetailsResponse? {
+                return ability
+            }
         }
         val service = FakeService()
 
-        class FakeDao: PokemonDao {
+        class FakeDao: PokemonDao{
             override suspend fun insert(pokemons: List<PokemonNameEntity>) {
                 TODO("Not yet implemented")
             }
@@ -68,19 +57,14 @@ class PokeRepoGetMoveDetails {
             override suspend fun eraseNames() {
                 TODO("Not yet implemented")
             }
-
         }
+
         val dao = FakeDao()
         val testDispatcher = StandardTestDispatcher(testScheduler)
 
         val repo = PokemonRepositoryImp(service, dao, MakeNetworkCall(testDispatcher))
 
-        val moveList = listOf(
-            MoveData("Teraexplosion", 1L, versionGroupDetails = emptyList()),
-            MoveData("Teraexplosion", 2L, versionGroupDetails = emptyList()),
-            MoveData("Teraexplosion", 3L, versionGroupDetails = emptyList()),
-        )
-        val resourceFlow = repo.getMoveDetails(moveList).toList()
+        val resourceFlow = repo.getAbility("clorofila").toList()
 
         val isLoadingResource = resourceFlow.first() as Resource.Loading
         Assert.assertEquals(true, isLoadingResource.isLoading)
@@ -88,14 +72,17 @@ class PokeRepoGetMoveDetails {
         val isNotLoadingResource = resourceFlow.last() as Resource.Loading
         Assert.assertEquals(false, isNotLoadingResource.isLoading)
 
-        val responseSuccess = resourceFlow.filter { it is Resource.Success }
-        Assert.assertEquals(moveList.count(), responseSuccess.count())
-
+        val resourceSuccess = resourceFlow.first { it is Resource.Success } as Resource.Success
+        Assert.assertEquals(service.ability.toDomain(), resourceSuccess.data)
     }
 
     @Test
-    fun getMoveDetailsFail() = runTest {
-        class FakeService: PokemonService {
+    fun getAbilityFail() = runTest{
+        class FakeService: PokemonService{
+            val ability = AbilityDetailsResponse(
+                name = "",
+                effect_entries = emptyList()
+            )
             override suspend fun getAllPokemons(urlLimitOffset: String): ContainerPokemonNameResponse? {
                 TODO("Not yet implemented")
             }
@@ -105,16 +92,16 @@ class PokeRepoGetMoveDetails {
             }
 
             override suspend fun getMoveDetails(move: Long): MoveDetailsResponse? {
-                throw Exception("Error")
+                TODO("Not yet implemented")
             }
 
             override suspend fun getAbility(abilty: String): AbilityDetailsResponse? {
-                TODO("Not yet implemented")
+                throw Exception("Error")
             }
         }
         val service = FakeService()
 
-        class FakeDao: PokemonDao {
+        class FakeDao: PokemonDao{
             override suspend fun insert(pokemons: List<PokemonNameEntity>) {
                 TODO("Not yet implemented")
             }
@@ -126,24 +113,21 @@ class PokeRepoGetMoveDetails {
             override suspend fun eraseNames() {
                 TODO("Not yet implemented")
             }
-
         }
+
         val dao = FakeDao()
         val testDispatcher = StandardTestDispatcher(testScheduler)
 
         val repo = PokemonRepositoryImp(service, dao, MakeNetworkCall(testDispatcher))
 
-        val moveList = listOf(
-            MoveData("Teraexplosion", 1L, versionGroupDetails = emptyList()),
-            MoveData("Teraexplosion", 2L, versionGroupDetails = emptyList()),
-            MoveData("Teraexplosion", 3L, versionGroupDetails = emptyList()),
-        )
-        val resourceFlow = repo.getMoveDetails(moveList).toList()
+        val resourceFlow = repo.getAbility("clorofila").toList()
 
         val isLoadingResource = resourceFlow.first() as Resource.Loading
         Assert.assertEquals(true, isLoadingResource.isLoading)
 
         val isNotLoadingResource = resourceFlow.last() as Resource.Loading
         Assert.assertEquals(false, isNotLoadingResource.isLoading)
+
+        val resourceError = resourceFlow.first { it is Resource.Error } as Resource.Error
     }
 }

@@ -62,7 +62,7 @@ fun TypeFilters(
                 text = stringResource(id = R.string.all),
                 isSelected = states.selectedTypeId == 0,
             ) {
-                onEvents(PokemonDetailsEvents.onTypeSelect(0))
+                onEvents(PokemonDetailsEvents.OnTypeSelect(0))
             }
         }
         items(types){ type ->
@@ -72,7 +72,7 @@ fun TypeFilters(
                 selectedBackGroundColor = type.getColor(),
                 selectedTextColor = Color.Black
             ) {
-                onEvents(PokemonDetailsEvents.onTypeSelect(type.id))
+                onEvents(PokemonDetailsEvents.OnTypeSelect(type.id))
             }
         }
     }
@@ -94,7 +94,7 @@ fun GenerationFilters(
                 text = stringResource(id = R.string.all),
                 isSelected = states.selectedGeneration == "",
             ) {
-                onEvents(PokemonDetailsEvents.onGenerationSelect(""))
+                onEvents(PokemonDetailsEvents.OnGenerationSelect(""))
             }
         }
         items(generations){ generations ->
@@ -102,7 +102,7 @@ fun GenerationFilters(
                 text = generations,
                 isSelected = generations == states.selectedGeneration,
             ) {
-                onEvents(PokemonDetailsEvents.onGenerationSelect(generations))
+                onEvents(PokemonDetailsEvents.OnGenerationSelect(generations))
             }
         }
     }
