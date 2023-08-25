@@ -9,8 +9,10 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.prior_dev.pokerroutejc.R
@@ -21,12 +23,15 @@ import com.prior_dev.pokerroutejc.feature_pokemon.presentation.details.PokemonDe
 import com.prior_dev.pokerroutejc.feature_types.domain.TypeData
 import com.prior_dev.pokerroutejc.feature_types.domain.getColor
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun Filters(
     states: PokemonDetailsStates,
     moveList: List<MoveDetailsData>,
     onEvents: (PokemonDetailsEvents) -> Unit
 ) {
+    val keyboardController = LocalSoftwareKeyboardController.current
+
     val types = moveList.map {
         it.type!!
     }.distinct()
@@ -40,6 +45,12 @@ fun Filters(
             .fillMaxWidth()
             .background(MaterialTheme.colors.primary)
     ) {
+        SearchTextField(
+            value = states.textSearch,
+            onValueChange = { onEvents(PokemonDetailsEvents.OnSearchTextChange(it)) },
+            onSearch = { keyboardController?.hide() }
+        )
+
         TypeFilters(states = states, types = types, onEvents = onEvents)
 
         GenerationFilters(states = states, generations = generations, onEvents = onEvents)

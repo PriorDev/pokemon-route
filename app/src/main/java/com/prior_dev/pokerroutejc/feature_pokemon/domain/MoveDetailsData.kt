@@ -1,11 +1,8 @@
 package com.prior_dev.pokerroutejc.feature_pokemon.domain
 
 import com.prior_dev.pokerroutejc.feature_pokemon.data.network.response.MoveDetailsResponse
-import com.prior_dev.pokerroutejc.feature_pokemon.data.network.response.PastValueResponse
-import com.prior_dev.pokerroutejc.feature_pokemon.data.network.response.VersionGroupResponse
 import com.prior_dev.pokerroutejc.feature_types.domain.TypeData
 import com.prior_dev.pokerroutejc.feature_types.domain.toDomain
-import java.math.BigInteger
 
 data class MoveDetailsData(
     var isVisible: Boolean = true,
@@ -19,20 +16,21 @@ data class MoveDetailsData(
     val type: TypeData?,
     val damageName: String,
     val generationName: String,
-    val pastValues: List<PastValueData>,
-)
-
-data class PastValueData(
-    val accuracy: Int,
-    val effect_chance: Any,
-    val effect_entries: List<Any>,
-    val power: Any,
-    val pp: Any,
-    val type: Any,
-    val version_group: VersionGroupResponse
+    val effect: String
 )
 
 fun MoveDetailsResponse.toDomain(moveData: MoveData): MoveDetailsData{
+    val effect = effect_entries.filter { it.language.name == "en" }
+    var effectText = if(effect.isEmpty()){
+        ""
+    }else{
+        effect.first().effect
+    }
+
+    effect_chance?.let {
+        effectText = effectText.replace("${'$'}effect_chance", "$it")
+    }
+
     return MoveDetailsData(
         name = moveData.name,
         id = moveData.id,
@@ -44,18 +42,6 @@ fun MoveDetailsResponse.toDomain(moveData: MoveData): MoveDetailsData{
         type = type?.toDomain(),
         damageName = damage_class?.name ?: "",
         generationName = generation?.name ?: "",
-        pastValues = pastValues?.map {
-            it.toDomain()
-        } ?: emptyList(),
+        effect = effectText
     )
 }
-
-fun PastValueResponse.toDomain() = PastValueData(
-    accuracy = accuracy,
-    effect_chance = effect_chance,
-    effect_entries = effect_entries,
-    power = power,
-    pp = pp,
-    type = type,
-    version_group = version_group
-)

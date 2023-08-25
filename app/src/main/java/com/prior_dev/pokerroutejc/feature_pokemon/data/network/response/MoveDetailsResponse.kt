@@ -7,7 +7,7 @@ data class MoveDetailsResponse(
     val name: String,
     val accuracy: Int?,
     val damage_class: DamageClassResponse?,
-    val effect_entries: List<EffectEntryResponse>?,
+    val effect_entries: List<EffectEntryResponse>,
     val flavor_text_entries: List<FlavorTextEntryResponse>?,
     val generation: GenerationResponse?,
     val moveNamesResponses: List<MoveNamesResponse>?,
@@ -15,7 +15,8 @@ data class MoveDetailsResponse(
     val power: Int?,
     val pp: Int?,
     val priority: Int?,
-    val type: TypeResponse?
+    val type: TypeResponse?,
+    val effect_chance: Int?
 )
 
 data class DamageClassResponse(

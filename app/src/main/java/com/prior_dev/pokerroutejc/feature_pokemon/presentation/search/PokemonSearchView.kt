@@ -18,7 +18,7 @@ import com.prior_dev.pokerroutejc.core.components.DisposableMessage
 import com.prior_dev.pokerroutejc.core.components.PreviewTemplate
 import com.prior_dev.pokerroutejc.feature_pokemon.domain.PokemonNameData
 import com.prior_dev.pokerroutejc.feature_pokemon.presentation.components.ItemPokemonName
-import com.prior_dev.pokerroutejc.feature_pokemon.presentation.components.PokemonSearchTextField
+import com.prior_dev.pokerroutejc.feature_pokemon.presentation.components.SearchTextField
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -36,7 +36,7 @@ fun PokemonSearchView(
     DisposableMessage(commonStates.uiMessages, onDismiss = { onEvent(PokemonSearchEvent.onDismiss) })
 
     Column {
-        PokemonSearchTextField(
+        SearchTextField(
             value = commonStates.searchText,
             onValueChange = {
                 onEvent(PokemonSearchEvent.OnSearchText(it))

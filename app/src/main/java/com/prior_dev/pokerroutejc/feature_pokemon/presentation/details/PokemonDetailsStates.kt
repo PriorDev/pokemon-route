@@ -13,5 +13,6 @@ data class PokemonDetailsStates(
     val pokemon: PokemonData = PokemonData(),
     val weaknessesAndStrengths: DamageRelationsData = DamageRelationsData(),
     val visibleAbilityDetails: AbilityDetailsData? = null,
-    val isAbilityLoading: Boolean? = null
+    val isAbilityLoading: Boolean? = null,
+    val textSearch: String = ""
 )

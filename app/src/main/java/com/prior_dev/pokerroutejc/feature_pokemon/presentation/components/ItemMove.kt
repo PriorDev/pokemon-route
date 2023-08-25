@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
@@ -48,18 +49,33 @@ fun ItemMove(
                 .background(MaterialTheme.colors.background),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Row {
+                move.type?.let {
+                    ItemType(type = it, modifier = Modifier.padding(8.dp), elevation = 0.dp)
+                }
+
+                SelectionContainer {
+                    Text(
+                        text = move.name.uppercase(),
+                        style = MaterialTheme.typography.h6,
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                        textAlign = TextAlign.Center,
+                        color = Color.Black,
+                        modifier = Modifier
+                            .background(backgroundColor)
+                            .fillMaxWidth()
+                    )
+                }
+            }
+
             Text(
-                text = move.name.uppercase(),
-                style = MaterialTheme.typography.h6,
-                fontWeight = FontWeight.Bold,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-                textAlign = TextAlign.Center,
-                color = Color.Black,
-                modifier = Modifier
-                    .background(backgroundColor)
-                    .fillMaxWidth()
+                text = stringResource(id = R.string.type_of_damage, move.damageName.uppercase()),
+                fontWeight = FontWeight.Bold
             )
+
+            Text(text = move.generationName.uppercase())
             Divider()
             Row(
                 horizontalArrangement = Arrangement.SpaceEvenly,
@@ -79,36 +95,30 @@ fun ItemMove(
                 Text(text = stringResource(id = R.string.priority) + " ${move.priority}")
             }
 
-            move.type?.let {
-                ItemType(type = it, modifier = Modifier.padding(4.dp))
-            }
-
-            Text(
-                text = stringResource(id = R.string.damage_type) + " ${move.damageName}",
-                fontWeight = FontWeight.Bold
-            )
-
-            Text(text = move.generationName.uppercase())
-
             Divider()
+
+            SelectionContainer {
+                Text(text = move.effect, modifier = Modifier.fillMaxWidth(.98f))
+            }
 
             LazyRow(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = Modifier
                     .padding(8.dp)
             ){
-                items(move.versionGroupDetails){ version ->
+                val versions = move.versionGroupDetails.distinctBy { it.moveLearnMethodId }
+                items(versions){ version ->
                     Card(elevation = 4.dp){
-                        Column(Modifier.fillMaxWidth().padding(4.dp)) {
+                        Column(
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(4.dp)) {
                             Text(
                                 text = stringResource(id = R.string.learned_at) +
                                         " ${version.levelLearnedAt}".uppercase()
                             )
                             Text(text = stringResource(id = R.string.method) +
                                     " ${version.moveLearnMethodName}".uppercase()
-                            )
-                            Text(text = stringResource(id = R.string.group) +
-                                    " ${version.versionGroupName}".uppercase()
                             )
                         }
                     }
@@ -149,7 +159,7 @@ private fun ItemMovePreview(){
         type = TypeData(1, "fire"),
         damageName = "Fisico",
         generationName = "Gold",
-        pastValues = emptyList()
+        effect = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
     )
 
     ItemMove(move = move)

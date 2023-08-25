@@ -68,7 +68,13 @@ class PokemonDetailsViewModel @Inject constructor(
             is PokemonDetailsEvents.OnTypeSelect -> onTypeSelect(event.typeId)
             is PokemonDetailsEvents.OnAbilityClick -> onAbilityClick(event.ability)
             PokemonDetailsEvents.OnAbilityDismiss -> onAbilityDismiss()
+            is PokemonDetailsEvents.OnSearchTextChange -> onSearchTextChanged(event.text)
         }
+    }
+
+    private fun onSearchTextChanged(text: String) {
+        _states.value = states.value.copy(textSearch = text)
+        filterMoves()
     }
 
     private fun onAbilityDismiss() {
@@ -137,7 +143,13 @@ class PokemonDetailsViewModel @Inject constructor(
             val selectedType = states.value.selectedTypeId
             val isTypeMatch = selectedType == 0 || selectedType == (move.type?.id ?: 0)
 
-            move.isVisible = isGenerationMatch && isTypeMatch
+            val isTextSearchMatch = if(states.value.textSearch == ""){
+                true
+            }else{
+                move.name.contains(states.value.textSearch)
+            }
+
+            move.isVisible = isGenerationMatch && isTypeMatch && isTextSearchMatch
         }
     }
 
