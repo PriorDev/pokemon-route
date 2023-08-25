@@ -56,13 +56,11 @@ class PokemonRepositoryImp @Inject constructor(
 
             val pokemonDB = dao.getPokemonNameByMatch(likeName)
 
-            if(pokemonDB.isNotEmpty()){
-                emit(Resource.Success(
-                    pokemonDB
-                        .map { it.toDomain() }
-                        .sortedBy { it.name })
-                )
-            }
+            emit(Resource.Success(
+                pokemonDB
+                    .map { it.toDomain() }
+                    .sortedBy { it.name })
+            )
 
             emit(Resource.Loading(false))
         }

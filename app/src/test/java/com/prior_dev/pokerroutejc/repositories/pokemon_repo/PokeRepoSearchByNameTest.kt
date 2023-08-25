@@ -264,7 +264,64 @@ class PokeRepoSearchByNameTest {
 
         assertEquals(false, dao.insert)
 
-        val response = resourceFlow.filter { it is Resource.Error || it is Resource.Success }
-        assertEquals(0, response.count())
+        val response = resourceFlow.first { it is Resource.Success } as Resource.Success
+        assertEquals(0, response.data!!.count())
+    }
+
+    @Test
+    fun searchPokemonNameByMatchSuccessButNoWithoutMatching() = runTest {
+        class FakeService: PokemonService{
+            override suspend fun getAllPokemons(urlLimitOffset: String): ContainerPokemonNameResponse? {
+                return ContainerPokemonNameResponse(
+                    next = null,
+                    pokemons = emptyList()
+                )
+            }
+
+            override suspend fun getPokemon(pokemon: String): PokemonResponse? {
+                TODO("Not yet implemented")
+            }
+
+            override suspend fun getMoveDetails(move: Long): MoveDetailsResponse? {
+                TODO("Not yet implemented")
+            }
+
+            override suspend fun getAbility(abilty: String): AbilityDetailsResponse? {
+                TODO("Not yet implemented")
+            }
+        }
+        val service = FakeService()
+
+        class FakeDao: PokemonDao{
+            var insert = false
+            override suspend fun insert(pokemons: List<PokemonNameEntity>) {
+                insert = true
+            }
+
+            override suspend fun getPokemonNameByMatch(name: String): List<PokemonNameEntity> {
+                return emptyList()
+            }
+
+            override suspend fun eraseNames() {
+                TODO("Not yet implemented")
+            }
+        }
+        val dao = FakeDao()
+        val testDispatcher = StandardTestDispatcher(testScheduler)
+
+        val repo = PokemonRepositoryImp(service, dao, MakeNetworkCall(testDispatcher))
+
+        val resourceFlow = repo.searchPokemonNameByMatch("").toList()
+
+        val isLoadingResource = resourceFlow.first() as Resource.Loading
+        assertEquals(true, isLoadingResource.isLoading)
+
+        val isNotLoadingResource = resourceFlow.last() as Resource.Loading
+        assertEquals(false, isNotLoadingResource.isLoading)
+
+        assertEquals(true, dao.insert)
+
+        val response = resourceFlow.first { it is Resource.Success } as Resource.Success
+        assertEquals(0, response.data!!.count())
     }
 }
