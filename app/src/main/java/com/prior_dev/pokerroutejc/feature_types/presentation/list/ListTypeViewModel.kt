@@ -27,7 +27,7 @@ class ListTypeViewModel @Inject constructor(
                 .collect{ result ->
                     when(result){
                         is Resource.Error -> {
-                            //_commonStates.value = commonStates.value.copy(uiMessages = result.uiMessages ?: "")
+                            _commonStates.value = commonStates.value.copy(uiMessages = result.uiMessages)
                         }
                         is Resource.Loading -> {
                             _commonStates.value = commonStates.value.copy(isLoading = result.isLoading)
