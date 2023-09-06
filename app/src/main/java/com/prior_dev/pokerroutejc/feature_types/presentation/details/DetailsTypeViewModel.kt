@@ -32,7 +32,7 @@ class DetailsTypeViewModel @Inject constructor(
                 repository.getTypeFlow(type)
                     .collect{ result ->
                         when(result){
-                            is Resource.Error -> onDismiss()
+                            is Resource.Error -> _states.value = states.value.copy(uiMessages =  result.uiMessages)
                             is Resource.Loading -> {
                                 _states.value = states.value.copy(isLoading = result.isLoading)
                             }
