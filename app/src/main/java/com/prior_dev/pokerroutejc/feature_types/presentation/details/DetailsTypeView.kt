@@ -1,13 +1,20 @@
 package com.prior_dev.pokerroutejc.feature_types.presentation.details
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.*
+import androidx.compose.material.Card
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,14 +29,19 @@ import com.prior_dev.pokerroutejc.core.components.CommonStatesView
 import com.prior_dev.pokerroutejc.core.getTypeColor
 import com.prior_dev.pokerroutejc.feature_types.domain.TypeDetailsData
 import com.prior_dev.pokerroutejc.feature_types.presentation.components.ItemDamageRelation
-import com.prior_dev.pokerroutejc.ui.theme.*
+import com.prior_dev.pokerroutejc.ui.theme.Defensive
+import com.prior_dev.pokerroutejc.ui.theme.DoubleDamageColor
+import com.prior_dev.pokerroutejc.ui.theme.HalfDamageColor
+import com.prior_dev.pokerroutejc.ui.theme.NoDamageColor
+import com.prior_dev.pokerroutejc.ui.theme.Offensive
+import com.prior_dev.pokerroutejc.ui.theme.Purple500
 
 @Composable
 fun DetailsTypeView(
-    viewModel: DetailsTypeViewModel
+    states: CommonStates,
+    details: TypeDetailsData,
+    onEvents: (DetailsTypeEvents) -> Unit
 ) {
-    val states by viewModel.states.observeAsState(CommonStates())
-    val details by viewModel.details.observeAsState(TypeDetailsData())
     val colorType = details.name.getTypeColor()
     val systemUiController = rememberSystemUiController()
 
@@ -52,7 +64,8 @@ fun DetailsTypeView(
             Text(
                 text = details.name.uppercase(),
                 style = MaterialTheme.typography.h4,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .background(colorType)
                     .padding(4.dp),
                 textAlign = TextAlign.Center,
@@ -60,7 +73,7 @@ fun DetailsTypeView(
             )
         },
     ) { innerPadding ->
-        CommonStatesView(onDismiss = viewModel::onDismiss, commonStates = states)
+        CommonStatesView(onDismiss = { onEvents(DetailsTypeEvents.onDismiss) }, commonStates = states)
         if(states.isLoading)
             return@Scaffold
 

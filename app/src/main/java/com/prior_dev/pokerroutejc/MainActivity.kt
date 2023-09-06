@@ -122,7 +122,13 @@ class MainActivity : ComponentActivity() {
                 )
             ){
                 val viewModel: DetailsTypeViewModel = hiltViewModel()
-                DetailsTypeView(viewModel)
+                val states = viewModel.states.collectAsStateWithLifecycle()
+                val details = viewModel.details.collectAsStateWithLifecycle()
+                DetailsTypeView(
+                    states = states.value,
+                    details = details.value,
+                    onEvents = viewModel::onEvent
+                )
             }
         }
     }
@@ -169,7 +175,13 @@ class MainActivity : ComponentActivity() {
                 )
             ){
                 val viewModel: DetailsTypeViewModel = hiltViewModel()
-                DetailsTypeView(viewModel)
+                val states = viewModel.states.collectAsStateWithLifecycle()
+                val details = viewModel.details.collectAsStateWithLifecycle()
+                DetailsTypeView(
+                    states = states.value,
+                    details = details.value,
+                    onEvents = viewModel::onEvent
+                )
             }
         }
     }

@@ -1,12 +1,16 @@
 package com.prior_dev.pokerroutejc.feature_types.presentation.details
 
-import androidx.lifecycle.*
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.prior_dev.pokerroutejc.core.CommonStates
 import com.prior_dev.pokerroutejc.core.Resource
+import com.prior_dev.pokerroutejc.core.routes.RoutesType
 import com.prior_dev.pokerroutejc.feature_types.domain.TypeDetailsData
 import com.prior_dev.pokerroutejc.feature_types.domain.TypeRepository
-import com.prior_dev.pokerroutejc.core.routes.RoutesType
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -15,27 +19,27 @@ class DetailsTypeViewModel @Inject constructor(
     private val repository: TypeRepository,
     private val savedStateHandle: SavedStateHandle,
 ): ViewModel(){
-    private val _states = MutableLiveData(CommonStates())
-    val states: LiveData<CommonStates> = _states
+    private val _states = MutableStateFlow(CommonStates())
+    val states = _states.asStateFlow()
 
-    private val _type = MutableLiveData(TypeDetailsData())
-    val details: LiveData<TypeDetailsData> = _type
+    private val _details = MutableStateFlow(TypeDetailsData())
+    val details = _details.asStateFlow()
 
     init {
         viewModelScope.launch {
-            val typeid = savedStateHandle.get<Int>(RoutesType.TypeDetails.argType)
-            savedStateHandle.get<Int>(RoutesType.TypeDetails.argType)?.let { type ->
+            val typeId = savedStateHandle.get<Int>(RoutesType.TypeDetails.argType)
+            typeId?.let { type ->
                 repository.getTypeFlow(type)
                     .collect{ result ->
                         when(result){
-                            is Resource.Error -> {
-                                //_states.value = states.value?.copy(message = result.message ?: "")
-                            }
+                            is Resource.Error -> onDismiss()
                             is Resource.Loading -> {
-                                _states.value = states.value?.copy(isLoading = result.isLoading)
+                                _states.value = states.value.copy(isLoading = result.isLoading)
                             }
                             is Resource.Success -> {
-                                _type.value = result.data
+                                result.data?.let {
+                                    _details.value = it
+                                }
                             }
                         }
                     }
@@ -43,7 +47,13 @@ class DetailsTypeViewModel @Inject constructor(
         }
     }
 
+    fun onEvent(event: DetailsTypeEvents){
+        when(event){
+            DetailsTypeEvents.onDismiss -> onDismiss()
+        }
+    }
+
     fun onDismiss(){
-        //_states.value = states.value?.copy(message = "")
+        _states.value = states.value.copy(uiMessages = null)
     }
 }
