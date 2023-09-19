@@ -21,12 +21,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.prior_dev.pokerroutejc.R
 import com.prior_dev.pokerroutejc.core.CommonStates
 import com.prior_dev.pokerroutejc.core.components.CommonStatesView
 import com.prior_dev.pokerroutejc.core.getTypeColor
+import com.prior_dev.pokerroutejc.feature_types.domain.DamageRelationsData
+import com.prior_dev.pokerroutejc.feature_types.domain.TypeData
 import com.prior_dev.pokerroutejc.feature_types.domain.TypeDetailsData
 import com.prior_dev.pokerroutejc.feature_types.presentation.components.ItemDamageRelation
 import com.prior_dev.pokerroutejc.ui.theme.Defensive
@@ -181,5 +184,27 @@ fun DetailsTypeView(
             }
         }
     }
+}
 
+@Preview(showSystemUi = true, showBackground = true)
+@Composable
+fun DetailsTypePreview(){
+    val typesList = listOf(TypeData(1, "Fuego"), TypeData(1, "Hielo"))
+    val states = CommonStates(isLoading = false)
+    val details = TypeDetailsData(
+        damageRelationsData = DamageRelationsData(
+            doubleDamageFrom = typesList,
+            doubleDamageTo = typesList,
+            halfDamageFrom = typesList,
+            halfDamageTo = typesList,
+            noDamageFrom = typesList,
+            x1_4DamageFrom = typesList,
+            x4DamageTo = typesList
+        )
+    )
+    DetailsTypeView(
+        states = states,
+        details = details,
+        onEvents = { }
+    )
 }
