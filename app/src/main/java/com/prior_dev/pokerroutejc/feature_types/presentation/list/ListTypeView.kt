@@ -1,12 +1,13 @@
 package com.prior_dev.pokerroutejc.feature_types.presentation.list
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -16,12 +17,11 @@ import com.prior_dev.pokerroutejc.core.components.CommonStatesView
 import com.prior_dev.pokerroutejc.core.components.ItemType
 import com.prior_dev.pokerroutejc.core.components.PreviewTemplate
 import com.prior_dev.pokerroutejc.feature_types.domain.TypeData
-import com.prior_dev.pokerroutejc.ui.theme.PokemonRRouteJCTheme
 
 @Composable
 fun ListTypeView(
     commonStates: CommonStates,
-    states: ListTypeStates,
+    typeList: List<TypeData>,
     onEvent: (ListTypesEvent) -> Unit,
     onUiEvent: (ListTypesUiEvent.openTypesDetailScreen) -> Unit
 ) {
@@ -37,7 +37,7 @@ fun ListTypeView(
         verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ){
-        items(states.types){ type ->
+        items(typeList){ type ->
             ItemType(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -59,13 +59,16 @@ fun ListTypeViewPreview() {
         TypeData(1, "Rock"),
         TypeData(1, "Agua"),
         TypeData(1, "Dragon"),
-        TypeData(1, "Fire"),
+        TypeData(1, "Fuego"),
+        TypeData(1, "Hielo"),
+        TypeData(1, "Fantasma"),
+        TypeData(1, "Veneno"),
     )
 
     PreviewTemplate{
         ListTypeView(
             commonStates = CommonStates(isLoading = false),
-            states = ListTypeStates(types),
+            typeList = types,
             onEvent = { },
             onUiEvent = { }
         )

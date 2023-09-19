@@ -156,11 +156,11 @@ class MainActivity : ComponentActivity() {
             composable(RoutesType.TypesList.route){
                 val viewModel = hiltViewModel<ListTypeViewModel>()
                 val commonStates = viewModel.commonStates.collectAsState()
-                val states = viewModel.states.collectAsState()
+                val typesList = viewModel.typesList
 
                 ListTypeView(
                     commonStates = commonStates.value,
-                    states = states.value,
+                    typeList = typesList,
                     onEvent = viewModel::onEvent,
                     onUiEvent = ::onListTypeUIEvent
                 )

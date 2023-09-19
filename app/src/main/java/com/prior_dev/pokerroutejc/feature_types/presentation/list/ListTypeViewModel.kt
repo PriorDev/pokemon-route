@@ -1,9 +1,11 @@
 package com.prior_dev.pokerroutejc.feature_types.presentation.list
 
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.prior_dev.pokerroutejc.core.CommonStates
 import com.prior_dev.pokerroutejc.core.Resource
+import com.prior_dev.pokerroutejc.feature_types.domain.TypeData
 import com.prior_dev.pokerroutejc.feature_types.domain.TypeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,8 +17,8 @@ import javax.inject.Inject
 class ListTypeViewModel @Inject constructor(
     private val repository: TypeRepository
 ): ViewModel() {
-    private val _states = MutableStateFlow(ListTypeStates())
-    val states = _states.asStateFlow()
+    private val _typesList = mutableStateListOf<TypeData>()
+    val typesList: List<TypeData> = _typesList
 
     private val _commonStates = MutableStateFlow(CommonStates())
     val commonStates = _commonStates.asStateFlow()
@@ -33,9 +35,9 @@ class ListTypeViewModel @Inject constructor(
                             _commonStates.value = commonStates.value.copy(isLoading = result.isLoading)
                         }
                         is Resource.Success -> {
-                            _states.value = states.value.copy(
-                                types = result.data ?: emptyList()
-                            )
+                            result.data?.let {
+                                _typesList.addAll(it)
+                            }
                         }
                     }
                 }
