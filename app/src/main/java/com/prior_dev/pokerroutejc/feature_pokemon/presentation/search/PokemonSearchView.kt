@@ -1,13 +1,19 @@
 package com.prior_dev.pokerroutejc.feature_pokemon.presentation.search
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -52,7 +58,7 @@ fun PokemonSearchView(
         if(commonStates.isLoading){
             LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
         }else{
-            Spacer(modifier = Modifier.height(ProgressIndicatorDefaults.StrokeWidth))
+            Spacer(modifier = Modifier.height(4.dp))
         }
 
         LazyVerticalGrid(
