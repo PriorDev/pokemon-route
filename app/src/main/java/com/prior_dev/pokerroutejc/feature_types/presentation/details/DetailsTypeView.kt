@@ -37,7 +37,7 @@ import com.prior_dev.pokerroutejc.ui.theme.DoubleDamageColor
 import com.prior_dev.pokerroutejc.ui.theme.HalfDamageColor
 import com.prior_dev.pokerroutejc.ui.theme.NoDamageColor
 import com.prior_dev.pokerroutejc.ui.theme.Offensive
-import com.prior_dev.pokerroutejc.ui.theme.Purple500
+import com.prior_dev.pokerroutejc.ui.theme.md_theme_light_primary
 
 @Composable
 fun DetailsTypeView(
@@ -56,7 +56,7 @@ fun DetailsTypeView(
 
         onDispose {
             systemUiController.setSystemBarsColor(
-                color = Purple500,
+                color = md_theme_light_primary,
                 darkIcons = true
             )
         }

@@ -6,7 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.rememberCoroutineScope
@@ -24,7 +24,7 @@ import com.prior_dev.pokerroutejc.feature_pokemon.presentation.components.Pokemo
 import com.prior_dev.pokerroutejc.feature_pokemon.presentation.components.SpritesView
 import com.prior_dev.pokerroutejc.feature_pokemon.presentation.components.WeaknessesAndStrengthView
 import com.prior_dev.pokerroutejc.feature_types.domain.getColor
-import com.prior_dev.pokerroutejc.ui.theme.Purple500
+import com.prior_dev.pokerroutejc.ui.theme.md_theme_light_primary
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -60,7 +60,7 @@ fun PokemonDetailsView(
 
         onDispose {
             systemUiController.setSystemBarsColor(
-                color = Purple500,
+                color = md_theme_light_primary,
                 darkIcons = true
             )
         }
@@ -90,7 +90,7 @@ fun PokemonDetailsView(
         ) {
             repeat(pageCount){ tab ->
                 val color = if (pagerState.currentPage == tab)
-                    MaterialTheme.colors.secondary
+                    MaterialTheme.colorScheme.secondary
                 else
                     Color.LightGray
 

@@ -1,15 +1,20 @@
 package com.prior_dev.pokerroutejc
 
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.MaterialTheme
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.prior_dev.pokerroutejc.core.components.BottomNavIcons
 import com.prior_dev.pokerroutejc.core.routes.RoutesPokemon
 import com.prior_dev.pokerroutejc.core.routes.RoutesType
 
@@ -28,47 +33,42 @@ fun MenuBottomNavBar(
         it.route == RoutesPokemon.ROUTE_NAME
     } == true
 
-    BottomNavigation(
-        backgroundColor = MaterialTheme.colors.primary
-    ){
-        BottomNavigationItem(
+
+
+    NavigationBar{
+        NavigationBarItem(
             selected = isTypeSelected,
-            onClick = {
-                navController.navigate(RoutesType.ROUTE_NAME){
-                    popUpTo(navController.graph.findStartDestination().id){
-                        saveState = true
-                    }
-                    launchSingleTop = true
-                    restoreState = true
-                }
-            },
+            onClick = { onNavigationItemClick(navController, RoutesType.ROUTE_NAME) },
             icon = {
-                BottomNavIcons(
-                    painterResourceId = R.drawable.outline_radio_button_checked_24,
-                    contentDescriptionId = R.string.types,
-                    isSelected = isTypeSelected
+                Icon(
+                    painter = painterResource(R.drawable.outline_radio_button_checked_24),
+                    contentDescription = stringResource(R.string.types)
                 )
-            }
+            },
+            label = { Text(text = stringResource(R.string.types)) }
         )
 
-        BottomNavigationItem(
+        NavigationBarItem(
             selected = isPokemonsSelected,
-            onClick = {
-                navController.navigate(RoutesPokemon.ROUTE_NAME){
-                    popUpTo(navController.graph.findStartDestination().id){
-                        saveState = true
-                    }
-                    launchSingleTop = true
-                    restoreState = true
-                }
-            },
+            onClick = { onNavigationItemClick(navController, RoutesPokemon.ROUTE_NAME) },
             icon = {
-                BottomNavIcons(
-                    painterResourceId = R.drawable.icon_pokeball,
-                    contentDescriptionId = R.string.pokemons,
-                    isSelected = isPokemonsSelected
+                Icon(
+                    painter = painterResource(R.drawable.icon_pokeball),
+                    contentDescription = stringResource(R.string.pokemons),
+                    modifier = Modifier.size(24.dp)
                 )
-            }
+            },
+            label = { Text(text = stringResource(R.string.pokemons)) }
         )
+    }
+}
+
+fun onNavigationItemClick(navController: NavHostController, route: String){
+    navController.navigate(route){
+        popUpTo(navController.graph.findStartDestination().id){
+            saveState = true
+        }
+        launchSingleTop = true
+        restoreState = true
     }
 }
