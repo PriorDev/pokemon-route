@@ -8,13 +8,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,7 +23,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.prior_dev.pokerroutejc.R
 import com.prior_dev.pokerroutejc.core.CommonStates
 import com.prior_dev.pokerroutejc.core.components.CommonStatesView
@@ -37,7 +36,6 @@ import com.prior_dev.pokerroutejc.ui.theme.DoubleDamageColor
 import com.prior_dev.pokerroutejc.ui.theme.HalfDamageColor
 import com.prior_dev.pokerroutejc.ui.theme.NoDamageColor
 import com.prior_dev.pokerroutejc.ui.theme.Offensive
-import com.prior_dev.pokerroutejc.ui.theme.md_theme_light_primary
 
 @Composable
 fun DetailsTypeView(
@@ -46,27 +44,12 @@ fun DetailsTypeView(
     onEvents: (DetailsTypeEvents) -> Unit
 ) {
     val colorType = details.name.getTypeColor()
-    val systemUiController = rememberSystemUiController()
-
-    DisposableEffect(systemUiController, colorType) {
-        systemUiController.setSystemBarsColor(
-            color = colorType,
-            darkIcons = true
-        )
-
-        onDispose {
-            systemUiController.setSystemBarsColor(
-                color = md_theme_light_primary,
-                darkIcons = true
-            )
-        }
-    }
 
     Scaffold(
         topBar = {
             Text(
                 text = details.name.uppercase(),
-                style = MaterialTheme.typography.h4,
+                style = MaterialTheme.typography.headlineLarge,
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(colorType)
@@ -83,18 +66,22 @@ fun DetailsTypeView(
         LazyColumn(
             Modifier
                 .padding(innerPadding)
-                .padding(horizontal = 8.dp)
-                .padding(top = 16.dp)
+                .background(colorType),
+
         ){
             item{
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+            item{
                 Card(
-                    elevation = 8.dp,
-                    backgroundColor = Offensive,
+                    elevation = CardDefaults.elevatedCardElevation(defaultElevation = 8.dp),
+                    colors = CardDefaults.cardColors(containerColor = Offensive),
+                    modifier = Modifier.padding(horizontal = 16.dp)
                 ) {
                     Column(
                         Modifier
                             .fillMaxWidth()
-                            .padding(4.dp),
+                            .padding(8.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Icon(
@@ -136,15 +123,17 @@ fun DetailsTypeView(
             item{
                 Spacer(modifier = Modifier.height(16.dp))
             }
+
             item{
                 Card(
-                    elevation = 8.dp,
-                    backgroundColor = Defensive,
+                    elevation = CardDefaults.elevatedCardElevation(defaultElevation = 8.dp),
+                    colors = CardDefaults.cardColors(containerColor = Defensive),
+                    modifier = Modifier.padding(horizontal = 16.dp)
                 ) {
                     Column(
                         Modifier
                             .fillMaxWidth()
-                            .padding(4.dp),
+                            .padding(8.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Icon(
@@ -182,6 +171,10 @@ fun DetailsTypeView(
                     }
                 }
             }
+
+            item{
+                Spacer(modifier = Modifier.height(16.dp))
+            }
         }
     }
 }
@@ -192,6 +185,7 @@ fun DetailsTypePreview(){
     val typesList = listOf(TypeData(1, "Fuego"), TypeData(1, "Hielo"))
     val states = CommonStates(isLoading = false)
     val details = TypeDetailsData(
+        name = "Fire",
         damageRelationsData = DamageRelationsData(
             doubleDamageFrom = typesList,
             doubleDamageTo = typesList,

@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -43,7 +43,7 @@ fun ListTypeView(
                     .fillMaxWidth()
                     .height(150.dp),
                 type = type,
-                style = MaterialTheme.typography.h4,
+                style = MaterialTheme.typography.titleLarge,
                 onClick = {
                     onUiEvent(ListTypesUiEvent.openTypesDetailScreen(type.id))
                 }

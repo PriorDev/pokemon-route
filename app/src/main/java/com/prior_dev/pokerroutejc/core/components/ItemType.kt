@@ -2,10 +2,12 @@ package com.prior_dev.pokerroutejc.core.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,7 +21,7 @@ import com.prior_dev.pokerroutejc.feature_types.domain.getColor
 @Composable
 fun ItemType(
     modifier: Modifier = Modifier,
-    style: TextStyle = MaterialTheme.typography.body1,
+    style: TextStyle = MaterialTheme.typography.titleMedium,
     type: TypeData,
     onClick: () -> Unit = { },
     elevation: Dp = 16.dp
@@ -27,11 +29,13 @@ fun ItemType(
     Card(
         modifier = modifier
             .clickable { onClick() },
-        backgroundColor = type.getColor(),
-        elevation = elevation,
+        colors = CardDefaults.cardColors(containerColor = type.getColor()),
+        elevation = CardDefaults.cardElevation(elevation)
     ){
         Box(
-            modifier = Modifier.padding(4.dp)
+            modifier = Modifier
+                .padding(4.dp)
+                .fillMaxSize()
         ){
             Text(
                 modifier = Modifier.align(Alignment.Center),
