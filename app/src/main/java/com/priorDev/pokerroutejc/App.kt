@@ -11,3 +11,5 @@ class App : Application()
 // TODO Add new error type strategy to apollo calls
 // TODO Migrate to ktor
 // TODO Migrate to koin
+// TODO Add Top App Bar Action
+// TODO Add a Bottom sheet

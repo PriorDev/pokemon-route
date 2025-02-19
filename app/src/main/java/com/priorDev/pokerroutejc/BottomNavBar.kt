@@ -21,7 +21,7 @@ import com.priorDev.pokerroutejc.utils.navigateToTab
 @Composable
 fun BottomNavBar(
     navController: NavHostController,
-    bottomItems: List<NavBottomItems<out Routes>>,
+    bottomItems: List<NavBottomItems>,
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
