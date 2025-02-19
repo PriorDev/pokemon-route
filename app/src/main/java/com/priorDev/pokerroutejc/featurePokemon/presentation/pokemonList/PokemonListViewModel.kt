@@ -6,10 +6,10 @@ import androidx.paging.Pager
 import androidx.paging.cachedIn
 import androidx.paging.map
 import com.priorDev.pokerroutejc.core.CommonStates
-import com.priorDev.pokerroutejc.core.routes.RoutesPokemon
 import com.priorDev.pokerroutejc.featurePokemon.data.database.PokemonNameEntity
 import com.priorDev.pokerroutejc.featurePokemon.domain.toDomain
 import com.priorDev.pokerroutejc.utils.IGlobalEventChannel
+import com.priorDev.pokerroutejc.utils.Routes
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -53,7 +53,7 @@ class PokemonListViewModel @Inject constructor(
             PokemonListEvent.OnRefresh -> onRefresh()
 
             PokemonListEvent.OnSearch -> {
-                globalEventChannel.onNavigate(RoutesPokemon.PkSearch.route)
+                globalEventChannel.onNavigate(Routes.PkSearch)
             }
         }
     }

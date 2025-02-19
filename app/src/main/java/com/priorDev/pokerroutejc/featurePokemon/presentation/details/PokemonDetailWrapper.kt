@@ -6,17 +6,10 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.priorDev.pokerroutejc.core.routes.RoutesPokemon
+import com.priorDev.pokerroutejc.utils.Routes
 
 fun NavGraphBuilder.pokemonDetailWrapper() {
-    composable(
-        route = RoutesPokemon.PokemonDetails.route,
-        arguments = listOf(
-            navArgument(RoutesPokemon.PokemonDetails.argPokemonName) {
-                type = NavType.StringType
-            }
-        )
-    ) {
+    composable<Routes.PkDetails> {
         val viewModel = hiltViewModel<PokemonDetailsViewModel>()
         val commonStates = viewModel.commonStates.collectAsStateWithLifecycle()
         val states = viewModel.states.collectAsStateWithLifecycle()

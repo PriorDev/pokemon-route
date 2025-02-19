@@ -2,12 +2,10 @@ package com.priorDev.pokerroutejc.featurePokemon.presentation.search
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.priorDev.pokerroutejc.core.routes.RoutesPokemon
+import com.priorDev.pokerroutejc.utils.Routes
 
 fun NavGraphBuilder.pkSearchWrapper() {
-    composable(
-        route = RoutesPokemon.PkSearch.route
-    ) {
+    composable<Routes.PkSearch> {
 //        val state = PkSearchState(
 //            searchText = ""
 //        )

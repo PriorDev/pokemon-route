@@ -3,9 +3,10 @@ package com.priorDev.pokerroutejc.featureTypes.presentation.details
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.priorDev.pokerroutejc.core.CommonStates
 import com.priorDev.pokerroutejc.core.Resource
-import com.priorDev.pokerroutejc.core.routes.RoutesType
+import com.priorDev.pokerroutejc.utils.Routes
 import com.priorDev.pokerroutejc.featureTypes.domain.TypeDetailsData
 import com.priorDev.pokerroutejc.featureTypes.domain.TypeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,23 +28,22 @@ class DetailsTypeViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            val typeId = savedStateHandle.get<Int>(RoutesType.TypeDetails.argType)
-            typeId?.let { type ->
-                repository.getTypeFlow(type)
-                    .collect { result ->
-                        when (result) {
-                            is Resource.Error -> _states.value = states.value.copy(uiMessages = result.uiMessages)
-                            is Resource.Loading -> {
-                                _states.value = states.value.copy(isLoading = result.isLoading)
-                            }
-                            is Resource.Success -> {
-                                result.data?.let {
-                                    _details.value = it
-                                }
+            val args = savedStateHandle.toRoute<Routes.TypeDetails>()
+            repository.getTypeFlow(args.typeId)
+                .collect { result ->
+                    when (result) {
+                        is Resource.Error -> _states.value = states.value.copy(uiMessages = result.uiMessages)
+                        is Resource.Loading -> {
+                            _states.value = states.value.copy(isLoading = result.isLoading)
+                        }
+                        is Resource.Success -> {
+                            result.data?.let {
+                                _details.value = it
                             }
                         }
                     }
-            }
+                }
+
         }
     }
 

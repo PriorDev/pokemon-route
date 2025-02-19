@@ -14,6 +14,13 @@ fun GlobalEventHandler(navController: NavHostController) {
                 )
             }
 
+            is OneTimeEvent.OnNavigateX<*> -> {
+                navController.navigate(
+                    route = event.route,
+                    builder = event.navOptions
+                )
+            }
+
             OneTimeEvent.OnNavigateUp -> navController.navigateUp()
         }
     }

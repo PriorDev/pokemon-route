@@ -6,10 +6,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.priorDev.pokerroutejc.core.routes.RoutesPokemon
+import com.priorDev.pokerroutejc.utils.Routes
 
 fun NavGraphBuilder.pokemonListWrapper() {
-    composable(RoutesPokemon.PokemonListRoute.route) {
+    composable<Routes.PokemonList> {
         val viewModel: PokemonListViewModel = hiltViewModel()
         val commonStates by viewModel.commonStates.collectAsStateWithLifecycle()
         val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()

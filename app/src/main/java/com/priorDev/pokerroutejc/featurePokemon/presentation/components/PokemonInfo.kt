@@ -1,16 +1,5 @@
 package com.priorDev.pokerroutejc.featurePokemon.presentation.components
 
-import com.priorDev.pokerroutejc.core.components.PreviewTemplate
-import com.priorDev.pokerroutejc.core.routes.RoutesPokemon
-import com.priorDev.pokerroutejc.featurePokemon.domain.AbilityData
-import com.priorDev.pokerroutejc.featurePokemon.domain.AbilityDetailsData
-import com.priorDev.pokerroutejc.featurePokemon.domain.PokemonData
-import com.priorDev.pokerroutejc.featurePokemon.presentation.details.PokemonDetailsEvents
-import com.priorDev.pokerroutejc.featurePokemon.presentation.details.PokemonDetailsStates
-import com.priorDev.pokerroutejc.featureTypes.domain.TypeData
-import com.priorDev.pokerroutejc.featureTypes.domain.getColor
-import com.priorDev.pokerroutejc.utils.GlobalEventChannel
-import com.priorDev.pokerroutejc.R
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -41,6 +30,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.priorDev.pokerroutejc.R
+import com.priorDev.pokerroutejc.core.components.PreviewTemplate
+import com.priorDev.pokerroutejc.featurePokemon.domain.AbilityData
+import com.priorDev.pokerroutejc.featurePokemon.domain.AbilityDetailsData
+import com.priorDev.pokerroutejc.featurePokemon.domain.PokemonData
+import com.priorDev.pokerroutejc.utils.Routes
+import com.priorDev.pokerroutejc.featurePokemon.presentation.details.PokemonDetailsEvents
+import com.priorDev.pokerroutejc.featurePokemon.presentation.details.PokemonDetailsStates
+import com.priorDev.pokerroutejc.featureTypes.domain.TypeData
+import com.priorDev.pokerroutejc.featureTypes.domain.getColor
+import com.priorDev.pokerroutejc.utils.GlobalEventChannel
 
 @Composable
 fun PokemonInfo(
@@ -87,17 +87,17 @@ fun PokemonInfo(
                         horizontalArrangement = Arrangement.Center,
                         modifier = Modifier.fillMaxWidth(),
                     ) {
-                        pokemon.types.forEach {
+                        pokemon.types.forEach { type ->
                             Button(
                                 onClick = {
                                     GlobalEventChannel.onNavigate(
-                                        RoutesPokemon.TypeDetails.getRoute(it.id)
+                                        Routes.TypeDetails.PokemonTab(type.id)
                                     )
                                 },
-                                colors = ButtonDefaults.buttonColors(backgroundColor = it.getColor()),
+                                colors = ButtonDefaults.buttonColors(backgroundColor = type.getColor()),
                                 modifier = Modifier.padding(horizontal = 16.dp)
                             ) {
-                                Text(text = it.name.uppercase())
+                                Text(text = type.name.uppercase())
                             }
                         }
                     }

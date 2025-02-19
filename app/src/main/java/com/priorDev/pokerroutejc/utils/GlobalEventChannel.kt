@@ -32,6 +32,21 @@ object GlobalEventChannel : IGlobalEventChannel {
         }
     }
 
+    override fun <T : Any> onNavigate(
+        route: T,
+        navOptions: NavOptionsBuilder.() -> Unit
+    ) {
+        coroutineScope.launch {
+            _eventChannel.send(
+                OneTimeEvent.OnNavigateX(
+                    route = route,
+                    navOptions = navOptions
+                )
+            )
+        }
+    }
+
+
     override fun sendNavigateUpEvent() {
         coroutineScope.launch {
             _eventChannel.send(OneTimeEvent.OnNavigateUp)

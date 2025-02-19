@@ -4,6 +4,7 @@ plugins {
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
     id("io.gitlab.arturbosch.detekt") version "1.23.1"
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -89,6 +90,7 @@ dependencies {
     implementation(libs.dagger.hitl)
     kapt(libs.dagger.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
+    implementation(libs.kotlinx.serialization.json)
     //Nav Controller
     implementation(libs.navigation.compose)
     //Room

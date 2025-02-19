@@ -28,13 +28,13 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.priorDev.pokerroutejc.core.CommonStates
 import com.priorDev.pokerroutejc.core.components.DisposableMessage
 import com.priorDev.pokerroutejc.core.components.PreviewTemplate
-import com.priorDev.pokerroutejc.core.routes.RoutesPokemon
 import com.priorDev.pokerroutejc.featurePokemon.domain.PokemonNameData
 import com.priorDev.pokerroutejc.featurePokemon.presentation.components.ItemPokemonName
 import com.priorDev.pokerroutejc.presentation.reusable.PullToRefreshBox
 import com.priorDev.pokerroutejc.presentation.reusable.SearchBarButton
 import com.priorDev.pokerroutejc.utils.GlobalEventChannel
 import com.priorDev.pokerroutejc.R
+import com.priorDev.pokerroutejc.utils.Routes
 
 @Composable
 fun PokemonListView(
@@ -86,9 +86,7 @@ fun PokemonListView(
                     ItemPokemonName(
                         pokemon = pokemon,
                         modifier = Modifier.clickable {
-                            GlobalEventChannel.onNavigate(
-                                RoutesPokemon.PokemonDetails.getRoute(pokemon.name)
-                            )
+                            GlobalEventChannel.onNavigate(Routes.PkDetails(pokemon.name))
                         }
                     )
                 }

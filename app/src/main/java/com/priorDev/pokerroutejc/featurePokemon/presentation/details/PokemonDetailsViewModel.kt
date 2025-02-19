@@ -4,15 +4,16 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.priorDev.pokerroutejc.core.CommonStates
 import com.priorDev.pokerroutejc.core.Resource
 import com.priorDev.pokerroutejc.core.UiMessages
-import com.priorDev.pokerroutejc.core.routes.RoutesPokemon
 import com.priorDev.pokerroutejc.featurePokemon.domain.AbilityDetailsData
 import com.priorDev.pokerroutejc.featurePokemon.domain.MoveDetailsData
 import com.priorDev.pokerroutejc.featurePokemon.domain.PokemonRepository
 import com.priorDev.pokerroutejc.featurePokemon.domain.useCases.PokemonUseCases
 import com.priorDev.pokerroutejc.featureTypes.domain.DamageRelationsData
+import com.priorDev.pokerroutejc.utils.Routes
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -34,12 +35,10 @@ class PokemonDetailsViewModel @Inject constructor(
     private val _moves = mutableStateListOf<MoveDetailsData>()
     val moves: List<MoveDetailsData> = _moves
 
-    private val pokemonName = savedStateHandle.get<String>(RoutesPokemon.PokemonDetails.argPokemonName)
-
     init {
         viewModelScope.launch {
-            pokemonName?.let {
-                repository.getPokemon(pokemonName).collect { resource ->
+            val navArg = savedStateHandle.toRoute<Routes.PkDetails>()
+                repository.getPokemon(navArg.pokemonName).collect { resource ->
                     when (resource) {
                         is Resource.Error -> showErrorMessage(resource.uiMessages)
                         is Resource.Loading -> handleLoadingWheel(resource.isLoading)
@@ -57,7 +56,6 @@ class PokemonDetailsViewModel @Inject constructor(
                     getMoves()
                 }
             }
-        }
     }
 
     fun onEvent(event: PokemonDetailsEvents) {

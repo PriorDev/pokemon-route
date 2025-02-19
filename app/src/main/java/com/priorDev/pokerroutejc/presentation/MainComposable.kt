@@ -6,9 +6,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.priorDev.pokerroutejc.MenuBottomNavBar
-import com.priorDev.pokerroutejc.core.routes.RoutesMenu
-import com.priorDev.pokerroutejc.core.routes.RoutesType
+import com.priorDev.pokerroutejc.BottomNavBar
+import com.priorDev.pokerroutejc.utils.Routes
 import com.priorDev.pokerroutejc.featurePokemon.presentation.pokemonNavigation
 import com.priorDev.pokerroutejc.featureTypes.presentation.typesNavigation
 import com.priorDev.pokerroutejc.utils.GlobalEventHandler
@@ -19,7 +18,7 @@ fun MainComposable() {
 
     Scaffold(
         bottomBar = {
-            MenuBottomNavBar(navController = navController)
+            BottomNavBar(navController = navController)
         }
     ) { innerPadding ->
 
@@ -29,8 +28,8 @@ fun MainComposable() {
             modifier = Modifier
                 .padding(innerPadding),
             navController = navController,
-            startDestination = RoutesType.ROUTE_NAME,
-            route = RoutesMenu.ROUTE_NAME
+            startDestination = Routes.TypeNav,
+            route = Routes.MainNav::class
         ) {
             pokemonNavigation()
 

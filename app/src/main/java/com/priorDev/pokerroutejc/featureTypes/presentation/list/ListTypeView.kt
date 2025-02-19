@@ -16,7 +16,7 @@ import com.priorDev.pokerroutejc.core.CommonStates
 import com.priorDev.pokerroutejc.core.components.CommonStatesView
 import com.priorDev.pokerroutejc.core.components.ItemType
 import com.priorDev.pokerroutejc.core.components.PreviewTemplate
-import com.priorDev.pokerroutejc.core.routes.RoutesType
+import com.priorDev.pokerroutejc.utils.Routes
 import com.priorDev.pokerroutejc.featureTypes.domain.TypeData
 import com.priorDev.pokerroutejc.utils.GlobalEventChannel
 
@@ -46,7 +46,7 @@ fun ListTypeView(
                 style = MaterialTheme.typography.titleLarge,
                 onClick = {
                     GlobalEventChannel.onNavigate(
-                        RoutesType.TypeDetails.getRoute(type.id)
+                        route = Routes.TypeDetails.TypeTab(type.id)
                     )
                 }
             )

@@ -8,5 +8,10 @@ sealed interface OneTimeEvent {
         val navOptions: NavOptionsBuilder.() -> Unit = {}
     ) : OneTimeEvent
 
+    data class OnNavigateX<T: Any>(
+        val route: T,
+        val navOptions: NavOptionsBuilder.() -> Unit = {}
+    ) : OneTimeEvent
+
     object OnNavigateUp : OneTimeEvent
 }
