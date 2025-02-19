@@ -21,7 +21,7 @@ import com.priorDev.pokerroutejc.data.network.NetworkError
 fun ScreenTemplate(
     modifier: Modifier = Modifier,
     loadingIndicator: LoadingIndicator,
-    networkError: NetworkError,
+    errorState: ErrorState,
     dialogModel: AlertDialogModel,
     onRefresh: () -> Unit,
     content: @Composable () -> Unit,
@@ -34,7 +34,7 @@ fun ScreenTemplate(
     Box {
         ScreenTemplate(
             loadingIndicator = loadingIndicator,
-            networkError = networkError,
+            errorState = errorState,
             dialogModel = dialogModel,
             content = content,
             modifier = modifier.pullRefresh(pullRefreshState)
@@ -52,7 +52,7 @@ fun ScreenTemplate(
 fun ScreenTemplate(
     modifier: Modifier = Modifier,
     loadingIndicator: LoadingIndicator,
-    networkError: NetworkError,
+    errorState: ErrorState,
     dialogModel: AlertDialogModel,
     content: @Composable () -> Unit
 ) {
@@ -89,6 +89,6 @@ fun ScreenTemplate(
             }
         }
 
-        ErrorView(networkError)
+        ErrorView(errorState)
     }
 }

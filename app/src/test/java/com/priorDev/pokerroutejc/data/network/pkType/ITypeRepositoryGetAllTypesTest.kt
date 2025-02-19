@@ -13,16 +13,16 @@ import com.priorDev.pokerroutejc.data.network.fakes.TypeDaoFake
 import com.priorDev.pokerroutejc.data.network.fakes.TypeServiceFake
 import com.priorDev.pokerroutejc.data.network.pkType.response.ContainerTypeResponse
 import com.priorDev.pokerroutejc.data.network.pkType.response.TypeResponse
-import com.priorDev.pokerroutejc.featureTypes.domain.TypeRepository
+import com.priorDev.pokerroutejc.featureTypes.domain.ITypeRepository
 import com.priorDev.pokerroutejc.presentation.core.LoadingIndicator
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-class TypeRepositoryGetAllTypesTest {
+class ITypeRepositoryGetAllTypesTest {
     private lateinit var service: ITypeService
     private lateinit var typeDao: TypeDao
-    private lateinit var typeRepo: TypeRepository
+    private lateinit var typeRepo: ITypeRepository
 
     @BeforeEach
     fun setUp() {
@@ -43,7 +43,7 @@ class TypeRepositoryGetAllTypesTest {
             val serviceFake = TypeServiceFake()
             serviceFake.getAllTypeResponse = NetworkResource.Success(containerResponse)
 
-            typeRepo = TypeRepositoryImp(serviceFake, typeDao)
+            typeRepo = ITypeRepositoryImp(serviceFake, typeDao)
 
             typeRepo.getAllTypesFlow(false).test {
                 // Validate first emission is loading with solid spinning wheel due is not refreshing
@@ -86,7 +86,7 @@ class TypeRepositoryGetAllTypesTest {
             val serviceFake = TypeServiceFake()
             serviceFake.getAllTypeResponse = NetworkResource.Success(containerResponse)
 
-            typeRepo = TypeRepositoryImp(serviceFake, typeDao)
+            typeRepo = ITypeRepositoryImp(serviceFake, typeDao)
 
             typeRepo.getAllTypesFlow(true).test {
                 // Validate first emission is loading with solid spinning wheel due is not refreshing
@@ -124,7 +124,7 @@ class TypeRepositoryGetAllTypesTest {
                 NetworkError.ServerError(serverMessage = "Error getting types")
             )
 
-            typeRepo = TypeRepositoryImp(serviceFake, typeDao)
+            typeRepo = ITypeRepositoryImp(serviceFake, typeDao)
 
             typeRepo.getAllTypesFlow(false).test {
                 // Validate first emission is loading with solid spinning wheel due is not refreshing
@@ -168,7 +168,7 @@ class TypeRepositoryGetAllTypesTest {
                 listOf(typeResponse.toDB())
             )
 
-            typeRepo = TypeRepositoryImp(serviceFake, typeDao)
+            typeRepo = ITypeRepositoryImp(serviceFake, typeDao)
 
             typeRepo.getAllTypesFlow(false).test {
                 // Validate first emission is loading with solid spinning wheel due is not refreshing
@@ -212,7 +212,7 @@ class TypeRepositoryGetAllTypesTest {
                 listOf(typeResponse.toDB())
             )
 
-            typeRepo = TypeRepositoryImp(serviceFake, typeDao)
+            typeRepo = ITypeRepositoryImp(serviceFake, typeDao)
 
             typeRepo.getAllTypesFlow(true).test {
                 // Validate first emission is loading with solid spinning wheel due is not refreshing

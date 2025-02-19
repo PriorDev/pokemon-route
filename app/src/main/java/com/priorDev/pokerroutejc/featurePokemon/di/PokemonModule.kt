@@ -13,7 +13,7 @@ import com.priorDev.pokerroutejc.featurePokemon.domain.PokemonNameRemoteMediator
 import com.priorDev.pokerroutejc.featurePokemon.domain.PokemonNameRemoteMediator.Companion.PAGE_SIZE
 import com.priorDev.pokerroutejc.featurePokemon.domain.useCases.GetWeaknessesAndStrengths
 import com.priorDev.pokerroutejc.featurePokemon.domain.useCases.PokemonUseCases
-import com.priorDev.pokerroutejc.featureTypes.domain.TypeRepository
+import com.priorDev.pokerroutejc.featureTypes.domain.ITypeRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -35,10 +35,10 @@ object PokemonModule {
     @ViewModelScoped
     @Provides
     fun providerPokemonUseCases(
-        typeRepository: TypeRepository
+        ITypeRepository: ITypeRepository
     ): PokemonUseCases {
         return PokemonUseCases(
-            GetWeaknessesAndStrengths(typeRepository)
+            GetWeaknessesAndStrengths(ITypeRepository)
         )
     }
 

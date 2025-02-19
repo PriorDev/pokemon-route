@@ -7,7 +7,7 @@ import com.priorDev.pokerroutejc.data.network.NetworkError
 import com.priorDev.pokerroutejc.data.network.NetworkResource
 import com.priorDev.pokerroutejc.featureTypes.domain.TypeData
 import com.priorDev.pokerroutejc.featureTypes.domain.TypeDetailsData
-import com.priorDev.pokerroutejc.featureTypes.domain.TypeRepository
+import com.priorDev.pokerroutejc.featureTypes.domain.ITypeRepository
 import com.priorDev.pokerroutejc.featureTypes.domain.toDomain
 import com.priorDev.pokerroutejc.presentation.core.LoadingIndicator
 import com.priorDev.pokerroutejc.presentation.core.spinningWheelOrRefresh
@@ -15,10 +15,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class TypeRepositoryImp @Inject constructor(
+class ITypeRepositoryImp @Inject constructor(
     private val service: ITypeService,
     private val dao: TypeDao,
-) : TypeRepository {
+) : ITypeRepository {
     override suspend fun getAllTypesFlow(isRefresh: Boolean): Flow<ResourceFlow<List<TypeData>>> {
         return flow {
             emit(

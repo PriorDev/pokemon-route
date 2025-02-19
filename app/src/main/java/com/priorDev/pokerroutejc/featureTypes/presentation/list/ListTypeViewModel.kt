@@ -3,11 +3,15 @@ package com.priorDev.pokerroutejc.featureTypes.presentation.list
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.priorDev.pokerroutejc.R
 import com.priorDev.pokerroutejc.core.ResourceFlow
 import com.priorDev.pokerroutejc.data.network.NetworkError
+import com.priorDev.pokerroutejc.featureTypes.domain.ITypeRepository
 import com.priorDev.pokerroutejc.featureTypes.domain.TypeData
-import com.priorDev.pokerroutejc.featureTypes.domain.TypeRepository
+import com.priorDev.pokerroutejc.presentation.core.DisplayError
+import com.priorDev.pokerroutejc.presentation.core.ErrorState
 import com.priorDev.pokerroutejc.presentation.core.ScreenStates
+import com.priorDev.pokerroutejc.presentation.core.UiMessages
 import com.priorDev.pokerroutejc.utils.flowSubscriber
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +22,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ListTypeViewModel @Inject constructor(
-    private val repository: TypeRepository
+    private val repository: ITypeRepository
 ) : ViewModel() {
     private val _typesList = mutableStateListOf<TypeData>()
     val typesList: List<TypeData> = _typesList
@@ -46,10 +50,11 @@ class ListTypeViewModel @Inject constructor(
                         is ResourceFlow.Error -> {
                             _screenStates.update {
                                 it.copy(
-                                    networkError = getErrorPage(result.networkErrorType)
+                                    error = getAllTypesError(result.networkErrorType)
                                 )
                             }
                         }
+
                         is ResourceFlow.Loading -> {
                             _screenStates.update {
                                 it.copy(
@@ -57,6 +62,7 @@ class ListTypeViewModel @Inject constructor(
                                 )
                             }
                         }
+
                         is ResourceFlow.Success -> {
                             result.data?.let {
                                 _typesList.addAll(it)
@@ -67,32 +73,34 @@ class ListTypeViewModel @Inject constructor(
         }
     }
 
-    private fun getErrorPage(error: NetworkError): NetworkError {
+    private fun getAllTypesError(error: NetworkError): ErrorState {
         return when (error) {
             is NetworkError.UnableToConnect -> {
-                error.copy(
-                    showRetryButton = true,
-                    retryAction = {
+                ErrorState(
+                    displayAs = DisplayError.Dialog,
+                    networkError = error,
+                    actionButtonText = UiMessages.StringResource(R.string.retry),
+                    onAction = {
                         _screenStates.update {
-                            it.copy(
-                                networkError = NetworkError.None
-                            )
+                            it.copy(error = ErrorState())
                         }
                         getAllTypes(isRefresh = true)
                     },
-                    showOfflineDataButton = true,
-                    showOfflineDataAction = {
+                    isActionButtonVisible = true,
+                    dismissButtonText = UiMessages.StringResource(R.string.dismiss),
+                    isDismissButtonVisible = true,
+                    onDismiss = {
                         _screenStates.update {
-                            it.copy(
-                                networkError = NetworkError.None
-                            )
+                            it.copy(error = ErrorState())
                         }
                     }
                 )
             }
 
             else -> {
-                error
+                ErrorState(
+                    networkError = error
+                )
             }
         }
     }

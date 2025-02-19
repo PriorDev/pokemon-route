@@ -4,11 +4,11 @@ import com.priorDev.pokerroutejc.core.ResourceFlow
 import com.priorDev.pokerroutejc.featureTypes.domain.DamageRelationsData
 import com.priorDev.pokerroutejc.featureTypes.domain.TypeData
 import com.priorDev.pokerroutejc.featureTypes.domain.TypeDetailsData
-import com.priorDev.pokerroutejc.featureTypes.domain.TypeRepository
+import com.priorDev.pokerroutejc.featureTypes.domain.ITypeRepository
 import javax.inject.Inject
 
 class GetWeaknessesAndStrengths @Inject constructor(
-    private val repository: TypeRepository
+    private val repository: ITypeRepository
 ) {
     private var damageRelationsData: DamageRelationsData = DamageRelationsData()
     private lateinit var allTypes: List<TypeData>

@@ -4,6 +4,7 @@ package com.priorDev.pokerroutejc.utils
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
@@ -12,7 +13,7 @@ import org.junit.jupiter.api.extension.BeforeEachCallback
 import org.junit.jupiter.api.extension.ExtensionContext
 
 class MainCoroutineExtension(
-    private val testDispatcher: TestDispatcher
+    val testDispatcher: TestDispatcher = StandardTestDispatcher()
 ) : BeforeEachCallback, AfterEachCallback {
     override fun beforeEach(context: ExtensionContext?) {
         Dispatchers.setMain(testDispatcher)

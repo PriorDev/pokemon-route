@@ -28,7 +28,7 @@ fun ListTypeView(
 ) {
     ScreenTemplate(
         loadingIndicator = screenState.loadingIndicator,
-        networkError = screenState.networkError,
+        errorState = screenState.error,
         dialogModel = screenState.dialogModel,
         onRefresh = {
             onEvent(ListTypesEvent.Refresh)

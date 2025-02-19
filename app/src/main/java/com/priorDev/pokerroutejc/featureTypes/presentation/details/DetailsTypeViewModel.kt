@@ -8,7 +8,7 @@ import com.priorDev.pokerroutejc.core.CommonStates
 import com.priorDev.pokerroutejc.core.ResourceFlow
 import com.priorDev.pokerroutejc.utils.Routes
 import com.priorDev.pokerroutejc.featureTypes.domain.TypeDetailsData
-import com.priorDev.pokerroutejc.featureTypes.domain.TypeRepository
+import com.priorDev.pokerroutejc.featureTypes.domain.ITypeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailsTypeViewModel @Inject constructor(
-    private val repository: TypeRepository,
+    private val repository: ITypeRepository,
     private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
     private val _states = MutableStateFlow(CommonStates())

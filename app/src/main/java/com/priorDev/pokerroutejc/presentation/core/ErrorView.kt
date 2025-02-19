@@ -31,14 +31,60 @@ import androidx.compose.ui.unit.dp
 import com.priorDev.pokerroutejc.R
 import com.priorDev.pokerroutejc.data.network.NetworkError
 import com.priorDev.pokerroutejc.presentation.reusable.PreviewTemplate
-import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 @Composable
 fun ErrorView(
-    networkError: NetworkError
+    errorState: ErrorState
 ) {
-    if (networkError is NetworkError.None) return
+    if (errorState.networkError is NetworkError.None) return
 
+    when (errorState.displayAs) {
+        DisplayError.Dialog -> {
+            ErrorDialog(errorState)
+        }
+        DisplayError.FullScreen -> {
+            FullScreenError(errorState)
+        }
+    }
+}
+
+@Composable
+private fun ErrorDialog(
+    errorState: ErrorState
+) {
+    CustomAlertDialog(
+        AlertDialogModel(
+            isVisible = true,
+            title = errorState.networkError.errorTitle,
+            message = when (errorState.networkError) {
+                is NetworkError.ClientError -> {
+                    UiMessages.DynamicMessage(errorState.networkError.serverMessage.orEmpty())
+                }
+
+                is NetworkError.ServerError -> {
+                    UiMessages.DynamicMessage(errorState.networkError.serverMessage)
+                }
+
+                else -> {
+                    UiMessages.DynamicMessage("")
+                }
+            },
+            confirmText = errorState.actionButtonText.takeIf { errorState.isActionButtonVisible },
+            onConfirm = {
+                errorState.onAction.invoke()
+            },
+            dismissText = errorState.dismissButtonText.takeIf { errorState.isDismissButtonVisible },
+            onDismiss = {
+                errorState.onDismiss.invoke()
+            }
+        )
+    )
+}
+
+@Composable
+private fun FullScreenError(
+    errorState: ErrorState
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -59,17 +105,17 @@ fun ErrorView(
             Spacer(Modifier.height(16.dp))
 
             Text(
-                text = networkError.userFriendlyMessage.asString(),
+                text = errorState.networkError.errorTitle.asString(),
                 style = MaterialTheme.typography.headlineSmall,
                 textAlign = TextAlign.Center
             )
 
             HorizontalDivider(Modifier.padding(vertical = 16.dp))
 
-            when (networkError) {
+            when (errorState.networkError) {
                 is NetworkError.ClientError -> {
                     Text(
-                        text = networkError.serverMessage.orEmpty(),
+                        text = errorState.networkError.serverMessage.orEmpty(),
                         style = MaterialTheme.typography.titleMedium,
                         textAlign = TextAlign.Center
                     )
@@ -77,73 +123,93 @@ fun ErrorView(
 
                 is NetworkError.ServerError -> {
                     Text(
-                        text = networkError.serverMessage,
+                        text = errorState.networkError.serverMessage,
                         style = MaterialTheme.typography.titleMedium,
                         textAlign = TextAlign.Center
                     )
-                }
-
-                is NetworkError.UnableToConnect -> {
-                    Row(
-                        horizontalArrangement = Arrangement.Center,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        if (networkError.showRetryButton) {
-                            OutlinedButton(
-                                colors = ButtonDefaults.buttonColors(),
-                                onClick = {
-                                    networkError.retryAction?.invoke()
-                                }
-                            ) {
-                                Text(text = networkError.retryButtonText.asString())
-                            }
-                        }
-
-                        Spacer(Modifier.width(16.dp))
-
-                        if (networkError.showOfflineDataButton) {
-                            OutlinedButton(
-                                colors = ButtonDefaults.filledTonalButtonColors(),
-                                onClick = {
-                                    networkError.showOfflineDataAction?.invoke()
-                                }
-                            ) {
-                                Text(text = networkError.showOfflineDataButtonText.asString())
-                            }
-                        }
-                    }
                 }
 
                 else -> {
                     // Don't display anything
                 }
             }
+
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                if (errorState.isActionButtonVisible) {
+                    OutlinedButton(
+                        colors = ButtonDefaults.buttonColors(),
+                        onClick = {
+                            errorState.onAction.invoke()
+                        }
+                    ) {
+                        Text(text = errorState.actionButtonText.asString())
+                    }
+                }
+
+                Spacer(Modifier.width(16.dp))
+
+                if (errorState.isDismissButtonVisible) {
+                    OutlinedButton(
+                        colors = ButtonDefaults.filledTonalButtonColors(),
+                        onClick = {
+                            errorState.onDismiss.invoke()
+                        }
+                    ) {
+                        Text(text = errorState.dismissButtonText.asString())
+                    }
+                }
+            }
         }
     }
 }
 
-class NetworkErrorProvider : PreviewParameterProvider<NetworkError> {
-    override val values: Sequence<NetworkError>
+class NetworkErrorProvider : PreviewParameterProvider<ErrorState> {
+    override val values: Sequence<ErrorState>
         get() = sequenceOf(
-            NetworkError.ClientError("Client error"),
-            NetworkError.ServerError("Server down"),
-            NetworkError.UnknownError,
-            NetworkError.UnableToConnect(
-                showRetryButton = true,
-                showOfflineDataButton = true
+            ErrorState(
+                displayAs = DisplayError.Dialog,
+                networkError = NetworkError.ClientError("Client error"),
+                actionButtonText = UiMessages.DynamicMessage("Retry"),
+                isActionButtonVisible = true,
+                dismissButtonText = UiMessages.DynamicMessage("Dismiss"),
+                isDismissButtonVisible = true
             ),
-            NetworkError.EmptyContent
+
+            ErrorState(
+                displayAs = DisplayError.Dialog,
+                networkError = NetworkError.ServerError("Server down"),
+                actionButtonText = UiMessages.DynamicMessage("Retry"),
+                isActionButtonVisible = true,
+            ),
+
+            ErrorState(
+                displayAs = DisplayError.FullScreen,
+                networkError = NetworkError.UnknownError,
+            ),
+
+            ErrorState(
+                displayAs = DisplayError.FullScreen,
+                networkError = NetworkError.UnableToConnect,
+            ),
+
+            ErrorState(
+                displayAs = DisplayError.FullScreen,
+                networkError = NetworkError.EmptyContent,
+            ),
         )
 }
 
 @Composable
 @Preview
 private fun ErrorViewPreview(
-    @PreviewParameter(NetworkErrorProvider::class) networkError: NetworkError
+    @PreviewParameter(NetworkErrorProvider::class) networkError: ErrorState
 ) {
     PreviewTemplate {
         ErrorView(
-            networkError = networkError
+            errorState = networkError
         )
     }
 }

@@ -3,7 +3,7 @@ package com.priorDev.pokerroutejc.featureTypes.domain
 import com.priorDev.pokerroutejc.core.ResourceFlow
 import kotlinx.coroutines.flow.Flow
 
-interface TypeRepository {
+interface ITypeRepository {
 
     suspend fun getAllTypesFlow(isRefresh: Boolean = false): Flow<ResourceFlow<List<TypeData>>>
 
