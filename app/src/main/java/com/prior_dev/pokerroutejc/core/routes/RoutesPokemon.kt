@@ -1,18 +1,20 @@
 package com.prior_dev.pokerroutejc.core.routes
 
 sealed class RoutesPokemon(val route: String){
-    object PokemonListRoute: RoutesPokemon("SearchView")
-    object PokemonDetails: RoutesPokemon("DetailsView/{pokemonName}"){
+    data object PokemonListRoute: RoutesPokemon("SearchView")
+    data object PokemonDetails: RoutesPokemon("DetailsView/{pokemonName}"){
         const val argPokemonName = "pokemonName"
 
         fun getRoute(pokemon: String) = "DetailsView/$pokemon"
     }
 
-    object TypeDetails: RoutesPokemon("Details/{type}"){
+    data object TypeDetails: RoutesPokemon("Details/{type}"){
         const val argType = "type"
 
         fun getRoute(type: Int) = "Details/$type"
     }
+
+    data object PkSearch: RoutesPokemon("Search")
 
     companion object{
         const val ROUTE_NAME = "PokemonRoutes"

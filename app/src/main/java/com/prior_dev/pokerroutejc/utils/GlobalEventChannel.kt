@@ -18,7 +18,7 @@ object GlobalEventChannel : IGlobalEventChannel {
         }
     }
 
-    override fun sendNavigateEvent(
+    override fun onNavigate(
         destinationRoute: String,
         navOptions: NavOptionsBuilder.() -> Unit
     ) {

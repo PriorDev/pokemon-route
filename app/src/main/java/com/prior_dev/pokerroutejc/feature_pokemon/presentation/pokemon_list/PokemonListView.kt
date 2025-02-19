@@ -1,5 +1,6 @@
 package com.prior_dev.pokerroutejc.feature_pokemon.presentation.pokemon_list
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,10 +12,11 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
@@ -24,16 +26,16 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.prior_dev.pokerroutejc.R
 import com.prior_dev.pokerroutejc.core.CommonStates
 import com.prior_dev.pokerroutejc.core.components.DisposableMessage
 import com.prior_dev.pokerroutejc.core.components.PreviewTemplate
 import com.prior_dev.pokerroutejc.core.routes.RoutesPokemon
 import com.prior_dev.pokerroutejc.feature_pokemon.domain.PokemonNameData
 import com.prior_dev.pokerroutejc.feature_pokemon.presentation.components.ItemPokemonName
-import com.prior_dev.pokerroutejc.feature_pokemon.presentation.components.SearchTextField
 import com.prior_dev.pokerroutejc.presentation.reusable.PullToRefreshBox
+import com.prior_dev.pokerroutejc.presentation.reusable.SearchBarButton
 import com.prior_dev.pokerroutejc.utils.GlobalEventChannel
-import kotlinx.coroutines.launch
 
 @Composable
 fun PokemonListView(
@@ -42,9 +44,7 @@ fun PokemonListView(
     onEvent: (PokemonListEvent) -> Unit,
     isRefreshing: Boolean
 ) {
-    val keyboardController = LocalSoftwareKeyboardController.current
     val gridState = rememberLazyGridState()
-    val coroutineScope = rememberCoroutineScope()
 
     DisposableMessage(commonStates.uiMessages, onDismiss = { onEvent(PokemonListEvent.OnDismiss) })
 
@@ -55,18 +55,15 @@ fun PokemonListView(
             pokemonList.refresh()
         }
     ) {
-        Column {
-            SearchTextField(
-                value = commonStates.searchText,
-                onValueChange = {
-                    onEvent(PokemonListEvent.OnListText(it))
-                    coroutineScope.launch {
-                        gridState.animateScrollToItem(0)
-                    }
-                },
-                onSearch = {
-                    keyboardController?.hide()
-                },
+        Column(
+            modifier = Modifier
+                .background(
+                    color = MaterialTheme.colorScheme.background
+                )
+        ) {
+            SearchBarButton(
+                text = stringResource(R.string.search_pokemon_by_name),
+                onClick = { onEvent.invoke(PokemonListEvent.OnSearch) }
             )
 
             if(commonStates.isLoading || pokemonList.loadState.append is LoadState.Loading){
@@ -90,7 +87,7 @@ fun PokemonListView(
                     ItemPokemonName(
                         pokemon = pokemon,
                         modifier = Modifier.clickable {
-                            GlobalEventChannel.sendNavigateEvent(
+                            GlobalEventChannel.onNavigate(
                                 RoutesPokemon.PokemonDetails.getRoute(pokemon.name)
                             )
                         }

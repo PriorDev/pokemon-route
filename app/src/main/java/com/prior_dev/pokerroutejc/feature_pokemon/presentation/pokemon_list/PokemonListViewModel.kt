@@ -7,9 +7,12 @@ import androidx.paging.cachedIn
 import androidx.paging.map
 import com.prior_dev.pokerroutejc.core.CommonStates
 import com.prior_dev.pokerroutejc.core.UiMessages
+import com.prior_dev.pokerroutejc.core.routes.RoutesPokemon
 import com.prior_dev.pokerroutejc.feature_pokemon.data.database.PokemonNameEntity
 import com.prior_dev.pokerroutejc.feature_pokemon.domain.PokemonRepository
 import com.prior_dev.pokerroutejc.feature_pokemon.domain.toDomain
+import com.prior_dev.pokerroutejc.utils.GlobalEventChannel
+import com.prior_dev.pokerroutejc.utils.IGlobalEventChannel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -23,7 +26,8 @@ import javax.inject.Inject
 @HiltViewModel
 class PokemonListViewModel @Inject constructor(
     private val repository: PokemonRepository,
-    pager: Pager<Int, PokemonNameEntity>
+    pager: Pager<Int, PokemonNameEntity>,
+    private val globalEventChannel: IGlobalEventChannel
 ): ViewModel() {
     private val _commonStates = MutableStateFlow(CommonStates())
     val commonStates = _commonStates.asStateFlow()
@@ -49,6 +53,9 @@ class PokemonListViewModel @Inject constructor(
             is PokemonListEvent.OnListText -> onSearchText(event.text)
             PokemonListEvent.OnDismiss -> onDismiss()
             PokemonListEvent.OnRefresh -> onRefresh()
+            PokemonListEvent.OnSearch -> {
+                globalEventChannel.onNavigate(RoutesPokemon.PkSearch.route)
+            }
         }
     }
 

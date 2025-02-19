@@ -5,7 +5,7 @@ import androidx.navigation.NavOptionsBuilder
 
 interface IGlobalEventChannel {
     fun sendEvent(event: OneTimeEvent)
-    fun sendNavigateEvent(
+    fun onNavigate(
         destinationRoute: String,
         navOptions: NavOptionsBuilder.() -> Unit = {}
     )
