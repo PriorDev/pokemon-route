@@ -1,6 +1,7 @@
 package com.priorDev.pokerroutejc.featureTypes.presentation.list
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -18,38 +19,40 @@ import com.priorDev.pokerroutejc.presentation.reusable.ItemType
 import com.priorDev.pokerroutejc.presentation.reusable.PreviewTemplate
 import com.priorDev.pokerroutejc.utils.Routes
 import com.priorDev.pokerroutejc.featureTypes.domain.TypeData
+import com.priorDev.pokerroutejc.presentation.core.ScreenStates
+import com.priorDev.pokerroutejc.presentation.core.ScreenTemplate
 import com.priorDev.pokerroutejc.utils.GlobalEventChannel
 
 @Composable
 fun ListTypeView(
-    commonStates: CommonStates,
+    screenState: ScreenStates,
     typeList: List<TypeData>,
-    onEvent: (ListTypesEvent) -> Unit
 ) {
-    CommonStatesView(onDismiss = { onEvent(ListTypesEvent.OnDismiss) }, commonStates = commonStates)
-    if (commonStates.isLoading) return
-
-    LazyVerticalGrid(
-        modifier = Modifier
-            .padding(horizontal = 8.dp)
-            .padding(top = 8.dp),
-        columns = GridCells.Fixed(2),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
+    ScreenTemplate(
+        loadingIndicator = screenState.loadingIndicator,
+        networkError = screenState.networkError,
+        dialogModel = screenState.dialogModel,
     ) {
-        items(typeList) { type ->
-            ItemType(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(150.dp),
-                type = type,
-                style = MaterialTheme.typography.titleLarge,
-                onClick = {
-                    GlobalEventChannel.navigate(
-                        route = Routes.TypeDetails.TypeTab(type.id)
-                    )
-                }
-            )
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            contentPadding = PaddingValues(horizontal = 12.dp, vertical = 24.dp)
+        ) {
+            items(typeList) { type ->
+                ItemType(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(150.dp),
+                    type = type,
+                    style = MaterialTheme.typography.titleLarge,
+                    onClick = {
+                        GlobalEventChannel.navigate(
+                            route = Routes.TypeDetails.TypeTab(type.id)
+                        )
+                    }
+                )
+            }
         }
     }
 }
@@ -69,9 +72,8 @@ private fun ListTypeViewPreview() {
 
     PreviewTemplate {
         ListTypeView(
-            commonStates = CommonStates(isLoading = false),
-            typeList = types,
-            onEvent = { }
+            screenState = ScreenStates(),
+            typeList = types
         )
     }
 }

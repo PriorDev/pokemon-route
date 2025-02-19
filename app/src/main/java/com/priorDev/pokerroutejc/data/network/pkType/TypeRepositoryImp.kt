@@ -11,6 +11,7 @@ import com.priorDev.pokerroutejc.featureTypes.domain.TypeData
 import com.priorDev.pokerroutejc.featureTypes.domain.TypeDetailsData
 import com.priorDev.pokerroutejc.featureTypes.domain.TypeRepository
 import com.priorDev.pokerroutejc.featureTypes.domain.toDomain
+import com.priorDev.pokerroutejc.presentation.core.LoadingIndicator
 import io.ktor.client.call.body
 import io.ktor.client.statement.bodyAsText
 import kotlinx.coroutines.flow.Flow
@@ -24,11 +25,11 @@ class TypeRepositoryImp @Inject constructor(
     override suspend fun getAllTypesFlow(): Flow<Resource<List<TypeData>>> {
         // Single source of truth DATABASE
         return flow {
-            emit(Resource.Loading())
+            emit(Resource.Loading(loadingIndicator = LoadingIndicator.SpinningWheel))
 
             emit(getAllTypes())
 
-            emit(Resource.Loading(false))
+            emit(Resource.Loading(loadingIndicator = LoadingIndicator.None))
         }
     }
 
@@ -59,13 +60,16 @@ class TypeRepositoryImp @Inject constructor(
     }
 
     override suspend fun getAllTypes(): Resource<List<TypeData>> {
-        val networkResult = service.getAllTypes()
+        when(val networkResult = service.getAllTypes()) {
+            is NetworkResource.Fail -> {
+                return Resource.Error(networkErrorType = networkResult.error)
+            }
+            is NetworkResource.Success -> {
+                val container: ContainerTypeResponse = networkResult.response.body()
 
-        if (networkResult is NetworkResource.Success) {
-            val container: ContainerTypeResponse = networkResult.response.body()
-
-            container.types.let { typeList ->
-                dao.insertTypes(typeList.map { it.toDB() })
+                container.types.let { typeList ->
+                    dao.insertTypes(typeList.map { it.toDB() })
+                }
             }
         }
 

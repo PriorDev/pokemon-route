@@ -29,6 +29,8 @@ import com.priorDev.pokerroutejc.presentation.reusable.PreviewTemplate
 fun ErrorView(
     networkError: NetworkError
 ) {
+    if (networkError is NetworkError.None) return
+
     Box(
         modifier = Modifier
             .fillMaxSize()

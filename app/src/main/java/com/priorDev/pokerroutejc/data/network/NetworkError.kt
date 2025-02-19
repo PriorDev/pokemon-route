@@ -29,4 +29,8 @@ sealed class NetworkError(
     data object EmptyContent : NetworkError(
         UiMessages.StringResource(R.string.empty_content)
     )
+
+    data object None : NetworkError(
+        UiMessages.DynamicMessage("")
+    )
 }

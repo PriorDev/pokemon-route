@@ -13,13 +13,12 @@ fun NavGraphBuilder.typeListWrapper() {
             // Do nothing to avoid closing the app
         }
         val viewModel: ListTypeViewModel = hiltViewModel()
-        val commonStates = viewModel.commonStates.collectAsStateWithLifecycle()
+        val screenStates = viewModel.screenStates.collectAsStateWithLifecycle()
         val typesList = viewModel.typesList
 
         ListTypeView(
-            commonStates = commonStates.value,
+            screenState = screenStates.value,
             typeList = typesList,
-            onEvent = viewModel::onEvent,
         )
     }
 }
