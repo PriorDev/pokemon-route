@@ -1,7 +1,10 @@
 package com.priorDev.pokerroutejc.data.network
 
 import android.util.Log
+import com.priorDev.pokerroutejc.data.network.pkType.response.ContainerTypeResponse
+import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse
+import io.ktor.util.reflect.TypeInfo
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -10,16 +13,18 @@ import javax.inject.Inject
 class MakeKtorNetworkCall @Inject constructor(
     private val dispatcher: CoroutineDispatcher
 ) : INetworkCaller {
-    override suspend operator fun invoke(
+    override suspend operator fun <T> invoke(
+        typeInfo: TypeInfo,
         call: suspend () -> HttpResponse
-    ): NetworkResource {
+    ): NetworkResource<T> {
         return withContext(dispatcher) {
             try {
                 val response = call.invoke()
 
                 when (response.status.value) {
                     in 200..299 -> {
-                        NetworkResource.Success(response)
+                        val body = response.body<T>(typeInfo)
+                        NetworkResource.Success(body)
                     }
 
                     in 400..499 -> {

@@ -40,10 +40,9 @@ class TypeRepositoryImp @Inject constructor(
             is NetworkResource.Fail -> {
                 return ResourceFlow.Error(networkErrorType = networkResult.error)
             }
-            is NetworkResource.Success -> {
-                val container: ContainerTypeResponse = networkResult.response.body()
 
-                container.types.let { typeList ->
+            is NetworkResource.Success -> {
+                networkResult.data.types.let { typeList ->
                     dao.insertTypes(typeList.map { it.toDB() })
                 }
             }
@@ -67,10 +66,8 @@ class TypeRepositoryImp @Inject constructor(
             val networkResource = service.getType(typeId)
 
             if (networkResource is NetworkResource.Success) {
-                val typeDetails: TypeDetailsResponse = networkResource.response.body()
-
-                dao.deleteDamageRelation(typeDetails.id)
-                dao.insertDamageRelations(typeDetails.toDB())
+                dao.deleteDamageRelation(networkResource.data.id)
+                dao.insertDamageRelations(networkResource.data.toDB())
             }
 
             val damageRelationEntity = dao.getDamageRelationByTypeId(typeId = typeId)
@@ -92,8 +89,7 @@ class TypeRepositoryImp @Inject constructor(
             }
 
             is NetworkResource.Success -> {
-                val typeDetails: TypeDetailsResponse = networkResource.response.body()
-                ResourceFlow.Success(typeDetails.toDomain())
+                ResourceFlow.Success(networkResource.data.toDomain())
             }
         }
     }
