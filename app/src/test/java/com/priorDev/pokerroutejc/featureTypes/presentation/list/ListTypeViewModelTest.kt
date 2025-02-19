@@ -6,19 +6,28 @@ import assertk.assertions.isInstanceOf
 import com.priorDev.pokerroutejc.core.ResourceFlow
 import com.priorDev.pokerroutejc.data.TypeRepoFake
 import com.priorDev.pokerroutejc.data.network.utils.NetworkError
+import com.priorDev.pokerroutejc.domain.GlobalEventChannelFake
 import com.priorDev.pokerroutejc.presentation.typeList.ListTypeViewModel
 import com.priorDev.pokerroutejc.presentation.typeList.ListTypesEvent
 import com.priorDev.pokerroutejc.presentation.core.DisplayError
 import com.priorDev.pokerroutejc.presentation.core.LoadingIndicator
+import com.priorDev.pokerroutejc.utils.GlobalEventChannel
 import com.priorDev.pokerroutejc.utils.MainCoroutineExtension
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(MainCoroutineExtension::class)
 class ListTypeViewModelTest {
     private lateinit var listTypeViewModel: ListTypeViewModel
+    private lateinit var globalEventChannel: GlobalEventChannel
+
+    @BeforeEach
+    fun setUp() {
+        globalEventChannel = GlobalEventChannelFake()
+    }
 
     @Test
     fun `Test getAllTypesFlow, repo return Loading, update state`() = runTest {
@@ -29,7 +38,10 @@ class ListTypeViewModelTest {
             )
         }
 
-        listTypeViewModel = ListTypeViewModel(repoFake)
+        listTypeViewModel = ListTypeViewModel(
+            repository = repoFake,
+            globalEvent = globalEventChannel
+        )
 
         listTypeViewModel.onEvent(ListTypesEvent.Refresh)
 
@@ -52,7 +64,10 @@ class ListTypeViewModelTest {
             )
         }
 
-        listTypeViewModel = ListTypeViewModel(repoFake)
+        listTypeViewModel = ListTypeViewModel(
+            repository = repoFake,
+            globalEvent = globalEventChannel
+        )
 
         listTypeViewModel.onEvent(ListTypesEvent.Refresh)
 
