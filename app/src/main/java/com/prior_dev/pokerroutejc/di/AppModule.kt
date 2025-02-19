@@ -3,6 +3,8 @@ package com.prior_dev.pokerroutejc.di
 import android.content.Context
 import androidx.room.Room
 import com.prior_dev.pokerroutejc.data.database.MyDataBase
+import com.prior_dev.pokerroutejc.presentation.utils.GlobalEventChannel
+import com.prior_dev.pokerroutejc.presentation.utils.IGlobalEventChannel
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -33,4 +35,10 @@ object AppModule {
     @Provides
     @Singleton
     fun providesIoDispatcher() = Dispatchers.IO
+
+    @Provides
+    @Singleton
+    fun providesGlobalEventChannel(): IGlobalEventChannel = GlobalEventChannel
+
+
 }
