@@ -1,4 +1,4 @@
-package com.prior_dev.pokerroutejc.feature_pokemon.presentation.search
+package com.prior_dev.pokerroutejc.feature_pokemon.presentation.pokemon_list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class PokemonSearchViewModel @Inject constructor(
+class PokemonListViewModel @Inject constructor(
     private val repository: PokemonRepository,
     pager: Pager<Int, PokemonNameEntity>
 ): ViewModel() {
@@ -44,11 +44,11 @@ class PokemonSearchViewModel @Inject constructor(
 
     private var searchJob: Job? = null
 
-    fun onEvent(event: PokemonSearchEvent){
+    fun onEvent(event: PokemonListEvent){
         when(event){
-            is PokemonSearchEvent.OnSearchText -> onSearchText(event.text)
-            PokemonSearchEvent.OnDismiss -> onDismiss()
-            PokemonSearchEvent.OnRefresh -> onRefresh()
+            is PokemonListEvent.OnListText -> onSearchText(event.text)
+            PokemonListEvent.OnDismiss -> onDismiss()
+            PokemonListEvent.OnRefresh -> onRefresh()
         }
     }
 

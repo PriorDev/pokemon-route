@@ -1,24 +1,16 @@
-package com.prior_dev.pokerroutejc.feature_pokemon.presentation.search
+package com.prior_dev.pokerroutejc.feature_pokemon.presentation.pokemon_list
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.pullrefresh.pullRefresh
-import androidx.compose.material.pullrefresh.rememberPullRefreshState
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.pulltorefresh.pullToRefresh
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -44,22 +36,22 @@ import com.prior_dev.pokerroutejc.utils.GlobalEventChannel
 import kotlinx.coroutines.launch
 
 @Composable
-fun PokemonSearchView(
+fun PokemonListView(
     commonStates: CommonStates,
     pokemonList: LazyPagingItems<PokemonNameData>,
-    onEvent: (PokemonSearchEvent) -> Unit,
+    onEvent: (PokemonListEvent) -> Unit,
     isRefreshing: Boolean
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     val gridState = rememberLazyGridState()
     val coroutineScope = rememberCoroutineScope()
 
-    DisposableMessage(commonStates.uiMessages, onDismiss = { onEvent(PokemonSearchEvent.OnDismiss) })
+    DisposableMessage(commonStates.uiMessages, onDismiss = { onEvent(PokemonListEvent.OnDismiss) })
 
     PullToRefreshBox(
         isRefreshing = isRefreshing,
         onRefresh = {
-            onEvent(PokemonSearchEvent.OnRefresh)
+            onEvent(PokemonListEvent.OnRefresh)
             pokemonList.refresh()
         }
     ) {
@@ -67,7 +59,7 @@ fun PokemonSearchView(
             SearchTextField(
                 value = commonStates.searchText,
                 onValueChange = {
-                    onEvent(PokemonSearchEvent.OnSearchText(it))
+                    onEvent(PokemonListEvent.OnListText(it))
                     coroutineScope.launch {
                         gridState.animateScrollToItem(0)
                     }
@@ -124,7 +116,7 @@ fun PokemonSearchViewPreview() {
 
         val lazyPagingItems = pager.flow.collectAsLazyPagingItems()
 
-        PokemonSearchView(
+        PokemonListView(
             commonStates = CommonStates(isLoading = true, searchText = "Buscando ando"),
             pokemonList = lazyPagingItems,
             onEvent = { },

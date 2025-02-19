@@ -1,7 +1,7 @@
 package com.prior_dev.pokerroutejc.core.routes
 
 sealed class RoutesPokemon(val route: String){
-    object SearchRoute: RoutesPokemon("SearchView")
+    object PokemonListRoute: RoutesPokemon("SearchView")
     object PokemonDetails: RoutesPokemon("DetailsView/{pokemonName}"){
         const val argPokemonName = "pokemonName"
 

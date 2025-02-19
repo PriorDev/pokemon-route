@@ -1,6 +1,5 @@
 package com.prior_dev.pokerroutejc.feature_pokemon.presentation
 
-import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
@@ -8,33 +7,19 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
-import androidx.paging.compose.collectAsLazyPagingItems
 import com.prior_dev.pokerroutejc.core.routes.RoutesPokemon
 import com.prior_dev.pokerroutejc.feature_pokemon.presentation.details.PokemonDetailsView
 import com.prior_dev.pokerroutejc.feature_pokemon.presentation.details.PokemonDetailsViewModel
-import com.prior_dev.pokerroutejc.feature_pokemon.presentation.search.PokemonSearchView
-import com.prior_dev.pokerroutejc.feature_pokemon.presentation.search.PokemonSearchViewModel
+import com.prior_dev.pokerroutejc.feature_pokemon.presentation.pokemon_list.pokemonListWrapper
 import com.prior_dev.pokerroutejc.feature_types.presentation.details.DetailsTypeView
 import com.prior_dev.pokerroutejc.feature_types.presentation.details.DetailsTypeViewModel
 
 fun NavGraphBuilder.pokemonNavigation() {
     navigation(
         route = RoutesPokemon.ROUTE_NAME,
-        startDestination = RoutesPokemon.SearchRoute.route
+        startDestination = RoutesPokemon.PokemonListRoute.route
     ){
-        composable(RoutesPokemon.SearchRoute.route){
-            val viewModel: PokemonSearchViewModel = hiltViewModel()
-            val commonStates by viewModel.commonStates.collectAsStateWithLifecycle()
-            val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
-            val pokemonList = viewModel.pokemonList.collectAsLazyPagingItems()
-
-            PokemonSearchView(
-                commonStates = commonStates,
-                pokemonList = pokemonList,
-                onEvent = viewModel::onEvent,
-                isRefreshing = isRefreshing
-            )
-        }
+        pokemonListWrapper()
 
         composable(
             route = RoutesPokemon.PokemonDetails.route,
