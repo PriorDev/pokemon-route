@@ -5,8 +5,8 @@ object EndPoints {
     const val TYPES = BASE_URL.plus("type")
 
     const val IMAGE_PATH = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites" +
-            "/pokemon/other/official-artwork/%s.png"
+        "/pokemon/other/official-artwork/%s.png"
 
     // Graph QL
-    const val QL_BASE_URL = "https://pokeapi.co/api/v2/"
+    const val QL_BASE_URL = "https://beta.pokeapi.co/graphql/v1beta"
 }

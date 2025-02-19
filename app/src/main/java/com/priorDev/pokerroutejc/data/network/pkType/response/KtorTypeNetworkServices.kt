@@ -11,14 +11,18 @@ class KtorTypeNetworkServices @Inject constructor(
     private val networkService: INetWorkService
 ) : ITypeService {
     override suspend fun getAllTypes(): NetworkResource {
-        return networkService.get(
-            NetworkRequestData(
-                url = EndPoints.TYPES
-            )
+        val requestData = NetworkRequestData(
+            url = EndPoints.TYPES
         )
+
+        return networkService.get(requestData)
     }
 
-    override suspend fun getType(typeId: Int): TypeDetailsResponse? {
-        TODO("Not yet implemented")
+    override suspend fun getType(typeId: Int): NetworkResource {
+        val requestData = NetworkRequestData(
+            url = EndPoints.TYPES + "/$typeId"
+        )
+
+        return  networkService.get(requestData)
     }
 }

@@ -20,9 +20,10 @@ class RetrofitTypeServiceImp @Inject constructor(
         }
     }
 
-    override suspend fun getType(typeId: Int): TypeDetailsResponse? {
+    override suspend fun getType(typeId: Int): NetworkResource {
         return withContext(Dispatchers.IO) {
-            api.getType("type/$typeId").body()
+            //api.getType("type/$typeId").body()
+            NetworkResource.Fail(NetworkError.UnknownError)
         }
     }
 }

@@ -3,6 +3,7 @@ package com.priorDev.pokerroutejc.featureTypes.di
 import com.priorDev.pokerroutejc.data.network.pkType.TypeRepositoryImp
 import com.priorDev.pokerroutejc.data.network.pkType.ITypeService
 import com.priorDev.pokerroutejc.data.network.pkType.RetrofitTypeServiceImp
+import com.priorDev.pokerroutejc.data.network.pkType.response.KtorTypeNetworkServices
 import com.priorDev.pokerroutejc.featureTypes.domain.TypeRepository
 import dagger.Binds
 import dagger.Module
@@ -19,5 +20,5 @@ abstract class RepositoryModule {
 
     @Binds
     @ViewModelScoped
-    abstract fun providesTypeService(service: RetrofitTypeServiceImp): ITypeService
+    abstract fun providesTypeService(service: KtorTypeNetworkServices): ITypeService
 }

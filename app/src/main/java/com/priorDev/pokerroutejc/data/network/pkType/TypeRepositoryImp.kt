@@ -1,17 +1,18 @@
 package com.priorDev.pokerroutejc.data.network.pkType
 
-import com.priorDev.pokerroutejc.data.network.MakeRetrofitNetworkCall
 import com.priorDev.pokerroutejc.core.Resource
 import com.priorDev.pokerroutejc.data.database.TypeDao
 import com.priorDev.pokerroutejc.data.database.toDB
 import com.priorDev.pokerroutejc.data.network.NetworkError
 import com.priorDev.pokerroutejc.data.network.NetworkResource
 import com.priorDev.pokerroutejc.data.network.pkType.response.ContainerTypeResponse
+import com.priorDev.pokerroutejc.data.network.pkType.response.TypeDetailsResponse
 import com.priorDev.pokerroutejc.featureTypes.domain.TypeData
 import com.priorDev.pokerroutejc.featureTypes.domain.TypeDetailsData
 import com.priorDev.pokerroutejc.featureTypes.domain.TypeRepository
 import com.priorDev.pokerroutejc.featureTypes.domain.toDomain
 import io.ktor.client.call.body
+import io.ktor.client.statement.bodyAsText
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -19,7 +20,6 @@ import javax.inject.Inject
 class TypeRepositoryImp @Inject constructor(
     private val service: ITypeService,
     private val dao: TypeDao,
-    private val makeRetrofitNetworkCall: MakeRetrofitNetworkCall
 ) : TypeRepository {
     override suspend fun getAllTypesFlow(): Flow<Resource<List<TypeData>>> {
         // Single source of truth DATABASE
@@ -37,22 +37,19 @@ class TypeRepositoryImp @Inject constructor(
         return flow {
             emit(Resource.Loading())
 
-            val response = makeRetrofitNetworkCall {
-                service.getType(typeId)
-            }
+            val networkResource = service.getType(typeId)
 
-            if (response is Resource.Success) {
-                response.data?.let { typeDetails ->
-                    dao.deleteDamageRelation(typeDetails.id)
-                    dao.insertDamageRelations(typeDetails.toDB())
-                }
+            if (networkResource is NetworkResource.Success) {
+                val typeDetails: TypeDetailsResponse = networkResource.response.body()
+
+                dao.deleteDamageRelation(typeDetails.id)
+                dao.insertDamageRelations(typeDetails.toDB())
             }
 
             val damageRelationEntity = dao.getDamageRelationByTypeId(typeId = typeId)
 
             if (damageRelationEntity.isEmpty()) {
-                val error = (response as Resource.Error).uiMessages
-                emit(Resource.Error(uiMessages = error, throwable = response.throwable))
+                emit(Resource.Error(networkErrorType = NetworkError.EmptyContent))
             } else {
                 emit(Resource.Success(damageRelationEntity.toDomain()))
             }
@@ -83,17 +80,15 @@ class TypeRepositoryImp @Inject constructor(
     }
 
     override suspend fun getType(typeId: Int): Resource<TypeDetailsData> {
-        val response = makeRetrofitNetworkCall {
-            service.getType(typeId)
-        }
+        return when (val networkResource = service.getType(typeId)) {
+            is NetworkResource.Fail -> {
+                Resource.Error(networkErrorType = NetworkError.EmptyContent)
+            }
 
-        if (response is Resource.Success) {
-            response.data?.let {
-                return Resource.Success(it.toDomain())
+            is NetworkResource.Success -> {
+                val typeDetails: TypeDetailsResponse = networkResource.response.body()
+                Resource.Success(typeDetails.toDomain())
             }
         }
-
-        val error = (response as Resource.Error).uiMessages
-        return Resource.Error(uiMessages = error, throwable = response.throwable)
     }
 }

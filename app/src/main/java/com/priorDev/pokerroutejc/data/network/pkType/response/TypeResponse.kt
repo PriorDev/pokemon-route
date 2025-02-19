@@ -1,13 +1,18 @@
 package com.priorDev.pokerroutejc.data.network.pkType.response
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class ContainerTypeResponse(
-    @SerializedName("count") val count: Int,
-    @SerializedName("results") val types: List<TypeResponse>
+    @SerialName("count")
+    val count: Int,
+    @SerialName("results")
+    val types: List<TypeResponse>
 )
 
+@Serializable
 data class TypeResponse(
-    @SerializedName("name") val name: String,
-    @SerializedName("url") val url: String
+    @SerialName("name") val name: String,
+    @SerialName("url") val url: String
 )

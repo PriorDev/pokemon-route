@@ -5,6 +5,9 @@ import androidx.room.Room
 import com.apollographql.apollo3.ApolloClient
 import com.priorDev.pokerroutejc.data.database.MyDataBase
 import com.priorDev.pokerroutejc.data.network.EndPoints
+import com.priorDev.pokerroutejc.data.network.INetWorkService
+import com.priorDev.pokerroutejc.data.network.KtorNetworkServiceImp
+import com.priorDev.pokerroutejc.data.network.MakeKtorNetworkCall
 import com.priorDev.pokerroutejc.utils.GlobalEventChannel
 import com.priorDev.pokerroutejc.utils.IGlobalEventChannel
 import dagger.Module
@@ -17,8 +20,10 @@ import io.ktor.client.engine.android.Android
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logging
+import io.ktor.serialization.kotlinx.json.DefaultJson
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.Dispatchers
+import kotlinx.serialization.json.Json
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -64,8 +69,24 @@ object AppModule {
                 level = LogLevel.ALL
             }
             install(ContentNegotiation) {
-                json()
+                json(
+                    Json {
+                        ignoreUnknownKeys = true
+                    }
+                )
             }
         }
+    }
+
+    @Provides
+    @Singleton
+    fun provideNetworkService(
+        client: HttpClient,
+        caller: MakeKtorNetworkCall
+    ): INetWorkService {
+        return KtorNetworkServiceImp(
+            client = client,
+            makeKtorNetworkCall = caller
+        )
     }
 }
