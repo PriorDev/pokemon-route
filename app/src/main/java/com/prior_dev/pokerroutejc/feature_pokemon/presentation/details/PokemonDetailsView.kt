@@ -34,7 +34,6 @@ fun PokemonDetailsView(
     states: PokemonDetailsStates,
     movesList: List<MoveDetailsData>,
     onEvents: (PokemonDetailsEvents) -> Unit,
-    onUiEvents: (PokemonDetailsUiEvents) -> Unit,
 ) {
     val cardPadding  = PaddingValues(horizontal = 32.dp, vertical = 16.dp)
     val scope = rememberCoroutineScope()
@@ -119,7 +118,6 @@ fun PokemonDetailsView(
                 0 -> PokemonInfo(
                         modifier = Modifier.fillMaxWidth(),
                         states = states,
-                        onUiEvents = onUiEvents,
                         onEvents = onEvents,
                         cardPadding = cardPadding
                     )
@@ -139,7 +137,6 @@ fun PokemonDetailsView(
                 else -> PokemonInfo(
                     modifier = Modifier.fillMaxWidth(),
                     states = states,
-                    onUiEvents = onUiEvents,
                     cardPadding = cardPadding,
                     onEvents = onEvents,
                 )

@@ -22,9 +22,11 @@ import androidx.compose.ui.unit.dp
 import com.prior_dev.pokerroutejc.core.CommonStates
 import com.prior_dev.pokerroutejc.core.components.DisposableMessage
 import com.prior_dev.pokerroutejc.core.components.PreviewTemplate
+import com.prior_dev.pokerroutejc.core.routes.RoutesPokemon
 import com.prior_dev.pokerroutejc.feature_pokemon.domain.PokemonNameData
 import com.prior_dev.pokerroutejc.feature_pokemon.presentation.components.ItemPokemonName
 import com.prior_dev.pokerroutejc.feature_pokemon.presentation.components.SearchTextField
+import com.prior_dev.pokerroutejc.presentation.utils.GlobalEventChannel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -33,7 +35,6 @@ fun PokemonSearchView(
     commonStates: CommonStates,
     pokemonList: List<PokemonNameData>,
     onEvent: (PokemonSearchEvent) -> Unit,
-    onUIEvent: (PokemonSearchUiEvent) -> Unit
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     val gridState = rememberLazyGridState()
@@ -74,7 +75,9 @@ fun PokemonSearchView(
                 ItemPokemonName(
                     pokemon = pokemon,
                     modifier = Modifier.clickable {
-                        onUIEvent(PokemonSearchUiEvent.openPokemonDetailsView(pokemon.name))
+                        GlobalEventChannel.sendNavigateEvent(
+                            RoutesPokemon.PokemonDetails.getRoute(pokemon.name)
+                        )
                     }
                 )
             }
@@ -107,8 +110,7 @@ fun PokemonSearchViewPreview() {
         PokemonSearchView(
             commonStates = CommonStates(isLoading = true, searchText = "Buscando ando"),
             pokemonList = pokemons,
-            onEvent = { },
-            onUIEvent = { }
+            onEvent = { }
         )
     }
 }

@@ -16,14 +16,15 @@ import com.prior_dev.pokerroutejc.core.CommonStates
 import com.prior_dev.pokerroutejc.core.components.CommonStatesView
 import com.prior_dev.pokerroutejc.core.components.ItemType
 import com.prior_dev.pokerroutejc.core.components.PreviewTemplate
+import com.prior_dev.pokerroutejc.core.routes.RoutesType
 import com.prior_dev.pokerroutejc.feature_types.domain.TypeData
+import com.prior_dev.pokerroutejc.presentation.utils.GlobalEventChannel
 
 @Composable
 fun ListTypeView(
     commonStates: CommonStates,
     typeList: List<TypeData>,
-    onEvent: (ListTypesEvent) -> Unit,
-    onUiEvent: (ListTypesUiEvent.openTypesDetailScreen) -> Unit
+    onEvent: (ListTypesEvent) -> Unit
 ) {
     CommonStatesView(onDismiss = { onEvent(ListTypesEvent.onDismiss) }, commonStates = commonStates)
     if(commonStates.isLoading)
@@ -45,7 +46,9 @@ fun ListTypeView(
                 type = type,
                 style = MaterialTheme.typography.titleLarge,
                 onClick = {
-                    onUiEvent(ListTypesUiEvent.openTypesDetailScreen(type.id))
+                    GlobalEventChannel.sendNavigateEvent(
+                        RoutesType.TypeDetails.getRoute(type.id)
+                    )
                 }
             )
         }
@@ -69,8 +72,7 @@ fun ListTypeViewPreview() {
         ListTypeView(
             commonStates = CommonStates(isLoading = false),
             typeList = types,
-            onEvent = { },
-            onUiEvent = { }
+            onEvent = { }
         )
     }
 }

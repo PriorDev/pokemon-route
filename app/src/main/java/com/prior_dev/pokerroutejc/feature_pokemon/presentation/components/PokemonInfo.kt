@@ -32,20 +32,20 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.prior_dev.pokerroutejc.R
 import com.prior_dev.pokerroutejc.core.components.PreviewTemplate
+import com.prior_dev.pokerroutejc.core.routes.RoutesPokemon
 import com.prior_dev.pokerroutejc.feature_pokemon.domain.AbilityData
 import com.prior_dev.pokerroutejc.feature_pokemon.domain.AbilityDetailsData
 import com.prior_dev.pokerroutejc.feature_pokemon.domain.PokemonData
 import com.prior_dev.pokerroutejc.feature_pokemon.presentation.details.PokemonDetailsEvents
 import com.prior_dev.pokerroutejc.feature_pokemon.presentation.details.PokemonDetailsStates
-import com.prior_dev.pokerroutejc.feature_pokemon.presentation.details.PokemonDetailsUiEvents
 import com.prior_dev.pokerroutejc.feature_types.domain.TypeData
 import com.prior_dev.pokerroutejc.feature_types.domain.getColor
+import com.prior_dev.pokerroutejc.presentation.utils.GlobalEventChannel
 
 @Composable
 fun PokemonInfo(
     modifier: Modifier = Modifier,
     states: PokemonDetailsStates,
-    onUiEvents: (PokemonDetailsUiEvents) -> Unit,
     onEvents: (PokemonDetailsEvents) -> Unit,
     cardPadding: PaddingValues,
 ) {
@@ -87,10 +87,12 @@ fun PokemonInfo(
                         horizontalArrangement = Arrangement.Center,
                         modifier = Modifier.fillMaxWidth(),
                     ) {
-                        pokemon.types.forEach{
+                        pokemon.types.forEach {
                             Button(
                                 onClick = {
-                                    onUiEvents(PokemonDetailsUiEvents.OpenTypeDetails(it.id))
+                                    GlobalEventChannel.sendNavigateEvent(
+                                        RoutesPokemon.TypeDetails.getRoute(it.id)
+                                    )
                                 },
                                 colors = ButtonDefaults.buttonColors(backgroundColor = it.getColor()),
                                 modifier = Modifier.padding(horizontal = 16.dp)
@@ -234,7 +236,6 @@ fun PokemonInfoPreview() {
         val cardPadding = PaddingValues()
         PokemonInfo(
             states = states,
-            onUiEvents = {},
             onEvents = {},
             cardPadding = cardPadding
         )

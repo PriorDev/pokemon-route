@@ -7,6 +7,8 @@ import com.prior_dev.pokerroutejc.core.CommonStates
 import com.prior_dev.pokerroutejc.core.Resource
 import com.prior_dev.pokerroutejc.feature_types.domain.TypeData
 import com.prior_dev.pokerroutejc.feature_types.domain.TypeRepository
+import com.prior_dev.pokerroutejc.presentation.utils.IGlobalEventChannel
+import com.prior_dev.pokerroutejc.presentation.utils.OneTimeEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

@@ -8,6 +8,8 @@ import com.prior_dev.pokerroutejc.core.Resource
 import com.prior_dev.pokerroutejc.core.UiMessages
 import com.prior_dev.pokerroutejc.feature_pokemon.domain.PokemonNameData
 import com.prior_dev.pokerroutejc.feature_pokemon.domain.PokemonRepository
+import com.prior_dev.pokerroutejc.presentation.utils.IGlobalEventChannel
+import com.prior_dev.pokerroutejc.presentation.utils.OneTimeEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -18,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PokemonSearchViewModel @Inject constructor(
-    private val repository: PokemonRepository
+    private val repository: PokemonRepository,
 ): ViewModel() {
     private val _commonStates = MutableStateFlow(CommonStates())
     val commonStates = _commonStates.asStateFlow()

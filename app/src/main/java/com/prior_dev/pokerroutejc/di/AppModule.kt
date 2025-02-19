@@ -37,8 +37,5 @@ object AppModule {
     fun providesIoDispatcher() = Dispatchers.IO
 
     @Provides
-    @Singleton
     fun providesGlobalEventChannel(): IGlobalEventChannel = GlobalEventChannel
-
-
 }
