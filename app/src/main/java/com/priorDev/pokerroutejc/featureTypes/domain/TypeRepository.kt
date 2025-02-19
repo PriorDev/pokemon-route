@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface TypeRepository {
 
-    suspend fun getAllTypesFlow(): Flow<ResourceFlow<List<TypeData>>>
+    suspend fun getAllTypesFlow(isRefresh: Boolean = false): Flow<ResourceFlow<List<TypeData>>>
 
     suspend fun getTypeFlow(typeId: Int): Flow<ResourceFlow<TypeDetailsData>>
 

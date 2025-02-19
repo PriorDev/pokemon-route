@@ -70,10 +70,16 @@ fun ScreenTemplate(
             LoadingIndicator.Refreshing -> {
                 // Don't display anything
             }
-            LoadingIndicator.SpinningWheel -> {
-                CircularProgressIndicator(
-                    modifier = Modifier.align(Alignment.Center)
-                )
+            LoadingIndicator.SolidSpinningWheel -> {
+                Box(
+                    modifier
+                        .fillMaxSize()
+                        .background(MaterialTheme.colorScheme.background)
+                ) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                }
             }
             LoadingIndicator.TopLinear -> {
                 LinearProgressIndicator(

@@ -19,6 +19,7 @@ fun NavGraphBuilder.typeListWrapper() {
         ListTypeView(
             screenState = screenStates.value,
             typeList = typesList,
+            onEvent = viewModel::onEvent
         )
     }
 }

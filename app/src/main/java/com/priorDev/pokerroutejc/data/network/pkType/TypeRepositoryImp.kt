@@ -12,7 +12,9 @@ import com.priorDev.pokerroutejc.featureTypes.domain.TypeDetailsData
 import com.priorDev.pokerroutejc.featureTypes.domain.TypeRepository
 import com.priorDev.pokerroutejc.featureTypes.domain.toDomain
 import com.priorDev.pokerroutejc.presentation.core.LoadingIndicator
+import com.priorDev.pokerroutejc.presentation.core.spinningWheelOrRefresh
 import io.ktor.client.call.body
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -21,14 +23,42 @@ class TypeRepositoryImp @Inject constructor(
     private val service: ITypeService,
     private val dao: TypeDao,
 ) : TypeRepository {
-    override suspend fun getAllTypesFlow(): Flow<ResourceFlow<List<TypeData>>> {
-        // Single source of truth DATABASE
+    override suspend fun getAllTypesFlow(isRefresh: Boolean): Flow<ResourceFlow<List<TypeData>>> {
         return flow {
-            emit(ResourceFlow.Loading(loadingIndicator = LoadingIndicator.SpinningWheel))
+
+            emit(
+                ResourceFlow.Loading(loadingIndicator = spinningWheelOrRefresh(isRefresh))
+            )
 
             emit(getAllTypes())
 
             emit(ResourceFlow.Loading(loadingIndicator = LoadingIndicator.None))
+        }
+    }
+
+    override suspend fun getAllTypes(): ResourceFlow<List<TypeData>> {
+        // Single source of truth DATABASE
+        when(val networkResult = service.getAllTypes()) {
+            is NetworkResource.Fail -> {
+                return ResourceFlow.Error(networkErrorType = networkResult.error)
+            }
+            is NetworkResource.Success -> {
+                val container: ContainerTypeResponse = networkResult.response.body()
+
+                container.types.let { typeList ->
+                    dao.insertTypes(typeList.map { it.toDB() })
+                }
+            }
+        }
+
+        val typesEntity = dao.getAllTypes()
+        val typeList = typesEntity.map { it.toDomain() }
+
+        delay(10000)
+        return if (typeList.isEmpty()) {
+            ResourceFlow.Error(networkErrorType = NetworkError.EmptyContent)
+        } else {
+            ResourceFlow.Success(typeList)
         }
     }
 
@@ -55,30 +85,6 @@ class TypeRepositoryImp @Inject constructor(
             }
 
             emit(ResourceFlow.Loading(false))
-        }
-    }
-
-    override suspend fun getAllTypes(): ResourceFlow<List<TypeData>> {
-        when(val networkResult = service.getAllTypes()) {
-            is NetworkResource.Fail -> {
-                return ResourceFlow.Error(networkErrorType = networkResult.error)
-            }
-            is NetworkResource.Success -> {
-                val container: ContainerTypeResponse = networkResult.response.body()
-
-                container.types.let { typeList ->
-                    dao.insertTypes(typeList.map { it.toDB() })
-                }
-            }
-        }
-
-        val typesEntity = dao.getAllTypes()
-        val typeList = typesEntity.map { it.toDomain() }
-
-        return if (typeList.isEmpty()) {
-            ResourceFlow.Error(networkErrorType = NetworkError.EmptyContent)
-        } else {
-            ResourceFlow.Success(typeList)
         }
     }
 

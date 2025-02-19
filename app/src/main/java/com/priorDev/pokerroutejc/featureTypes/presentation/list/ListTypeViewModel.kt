@@ -25,8 +25,20 @@ class ListTypeViewModel @Inject constructor(
     val screenStates = _screenStates.asStateFlow()
 
     init {
+        getAllTypes()
+    }
+
+    fun onEvent(event: ListTypesEvent) {
+        when (event) {
+            ListTypesEvent.Refresh -> {
+                getAllTypes(isRefresh = false)
+            }
+        }
+    }
+
+    private fun getAllTypes(isRefresh: Boolean = false) {
         viewModelScope.launch {
-            repository.getAllTypesFlow()
+            repository.getAllTypesFlow(isRefresh)
                 .collect { result ->
                     when (result) {
                         is ResourceFlow.Error -> {
@@ -50,14 +62,6 @@ class ListTypeViewModel @Inject constructor(
                         }
                     }
                 }
-        }
-    }
-
-    fun onEvent(event: ListTypesEvent) {
-        when (event) {
-            ListTypesEvent.OnDismiss -> {
-                // TODO: retry button
-            }
         }
     }
 }

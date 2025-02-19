@@ -1,5 +1,6 @@
 package com.priorDev.pokerroutejc.core
 
+import com.priorDev.pokerroutejc.core.ResourceFlow.Loading
 import com.priorDev.pokerroutejc.data.network.NetworkError
 import com.priorDev.pokerroutejc.presentation.core.LoadingIndicator
 import com.priorDev.pokerroutejc.presentation.core.UiMessages
@@ -17,5 +18,7 @@ sealed class ResourceFlow<T> {
     class Loading<T>(
         val isLoading: Boolean = true,
         val loadingIndicator: LoadingIndicator = LoadingIndicator.None
-    ) : ResourceFlow<T>()
+    ) : ResourceFlow<T>() {
+
+    }
 }
