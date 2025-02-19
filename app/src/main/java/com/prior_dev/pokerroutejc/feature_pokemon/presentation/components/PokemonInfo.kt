@@ -40,7 +40,7 @@ import com.prior_dev.pokerroutejc.feature_pokemon.presentation.details.PokemonDe
 import com.prior_dev.pokerroutejc.feature_pokemon.presentation.details.PokemonDetailsStates
 import com.prior_dev.pokerroutejc.feature_types.domain.TypeData
 import com.prior_dev.pokerroutejc.feature_types.domain.getColor
-import com.prior_dev.pokerroutejc.presentation.utils.GlobalEventChannel
+import com.prior_dev.pokerroutejc.utils.GlobalEventChannel
 
 @Composable
 fun PokemonInfo(

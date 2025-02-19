@@ -1,10 +1,18 @@
 package com.prior_dev.pokerroutejc.di
 
 import android.content.Context
+import androidx.paging.ExperimentalPagingApi
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import androidx.room.Room
+import com.prior_dev.pokerroutejc.core.MakeNetworkCall
 import com.prior_dev.pokerroutejc.data.database.MyDataBase
-import com.prior_dev.pokerroutejc.presentation.utils.GlobalEventChannel
-import com.prior_dev.pokerroutejc.presentation.utils.IGlobalEventChannel
+import com.prior_dev.pokerroutejc.feature_pokemon.data.PokemonService
+import com.prior_dev.pokerroutejc.feature_pokemon.data.database.PokemonDao
+import com.prior_dev.pokerroutejc.feature_pokemon.data.database.PokemonNameEntity
+import com.prior_dev.pokerroutejc.feature_pokemon.domain.PokemonNameRemoteMediator
+import com.prior_dev.pokerroutejc.utils.GlobalEventChannel
+import com.prior_dev.pokerroutejc.utils.IGlobalEventChannel
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -37,5 +45,6 @@ object AppModule {
     fun providesIoDispatcher() = Dispatchers.IO
 
     @Provides
+    @Singleton
     fun providesGlobalEventChannel(): IGlobalEventChannel = GlobalEventChannel
 }

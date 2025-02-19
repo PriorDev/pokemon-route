@@ -1,4 +1,4 @@
-package com.prior_dev.pokerroutejc.presentation.utils
+package com.prior_dev.pokerroutejc.utils
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController

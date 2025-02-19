@@ -18,14 +18,14 @@ class GetWeaknessesAndStrengths @Inject constructor(
         pokemonTypes: List<TypeData>
     ): Resource<DamageRelationsData> {
         when(val allTypesResource = repository.getAllTypes()){
-            is Resource.Error -> return Resource.Error(allTypesResource.uiMessages!!)
+            is Resource.Error -> return Resource.Error(uiMessages = allTypesResource.uiMessages, throwable = allTypesResource.throwable)
             is Resource.Loading -> { }
             is Resource.Success -> allTypes = allTypesResource.data!!
         }
 
         pokemonTypes.forEach{ type ->
             when(val typeResource = repository.getType(type.id)){
-                is Resource.Error -> return Resource.Error(typeResource.uiMessages!!)
+                is Resource.Error -> return Resource.Error(uiMessages = typeResource.uiMessages, throwable = typeResource.throwable)
                 is Resource.Loading -> { }
                 is Resource.Success -> pokemonTypesDetails.add(typeResource.data!!)
             }

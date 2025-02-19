@@ -37,7 +37,7 @@ class TypeRepositoryImp @Inject constructor(
 
             if(typeList.isEmpty()){
                 val error = (response as Resource.Error).uiMessages
-                emit(Resource.Error(error))
+                emit(Resource.Error(uiMessages = error, throwable = response.throwable))
             }else{
                 emit(Resource.Success(typeList))
             }
@@ -66,7 +66,7 @@ class TypeRepositoryImp @Inject constructor(
 
             if(damageRelationEntity.isEmpty()){
                 val error = (response as Resource.Error).uiMessages
-                emit(Resource.Error(error))
+                emit(Resource.Error(uiMessages = error, throwable = response.throwable))
             }else{
                 emit(Resource.Success(damageRelationEntity.toDomain()))
             }
@@ -90,7 +90,7 @@ class TypeRepositoryImp @Inject constructor(
 
         if(typesEntity.isEmpty()){
             val error = (response as Resource.Error).uiMessages
-            return Resource.Error(error)
+            return Resource.Error(uiMessages = error, throwable = response.throwable)
         }
 
         val typesList = typesEntity.map { it.toDomain() }
@@ -109,7 +109,7 @@ class TypeRepositoryImp @Inject constructor(
         }
 
         val error = (response as Resource.Error).uiMessages
-        return Resource.Error(error)
+        return Resource.Error(uiMessages = error, throwable = response.throwable)
     }
 }
 

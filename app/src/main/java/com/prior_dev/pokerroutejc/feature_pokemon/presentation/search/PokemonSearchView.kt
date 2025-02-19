@@ -7,10 +7,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -19,6 +20,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.paging.LoadState
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingSource
+import androidx.paging.PagingState
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.prior_dev.pokerroutejc.core.CommonStates
 import com.prior_dev.pokerroutejc.core.components.DisposableMessage
 import com.prior_dev.pokerroutejc.core.components.PreviewTemplate
@@ -26,21 +34,20 @@ import com.prior_dev.pokerroutejc.core.routes.RoutesPokemon
 import com.prior_dev.pokerroutejc.feature_pokemon.domain.PokemonNameData
 import com.prior_dev.pokerroutejc.feature_pokemon.presentation.components.ItemPokemonName
 import com.prior_dev.pokerroutejc.feature_pokemon.presentation.components.SearchTextField
-import com.prior_dev.pokerroutejc.presentation.utils.GlobalEventChannel
+import com.prior_dev.pokerroutejc.utils.GlobalEventChannel
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun PokemonSearchView(
     commonStates: CommonStates,
-    pokemonList: List<PokemonNameData>,
+    pokemonList: LazyPagingItems<PokemonNameData>,
     onEvent: (PokemonSearchEvent) -> Unit,
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     val gridState = rememberLazyGridState()
     val coroutineScope = rememberCoroutineScope()
 
-    DisposableMessage(commonStates.uiMessages, onDismiss = { onEvent(PokemonSearchEvent.onDismiss) })
+    DisposableMessage(commonStates.uiMessages, onDismiss = { onEvent(PokemonSearchEvent.OnDismiss) })
 
     Column {
         SearchTextField(
@@ -71,7 +78,9 @@ fun PokemonSearchView(
                 .padding(horizontal = 8.dp)
                 .padding(top = 4.dp)
         ){
-            items(pokemonList){ pokemon ->
+            items(pokemonList.itemCount){ index ->
+                val pokemon = pokemonList[index] ?: return@items
+
                 ItemPokemonName(
                     pokemon = pokemon,
                     modifier = Modifier.clickable {
@@ -84,10 +93,11 @@ fun PokemonSearchView(
             item {
                 Spacer(modifier = Modifier.height(8.dp))
             }
-        }
-
-        if(!gridState.canScrollForward && pokemonList.isNotEmpty()){
-            onEvent(PokemonSearchEvent.getNextPage)
+            item {
+                if (pokemonList.loadState.append is LoadState.Loading) {
+                    CircularProgressIndicator()
+                }
+            }
         }
     }
 }
@@ -97,6 +107,22 @@ fun PokemonSearchView(
 @Composable
 fun PokemonSearchViewPreview() {
     PreviewTemplate {
+        val pager = Pager(PagingConfig(pageSize = 10)) {
+            FakeMyItemPagingSource()
+        }
+
+        val lazyPagingItems = pager.flow.collectAsLazyPagingItems()
+
+        PokemonSearchView(
+            commonStates = CommonStates(isLoading = true, searchText = "Buscando ando"),
+            pokemonList = lazyPagingItems,
+            onEvent = { }
+        )
+    }
+}
+
+private class FakeMyItemPagingSource : PagingSource<Int, PokemonNameData>() {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PokemonNameData> {
         val pokemons = listOf(
             PokemonNameData(1, "Charmander", ""),
             PokemonNameData(1, "Totodile", ""),
@@ -106,11 +132,14 @@ fun PokemonSearchViewPreview() {
             PokemonNameData(1, "Fuecoco", ""),
             PokemonNameData(1, "Sprigatito", ""),
         )
-
-        PokemonSearchView(
-            commonStates = CommonStates(isLoading = true, searchText = "Buscando ando"),
-            pokemonList = pokemons,
-            onEvent = { }
+        return LoadResult.Page(
+            data = pokemons,
+            prevKey = null,
+            nextKey = null
         )
+    }
+
+    override fun getRefreshKey(state: PagingState<Int, PokemonNameData>): Int? {
+        return null
     }
 }

@@ -5,14 +5,15 @@ import androidx.room.PrimaryKey
 import com.prior_dev.pokerroutejc.core.getIdFromPokeUrl
 import com.prior_dev.pokerroutejc.feature_pokemon.data.network.response.PokemonNameResponse
 
-@Entity(tableName = "catPokemonName")
+@Entity(tableName = "PokemonNameEntity")
 data class PokemonNameEntity (
     @PrimaryKey val id: Int,
     val name: String,
+    val savedTime: Long = System.currentTimeMillis()
 )
 
 fun PokemonNameResponse.toDB() =
     PokemonNameEntity(
         name = name,
-        id = url.getIdFromPokeUrl(),
+        id = url.getIdFromPokeUrl()
     )

@@ -79,7 +79,7 @@ class PokemonRepositoryImp @Inject constructor(
                 }
             }else if(response is Resource.Error){
                 val error = response.uiMessages
-                emit(Resource.Error(error))
+                emit(Resource.Error(uiMessages = error, throwable = response.throwable))
             }
 
             emit(Resource.Loading(false))
@@ -100,7 +100,7 @@ class PokemonRepositoryImp @Inject constructor(
                 }
             }else if(response is Resource.Error){
                 val error = response.uiMessages
-                emit(Resource.Error(error))
+                emit(Resource.Error(uiMessages = error, throwable = response.throwable))
             }
 
             emit(Resource.Loading(false))
@@ -141,7 +141,7 @@ class PokemonRepositoryImp @Inject constructor(
             }
         }else if(response is Resource.Error){
             val error = response.uiMessages
-            emit(Resource.Error(error))
+            emit(Resource.Error(uiMessages = error, throwable = response.throwable))
         }
 
         emit(Resource.Loading(false))

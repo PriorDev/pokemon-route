@@ -13,8 +13,8 @@ import com.prior_dev.pokerroutejc.feature_pokemon.domain.MoveDetailsData
 import com.prior_dev.pokerroutejc.feature_pokemon.domain.PokemonRepository
 import com.prior_dev.pokerroutejc.feature_pokemon.domain.use_cases.PokemonUseCases
 import com.prior_dev.pokerroutejc.feature_types.domain.DamageRelationsData
-import com.prior_dev.pokerroutejc.presentation.utils.IGlobalEventChannel
-import com.prior_dev.pokerroutejc.presentation.utils.OneTimeEvent
+import com.prior_dev.pokerroutejc.utils.IGlobalEventChannel
+import com.prior_dev.pokerroutejc.utils.OneTimeEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

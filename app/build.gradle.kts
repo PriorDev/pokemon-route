@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId = "com.prior_dev.pokerroutejc"
-        minSdk = 24
+        minSdk = 29
         targetSdk = 33
         versionCode = 4
         versionName = "1.2"
@@ -50,7 +50,6 @@ android {
 
 dependencies {
     implementation(libs.core.ktx)
-    implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.activity.compose)
     implementation(libs.composeUi)
     implementation(libs.compose.preview)
@@ -70,7 +69,7 @@ dependencies {
     implementation(libs.material3)
 
     //lifecycle
-    implementation(libs.lifecycle.runtime.ktx.v261)
+    implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.runtime.compose)
     //Life data
     implementation(libs.runtime.livedata)
@@ -87,6 +86,7 @@ dependencies {
     implementation(libs.navigation.compose)
     //Room
     implementation(libs.room.ktx)
+    implementation(libs.room.paging)
     kapt(libs.room.compiler)
     //System ui Controll
     implementation(libs.accompanist.systemuicontroller)
@@ -95,4 +95,7 @@ dependencies {
     implementation(libs.palette)
     //Test coroutines
     testImplementation(libs.kotlinx.coroutines.test)
+    // Paging
+    implementation(libs.paging.runtime.ktx)
+    implementation(libs.paging.compose)
 }

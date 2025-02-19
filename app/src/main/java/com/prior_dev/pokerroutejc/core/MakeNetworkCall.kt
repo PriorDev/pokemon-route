@@ -17,10 +17,16 @@ class MakeNetworkCall @Inject constructor(
                 Resource.Success(call())
             }catch (e: HttpException){
                 println(e.printStackTrace())
-                Resource.Error(UiMessages.StringResource(R.string.error_trying_to_reach_remote_source))
+                Resource.Error(
+                    uiMessages = UiMessages.StringResource(R.string.error_trying_to_reach_remote_source),
+                    throwable = e
+                )
             }catch (e: Exception){
                 println(e.printStackTrace())
-                Resource.Error(UiMessages.StringResource(R.string.unexpected_error))
+                Resource.Error(
+                    UiMessages.StringResource(R.string.unexpected_error),
+                    throwable = e
+                )
             }
         }
     }

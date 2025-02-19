@@ -31,10 +31,10 @@ import com.prior_dev.pokerroutejc.feature_types.presentation.details.DetailsType
 import com.prior_dev.pokerroutejc.feature_types.presentation.list.ListTypeView
 import com.prior_dev.pokerroutejc.feature_types.presentation.list.ListTypeViewModel
 import com.prior_dev.pokerroutejc.feature_types.presentation.typesNavigation
-import com.prior_dev.pokerroutejc.presentation.utils.GlobalEventChannel
-import com.prior_dev.pokerroutejc.presentation.utils.GlobalEventHandler
-import com.prior_dev.pokerroutejc.presentation.utils.ObserveEvents
-import com.prior_dev.pokerroutejc.presentation.utils.OneTimeEvent
+import com.prior_dev.pokerroutejc.utils.GlobalEventChannel
+import com.prior_dev.pokerroutejc.utils.GlobalEventHandler
+import com.prior_dev.pokerroutejc.utils.ObserveEvents
+import com.prior_dev.pokerroutejc.utils.OneTimeEvent
 import dagger.hilt.android.EntryPointAccessors
 
 @Composable

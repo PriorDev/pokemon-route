@@ -7,6 +7,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.prior_dev.pokerroutejc.core.routes.RoutesPokemon
 import com.prior_dev.pokerroutejc.feature_pokemon.presentation.details.PokemonDetailsView
 import com.prior_dev.pokerroutejc.feature_pokemon.presentation.details.PokemonDetailsViewModel
@@ -23,7 +24,7 @@ fun NavGraphBuilder.pokemonNavigation() {
         composable(RoutesPokemon.SearchRoute.route){
             val viewModel: PokemonSearchViewModel = hiltViewModel()
             val commonStates = viewModel.commonStates.collectAsStateWithLifecycle()
-            val pokemonList = viewModel.pokemonList
+            val pokemonList = viewModel.pokemonList.collectAsLazyPagingItems()
 
             PokemonSearchView(
                 commonStates = commonStates.value,

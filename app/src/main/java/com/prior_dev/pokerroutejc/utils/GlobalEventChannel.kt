@@ -1,4 +1,4 @@
-package com.prior_dev.pokerroutejc.presentation.utils
+package com.prior_dev.pokerroutejc.utils
 
 import androidx.navigation.NavOptionsBuilder
 import kotlinx.coroutines.CoroutineScope

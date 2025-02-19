@@ -18,7 +18,7 @@ import com.prior_dev.pokerroutejc.core.components.ItemType
 import com.prior_dev.pokerroutejc.core.components.PreviewTemplate
 import com.prior_dev.pokerroutejc.core.routes.RoutesType
 import com.prior_dev.pokerroutejc.feature_types.domain.TypeData
-import com.prior_dev.pokerroutejc.presentation.utils.GlobalEventChannel
+import com.prior_dev.pokerroutejc.utils.GlobalEventChannel
 
 @Composable
 fun ListTypeView(
