@@ -1,9 +1,9 @@
-package com.priorDev.pokerroutejc.featureTypes.data
+package com.priorDev.pokerroutejc.data.network.pkType
 
 import com.priorDev.pokerroutejc.core.MakeNetworkCall
 import com.priorDev.pokerroutejc.core.Resource
-import com.priorDev.pokerroutejc.featureTypes.data.database.TypeDao
-import com.priorDev.pokerroutejc.featureTypes.data.database.toDB
+import com.priorDev.pokerroutejc.data.database.TypeDao
+import com.priorDev.pokerroutejc.data.database.toDB
 import com.priorDev.pokerroutejc.featureTypes.domain.TypeData
 import com.priorDev.pokerroutejc.featureTypes.domain.TypeDetailsData
 import com.priorDev.pokerroutejc.featureTypes.domain.TypeRepository

@@ -1,7 +1,7 @@
 package com.priorDev.pokerroutejc.featurePokemon.data.network.response
 
 import com.google.gson.annotations.SerializedName
-import com.priorDev.pokerroutejc.featureTypes.data.network.response.TypeResponse
+import com.priorDev.pokerroutejc.data.network.pkType.response.TypeResponse
 
 data class PokemonResponse(
     @SerializedName("id") val id: Int,

@@ -4,9 +4,6 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.priorDev.pokerroutejc.featurePokemon.data.database.PokemonDao
 import com.priorDev.pokerroutejc.featurePokemon.data.database.PokemonNameEntity
-import com.priorDev.pokerroutejc.featureTypes.data.database.DamageRelationsEntity
-import com.priorDev.pokerroutejc.featureTypes.data.database.TypeDao
-import com.priorDev.pokerroutejc.featureTypes.data.database.TypeEntity
 
 @Database(
     entities = [

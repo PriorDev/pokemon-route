@@ -1,8 +1,8 @@
 package com.priorDev.pokerroutejc.featureTypes.di
 
-import com.priorDev.pokerroutejc.featureTypes.data.TypeRepositoryImp
-import com.priorDev.pokerroutejc.featureTypes.data.TypeService
-import com.priorDev.pokerroutejc.featureTypes.data.network.TypeServiceImp
+import com.priorDev.pokerroutejc.data.network.pkType.TypeRepositoryImp
+import com.priorDev.pokerroutejc.data.network.pkType.TypeService
+import com.priorDev.pokerroutejc.data.network.pkType.TypeServiceImp
 import com.priorDev.pokerroutejc.featureTypes.domain.TypeRepository
 import dagger.Binds
 import dagger.Module

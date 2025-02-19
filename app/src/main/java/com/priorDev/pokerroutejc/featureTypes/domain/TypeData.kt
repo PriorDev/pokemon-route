@@ -2,8 +2,8 @@ package com.priorDev.pokerroutejc.featureTypes.domain
 
 import com.priorDev.pokerroutejc.core.EnumColorTypes
 import com.priorDev.pokerroutejc.core.getIdFromPokeUrl
-import com.priorDev.pokerroutejc.featureTypes.data.database.TypeEntity
-import com.priorDev.pokerroutejc.featureTypes.data.network.response.TypeResponse
+import com.priorDev.pokerroutejc.data.database.TypeEntity
+import com.priorDev.pokerroutejc.data.network.pkType.response.TypeResponse
 
 data class TypeData(
     val id: Int,

@@ -1,9 +1,9 @@
-package com.priorDev.pokerroutejc.featureTypes.data.database
+package com.priorDev.pokerroutejc.data.database
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.priorDev.pokerroutejc.core.getIdFromPokeUrl
-import com.priorDev.pokerroutejc.featureTypes.data.network.response.TypeResponse
+import com.priorDev.pokerroutejc.data.network.pkType.response.TypeResponse
 
 @Entity(tableName = "catType")
 data class TypeEntity(

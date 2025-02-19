@@ -1,8 +1,8 @@
 package com.priorDev.pokerroutejc.featureTypes.domain
 
-import com.priorDev.pokerroutejc.featureTypes.data.database.DamageRelationsEntity
-import com.priorDev.pokerroutejc.featureTypes.data.network.response.DamageRelationsResponse
-import com.priorDev.pokerroutejc.featureTypes.data.network.response.TypeDetailsResponse
+import com.priorDev.pokerroutejc.data.database.DamageRelationsEntity
+import com.priorDev.pokerroutejc.data.network.pkType.response.DamageRelationsResponse
+import com.priorDev.pokerroutejc.data.network.pkType.response.TypeDetailsResponse
 
 data class TypeDetailsData(
     val id: Int = 0,

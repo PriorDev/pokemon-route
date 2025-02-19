@@ -1,4 +1,4 @@
-package com.priorDev.pokerroutejc.featureTypes.data.database
+package com.priorDev.pokerroutejc.data.database
 
 import androidx.room.Dao
 import androidx.room.Insert

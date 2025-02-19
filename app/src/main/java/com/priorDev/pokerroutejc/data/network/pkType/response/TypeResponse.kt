@@ -1,4 +1,4 @@
-package com.priorDev.pokerroutejc.featureTypes.data.network.response
+package com.priorDev.pokerroutejc.data.network.pkType.response
 
 import com.google.gson.annotations.SerializedName
 

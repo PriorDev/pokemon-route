@@ -1,9 +1,9 @@
-package com.priorDev.pokerroutejc.featureTypes.data.database
+package com.priorDev.pokerroutejc.data.database
 
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.priorDev.pokerroutejc.featureTypes.data.network.response.TypeDetailsResponse
+import com.priorDev.pokerroutejc.data.network.pkType.response.TypeDetailsResponse
 
 @Entity(tableName = "damage_relations")
 data class DamageRelationsEntity(

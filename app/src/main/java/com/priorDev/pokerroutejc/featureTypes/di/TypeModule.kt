@@ -1,7 +1,7 @@
 package com.priorDev.pokerroutejc.featureTypes.di
 
 import com.priorDev.pokerroutejc.data.database.MyDataBase
-import com.priorDev.pokerroutejc.featureTypes.data.network.TypeApi
+import com.priorDev.pokerroutejc.data.network.pkType.TypeApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

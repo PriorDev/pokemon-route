@@ -1,8 +1,7 @@
-package com.priorDev.pokerroutejc.featureTypes.data.network
+package com.priorDev.pokerroutejc.data.network.pkType
 
-import com.priorDev.pokerroutejc.featureTypes.data.TypeService
-import com.priorDev.pokerroutejc.featureTypes.data.network.response.ContainerTypeResponse
-import com.priorDev.pokerroutejc.featureTypes.data.network.response.TypeDetailsResponse
+import com.priorDev.pokerroutejc.data.network.pkType.response.ContainerTypeResponse
+import com.priorDev.pokerroutejc.data.network.pkType.response.TypeDetailsResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
