@@ -7,13 +7,14 @@ import com.priorDev.pokerroutejc.data.network.pkType.response.ContainerTypeRespo
 import com.priorDev.pokerroutejc.data.network.pkType.response.TypeDetailsResponse
 
 class TypeNetServiceFake : TypeNetService {
-    var getAllTypeResponse: NetworkResource<ContainerTypeResponse> = NetworkResource.Fail(
-        NetworkError.None)
+    var getAllTypeResponse: NetworkResource<ContainerTypeResponse> = NetworkResource
+        .Fail(NetworkError.None)
     override suspend fun getAllTypes(): NetworkResource<ContainerTypeResponse> {
         return getAllTypeResponse
     }
 
-    var getTypeResponse: NetworkResource<TypeDetailsResponse> = NetworkResource.Fail(NetworkError.None)
+    var getTypeResponse: NetworkResource<TypeDetailsResponse> = NetworkResource
+        .Fail(NetworkError.None)
     override suspend fun getType(typeId: Int): NetworkResource<TypeDetailsResponse> {
         return getTypeResponse
     }

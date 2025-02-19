@@ -11,10 +11,9 @@ import com.priorDev.pokerroutejc.data.network.pokemon.responses.EvolutionRespons
 import com.priorDev.pokerroutejc.data.network.pokemon.responses.toResponse
 import com.priorDev.pokerroutejc.domain.pokemon.models.PokemonNameData
 import com.priorDev.pokerroutejc.domain.pokemon.models.toDomain
-import javax.inject.Inject
 
 @Suppress("TooGenericExceptionCaught")
-class PokemonApolloServiceImp @Inject constructor(
+class PokemonApolloServiceImp(
     private val apolloClient: ApolloClient
 ) : PokemonApolloService {
     override suspend fun getPokemonByName(name: String): ResourceFlow<List<PokemonNameData>> {

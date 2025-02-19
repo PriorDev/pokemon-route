@@ -9,14 +9,11 @@ import com.priorDev.pokerroutejc.core.ResourceFlow
 import com.priorDev.pokerroutejc.ui.Routes
 import com.priorDev.pokerroutejc.domain.types.models.TypeDetailsData
 import com.priorDev.pokerroutejc.data.TypeRepo
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class DetailsTypeViewModel @Inject constructor(
+class DetailsTypeViewModel(
     private val repository: TypeRepo,
     private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {

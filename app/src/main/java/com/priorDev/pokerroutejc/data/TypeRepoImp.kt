@@ -13,9 +13,8 @@ import com.priorDev.pokerroutejc.presentation.core.LoadingIndicator
 import com.priorDev.pokerroutejc.presentation.core.spinningWheelOrRefresh
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import javax.inject.Inject
 
-class TypeRepoImp @Inject constructor(
+class TypeRepoImp(
     private val service: TypeNetService,
     private val dao: TypeDao,
 ) : TypeRepo {

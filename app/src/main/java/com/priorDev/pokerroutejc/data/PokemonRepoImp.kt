@@ -13,9 +13,8 @@ import com.priorDev.pokerroutejc.domain.pokemon.models.PokemonData
 import com.priorDev.pokerroutejc.domain.pokemon.models.toDomain
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import javax.inject.Inject
 
-class PokemonRepoImp @Inject constructor(
+class PokemonRepoImp(
     private val service: PokemonNetService,
     private val graphQLClient: PokemonApolloService
 ) : PokemonRepo {

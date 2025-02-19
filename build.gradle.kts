@@ -8,7 +8,6 @@ buildscript {
         classpath(libs.google.service)
         classpath(libs.gradle)
         classpath(libs.kotlin.gradle)
-        classpath(libs.dagger.hilt)
     }
 }
 

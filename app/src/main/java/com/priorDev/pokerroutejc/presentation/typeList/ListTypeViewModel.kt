@@ -13,15 +13,13 @@ import com.priorDev.pokerroutejc.presentation.core.ErrorState
 import com.priorDev.pokerroutejc.presentation.core.ScreenStates
 import com.priorDev.pokerroutejc.presentation.core.UiMessages
 import com.priorDev.pokerroutejc.presentation.utils.flowSubscriber
-import dagger.hilt.android.lifecycle.HiltViewModel
+
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class ListTypeViewModel @Inject constructor(
+class ListTypeViewModel(
     private val repository: TypeRepo
 ) : ViewModel() {
     private val _typesList = mutableStateListOf<TypeData>()

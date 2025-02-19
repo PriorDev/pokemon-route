@@ -32,7 +32,7 @@ import com.priorDev.pokerroutejc.domain.pokemon.models.PokemonNameData
 import com.priorDev.pokerroutejc.presentation.pokemonList.components.ItemPokemonName
 import com.priorDev.pokerroutejc.presentation.reusable.PullToRefreshBox
 import com.priorDev.pokerroutejc.presentation.reusable.SearchBarButton
-import com.priorDev.pokerroutejc.utils.GlobalEventChannel
+import com.priorDev.pokerroutejc.utils.GlobalEventChannelImp
 import com.priorDev.pokerroutejc.R
 import com.priorDev.pokerroutejc.ui.Routes
 
@@ -86,7 +86,7 @@ fun PokemonListView(
                     ItemPokemonName(
                         pokemon = pokemon,
                         modifier = Modifier.clickable {
-                            GlobalEventChannel.navigate(Routes.PkDetails(pokemon.name))
+                            GlobalEventChannelImp.navigate(Routes.PkDetails(pokemon.name))
                         }
                     )
                 }

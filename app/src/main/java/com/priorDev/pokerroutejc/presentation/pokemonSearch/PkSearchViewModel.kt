@@ -6,17 +6,15 @@ import androidx.lifecycle.viewModelScope
 import com.priorDev.pokerroutejc.core.ResourceFlow
 import com.priorDev.pokerroutejc.data.network.pokemon.PokemonApolloService
 import com.priorDev.pokerroutejc.domain.pokemon.models.PokemonNameData
-import com.priorDev.pokerroutejc.utils.IGlobalEventChannel
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.priorDev.pokerroutejc.utils.GlobalEventChannel
+
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class PkSearchViewModel @Inject constructor(
-    private val pokemonNameClient: PokemonApolloService,
-    private val globalEventChannel: IGlobalEventChannel
+class PkSearchViewModel(
+    private val pokemonApolloService: PokemonApolloService,
+    private val globalEventChannel: GlobalEventChannel
 ) : ViewModel() {
     private val _pokemonNames = mutableStateListOf<PokemonNameData>()
     val pokemonNames: List<PokemonNameData> = _pokemonNames
@@ -43,7 +41,7 @@ class PkSearchViewModel @Inject constructor(
                 if (name.isBlank()) {
                     _pokemonNames.clear()
                 } else {
-                    when (val result = pokemonNameClient.getPokemonByName(name)) {
+                    when (val result = pokemonApolloService.getPokemonByName(name)) {
                         is ResourceFlow.Error -> {
                             // Do nothing
                         }

@@ -18,7 +18,7 @@ import com.priorDev.pokerroutejc.ui.Routes
 import com.priorDev.pokerroutejc.domain.types.models.TypeData
 import com.priorDev.pokerroutejc.presentation.core.ScreenStates
 import com.priorDev.pokerroutejc.presentation.core.ScreenTemplate
-import com.priorDev.pokerroutejc.utils.GlobalEventChannel
+import com.priorDev.pokerroutejc.utils.GlobalEventChannelImp
 
 @Composable
 fun ListTypeView(
@@ -48,7 +48,7 @@ fun ListTypeView(
                     type = type,
                     style = MaterialTheme.typography.titleLarge,
                     onClick = {
-                        GlobalEventChannel.navigate(
+                        GlobalEventChannelImp.navigate(
                             route = Routes.TypeDetails.TypeTab(type.id)
                         )
                     }

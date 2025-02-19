@@ -6,7 +6,7 @@ import com.priorDev.pokerroutejc.presentation.utils.ObserveEvents
 
 @Composable
 fun GlobalEventHandler(navController: NavHostController) {
-    ObserveEvents(flow = GlobalEventChannel.eventChannel) { event ->
+    ObserveEvents(flow = GlobalEventChannelImp.eventChannel) { event ->
         when (event) {
             is OneTimeEvent.OnNavigate -> {
                 navController.navigate(

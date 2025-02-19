@@ -9,9 +9,8 @@ import com.priorDev.pokerroutejc.data.network.pokemon.responses.ContainerPokemon
 import com.priorDev.pokerroutejc.data.network.pokemon.responses.MoveDetailsResponse
 import com.priorDev.pokerroutejc.data.network.pokemon.responses.PokemonResponse
 import io.ktor.util.reflect.typeInfo
-import javax.inject.Inject
 
-class PokemonNetServiceImp @Inject constructor(
+class PokemonNetServiceImp(
     private val networkService: NetworkService
 ) : PokemonNetService {
     override suspend fun getAllPokemons(

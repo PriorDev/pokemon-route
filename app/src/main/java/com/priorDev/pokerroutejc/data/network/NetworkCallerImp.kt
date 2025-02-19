@@ -8,10 +8,9 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.util.reflect.TypeInfo
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
 @Suppress("TooGenericExceptionCaught")
-class NetworkCallerImp @Inject constructor(
+class NetworkCallerImp(
     private val dispatcher: CoroutineDispatcher
 ) : NetworkCaller {
     override suspend operator fun <T> invoke(

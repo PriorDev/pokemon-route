@@ -5,10 +5,9 @@ import com.priorDev.pokerroutejc.domain.types.models.DamageRelationsData
 import com.priorDev.pokerroutejc.domain.types.models.TypeData
 import com.priorDev.pokerroutejc.domain.types.models.TypeDetailsData
 import com.priorDev.pokerroutejc.data.TypeRepo
-import javax.inject.Inject
 
-class GetWeaknessesAndStrengths @Inject constructor(
-    private val repository: TypeRepo
+class GetWeaknessesAndStrengths(
+    private val typeRepo: TypeRepo
 ) {
     private var damageRelationsData: DamageRelationsData = DamageRelationsData()
     private lateinit var allTypes: List<TypeData>
@@ -18,7 +17,7 @@ class GetWeaknessesAndStrengths @Inject constructor(
     suspend operator fun invoke(
         pokemonTypes: List<TypeData>
     ): ResourceFlow<DamageRelationsData> {
-        when (val allTypesResource = repository.getAllTypes()) {
+        when (val allTypesResource = typeRepo.getAllTypes()) {
             is ResourceFlow.Error -> {
                 return ResourceFlow.Error(
                     uiMessages = allTypesResource.uiMessages,
@@ -30,7 +29,7 @@ class GetWeaknessesAndStrengths @Inject constructor(
         }
 
         pokemonTypes.forEach { type ->
-            when (val typeResource = repository.getType(type.id)) {
+            when (val typeResource = typeRepo.getType(type.id)) {
                 is ResourceFlow.Error -> {
                     return ResourceFlow.Error(
                         uiMessages = typeResource.uiMessages,

@@ -8,19 +8,17 @@ import androidx.paging.map
 import com.priorDev.pokerroutejc.core.CommonStates
 import com.priorDev.pokerroutejc.data.database.PokemonNameEntity
 import com.priorDev.pokerroutejc.domain.pokemon.models.toDomain
-import com.priorDev.pokerroutejc.utils.IGlobalEventChannel
+import com.priorDev.pokerroutejc.utils.GlobalEventChannel
 import com.priorDev.pokerroutejc.ui.Routes
-import dagger.hilt.android.lifecycle.HiltViewModel
+
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
-import javax.inject.Inject
 
-@HiltViewModel
-class PokemonListViewModel @Inject constructor(
+class PokemonListViewModel(
     pager: Pager<Int, PokemonNameEntity>,
-    private val globalEventChannel: IGlobalEventChannel
+    private val globalEventChannel: GlobalEventChannel
 ) : ViewModel() {
     private val _commonStates = MutableStateFlow(CommonStates())
     val commonStates = _commonStates.asStateFlow()

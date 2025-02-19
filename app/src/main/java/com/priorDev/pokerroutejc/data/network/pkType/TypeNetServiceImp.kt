@@ -1,15 +1,14 @@
 package com.priorDev.pokerroutejc.data.network.pkType
 
-import com.priorDev.pokerroutejc.data.network.utils.EndPoints
 import com.priorDev.pokerroutejc.data.network.NetworkService
-import com.priorDev.pokerroutejc.data.network.utils.NetworkRequestData
-import com.priorDev.pokerroutejc.data.network.utils.NetworkResource
 import com.priorDev.pokerroutejc.data.network.pkType.response.ContainerTypeResponse
 import com.priorDev.pokerroutejc.data.network.pkType.response.TypeDetailsResponse
+import com.priorDev.pokerroutejc.data.network.utils.EndPoints
+import com.priorDev.pokerroutejc.data.network.utils.NetworkRequestData
+import com.priorDev.pokerroutejc.data.network.utils.NetworkResource
 import io.ktor.util.reflect.typeInfo
-import javax.inject.Inject
 
-class TypeNetServiceImp @Inject constructor(
+class TypeNetServiceImp(
     private val networkService: NetworkService
 ) : TypeNetService {
     override suspend fun getAllTypes(): NetworkResource<ContainerTypeResponse> {

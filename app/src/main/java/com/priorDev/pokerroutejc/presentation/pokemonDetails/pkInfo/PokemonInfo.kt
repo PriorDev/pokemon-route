@@ -40,7 +40,7 @@ import com.priorDev.pokerroutejc.presentation.pokemonDetails.PokemonDetailsEvent
 import com.priorDev.pokerroutejc.presentation.pokemonDetails.PokemonDetailsStates
 import com.priorDev.pokerroutejc.domain.types.models.TypeData
 import com.priorDev.pokerroutejc.domain.types.models.getColor
-import com.priorDev.pokerroutejc.utils.GlobalEventChannel
+import com.priorDev.pokerroutejc.utils.GlobalEventChannelImp
 
 @Composable
 fun PokemonInfo(
@@ -90,7 +90,7 @@ fun PokemonInfo(
                         pokemon.types.forEach { type ->
                             Button(
                                 onClick = {
-                                    GlobalEventChannel.navigate(
+                                    GlobalEventChannelImp.navigate(
                                         Routes.TypeDetails.PokemonTab(type.id)
                                     )
                                 },

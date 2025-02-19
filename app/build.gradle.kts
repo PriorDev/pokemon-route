@@ -2,7 +2,6 @@ plugins {
     id("com.android.application")
     kotlin("android")
     id("kotlin-kapt")
-    id("dagger.hilt.android.plugin")
     id("io.gitlab.arturbosch.detekt") version "1.23.1"
     alias(libs.plugins.kotlin.serialization)
     id("com.apollographql.apollo3").version("3.7.3")
@@ -71,27 +70,18 @@ dependencies {
     implementation(libs.activity.compose)
     implementation(libs.composeUi)
     implementation(libs.compose.preview)
-
     androidTestImplementation(libs.compose.test.junit)
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.compose.test.manifest)
-
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
-
     //Material
     implementation(libs.material)
     implementation(libs.material3)
-
     //lifecycle
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.runtime.compose)
-    //Life data
     implementation(libs.runtime.livedata)
-    //Dager-hilt
-    implementation(libs.dagger.hitl)
-    kapt(libs.dagger.hilt.compiler)
-    implementation(libs.hilt.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
     //Nav Controller
     implementation(libs.navigation.compose)
@@ -129,4 +119,9 @@ dependencies {
     androidTestImplementation(libs.mockk.android)
     //Test coroutines
     testImplementation(libs.kotlinx.coroutines.test)
+    // Koin
+    implementation(libs.koin.android)
+    implementation(libs.koin.androidx.navigation)
+    implementation(libs.koin.androidx.compose)
+    testImplementation(libs.koin.test.junit4)
 }

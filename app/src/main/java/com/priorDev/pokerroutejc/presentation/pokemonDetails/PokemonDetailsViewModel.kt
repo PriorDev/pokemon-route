@@ -14,15 +14,13 @@ import com.priorDev.pokerroutejc.data.PokemonRepo
 import com.priorDev.pokerroutejc.domain.pokemon.useCases.PokemonUseCases
 import com.priorDev.pokerroutejc.domain.types.models.DamageRelationsData
 import com.priorDev.pokerroutejc.ui.Routes
-import dagger.hilt.android.lifecycle.HiltViewModel
+
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class PokemonDetailsViewModel @Inject constructor(
+class PokemonDetailsViewModel(
     private val repository: PokemonRepo,
     savedStateHandle: SavedStateHandle,
     private val useCases: PokemonUseCases
