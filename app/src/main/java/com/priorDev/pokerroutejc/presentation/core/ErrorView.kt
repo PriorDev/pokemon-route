@@ -19,6 +19,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import com.priorDev.pokerroutejc.R
 import com.priorDev.pokerroutejc.data.network.NetworkError
@@ -82,12 +84,25 @@ fun ErrorView(
     }
 }
 
+class NetworkErrorProvider: PreviewParameterProvider<NetworkError> {
+    override val values: Sequence<NetworkError>
+        get() = sequenceOf(
+            NetworkError.ClientError("Client error"),
+            NetworkError.ServerError("Server down"),
+            NetworkError.UnknownError,
+            NetworkError.UnableToConnect,
+            NetworkError.EmptyContent
+        )
+}
+
 @Composable
 @Preview
-private fun ErrorViewPreview() {
+private fun ErrorViewPreview(
+    @PreviewParameter(NetworkErrorProvider::class) networkError: NetworkError
+) {
     PreviewTemplate {
         ErrorView(
-            networkError = NetworkError.ServerError("Server down")
+            networkError = networkError
         )
     }
 }
