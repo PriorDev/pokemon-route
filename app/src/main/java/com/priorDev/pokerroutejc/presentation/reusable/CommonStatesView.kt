@@ -1,4 +1,4 @@
-package com.priorDev.pokerroutejc.core.components
+package com.priorDev.pokerroutejc.presentation.reusable
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,6 +8,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.priorDev.pokerroutejc.core.CommonStates
 
+@Deprecated(
+    message = "CommonStatesView is deprecated",
+    replaceWith = ReplaceWith("ScreenTemplate")
+)
 @Composable
 fun CommonStatesView(
     onDismiss: () -> Unit,

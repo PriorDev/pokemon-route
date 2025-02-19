@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.priorDev.pokerroutejc.core.CommonStates
 import com.priorDev.pokerroutejc.core.Resource
-import com.priorDev.pokerroutejc.core.UiMessages
+import com.priorDev.pokerroutejc.presentation.core.UiMessages
 import com.priorDev.pokerroutejc.featurePokemon.domain.AbilityDetailsData
 import com.priorDev.pokerroutejc.featurePokemon.domain.MoveDetailsData
 import com.priorDev.pokerroutejc.featurePokemon.data.PokemonRepository

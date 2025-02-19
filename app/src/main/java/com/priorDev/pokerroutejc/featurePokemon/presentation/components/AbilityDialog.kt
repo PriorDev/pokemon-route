@@ -20,7 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.priorDev.pokerroutejc.core.components.PreviewTemplate
+import com.priorDev.pokerroutejc.presentation.reusable.PreviewTemplate
 import com.priorDev.pokerroutejc.featurePokemon.domain.AbilityDetailsData
 
 @Composable

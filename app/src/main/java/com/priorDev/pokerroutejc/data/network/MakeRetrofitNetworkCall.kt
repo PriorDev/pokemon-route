@@ -2,7 +2,7 @@ package com.priorDev.pokerroutejc.data.network
 
 import com.priorDev.pokerroutejc.R
 import com.priorDev.pokerroutejc.core.Resource
-import com.priorDev.pokerroutejc.core.UiMessages
+import com.priorDev.pokerroutejc.presentation.core.UiMessages
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException

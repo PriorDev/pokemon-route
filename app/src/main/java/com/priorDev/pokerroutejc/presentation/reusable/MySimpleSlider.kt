@@ -1,4 +1,4 @@
-package com.priorDev.pokerroutejc.core.components
+package com.priorDev.pokerroutejc.presentation.reusable
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.MaterialTheme

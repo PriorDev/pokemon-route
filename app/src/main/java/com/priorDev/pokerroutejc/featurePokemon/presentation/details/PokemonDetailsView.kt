@@ -23,7 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.priorDev.pokerroutejc.core.CommonStates
 import com.priorDev.pokerroutejc.core.EnumColorTypes
-import com.priorDev.pokerroutejc.core.components.CommonStatesView
+import com.priorDev.pokerroutejc.presentation.reusable.CommonStatesView
 import com.priorDev.pokerroutejc.featurePokemon.domain.MoveDetailsData
 import com.priorDev.pokerroutejc.featurePokemon.presentation.components.MovesView
 import com.priorDev.pokerroutejc.featurePokemon.presentation.components.PokemonInfo

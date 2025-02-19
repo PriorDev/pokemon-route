@@ -24,7 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.priorDev.pokerroutejc.core.CommonStates
-import com.priorDev.pokerroutejc.core.components.CommonStatesView
+import com.priorDev.pokerroutejc.presentation.reusable.CommonStatesView
 import com.priorDev.pokerroutejc.core.getTypeColor
 import com.priorDev.pokerroutejc.featureTypes.domain.DamageRelationsData
 import com.priorDev.pokerroutejc.featureTypes.domain.TypeData

@@ -1,4 +1,4 @@
-package com.priorDev.pokerroutejc.core.components
+package com.priorDev.pokerroutejc.presentation.reusable
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box

@@ -1,11 +1,15 @@
-package com.priorDev.pokerroutejc.core.components
+package com.priorDev.pokerroutejc.presentation.reusable
 
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.priorDev.pokerroutejc.core.UiMessages
+import com.priorDev.pokerroutejc.presentation.core.UiMessages
 
+@Deprecated(
+    message = "DisposableMessage is deprecated",
+    replaceWith = ReplaceWith("CustomAlertDialog")
+)
 @Composable
 fun DisposableMessage(
     uiMessages: UiMessages?,

@@ -23,7 +23,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.priorDev.pokerroutejc.core.components.ItemType
+import com.priorDev.pokerroutejc.presentation.reusable.ItemType
 import com.priorDev.pokerroutejc.featurePokemon.domain.PokemonData
 import com.priorDev.pokerroutejc.featureTypes.domain.getColor
 

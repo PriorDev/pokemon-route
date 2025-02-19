@@ -1,4 +1,4 @@
-package com.priorDev.pokerroutejc.core
+package com.priorDev.pokerroutejc.presentation.core
 
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable

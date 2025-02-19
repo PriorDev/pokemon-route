@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.priorDev.pokerroutejc.R
-import com.priorDev.pokerroutejc.core.components.PreviewTemplate
+import com.priorDev.pokerroutejc.presentation.reusable.PreviewTemplate
 import com.priorDev.pokerroutejc.featurePokemon.domain.AbilityData
 import com.priorDev.pokerroutejc.featurePokemon.domain.AbilityDetailsData
 import com.priorDev.pokerroutejc.featurePokemon.domain.PokemonData

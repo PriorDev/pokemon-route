@@ -24,7 +24,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.priorDev.pokerroutejc.core.EnumColorTypes
-import com.priorDev.pokerroutejc.core.components.ItemType
+import com.priorDev.pokerroutejc.presentation.reusable.ItemType
 import com.priorDev.pokerroutejc.featurePokemon.domain.MoveDetailsData
 import com.priorDev.pokerroutejc.featurePokemon.domain.VersionGroupDetailData
 import com.priorDev.pokerroutejc.featureTypes.domain.TypeData

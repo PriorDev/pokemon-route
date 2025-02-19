@@ -3,7 +3,7 @@ package com.priorDev.pokerroutejc.data.network
 import com.apollographql.apollo3.ApolloClient
 import com.priorDev.SearchPokemonNameQuery
 import com.priorDev.pokerroutejc.core.Resource
-import com.priorDev.pokerroutejc.core.UiMessages
+import com.priorDev.pokerroutejc.presentation.core.UiMessages
 import com.priorDev.pokerroutejc.core.orDefault
 import com.priorDev.pokerroutejc.featurePokemon.domain.PokemonNameData
 import com.priorDev.pokerroutejc.featurePokemon.domain.toDomain

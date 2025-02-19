@@ -34,4 +34,8 @@
     <string name="go_to_tab">Go to tab %s</string>
     <string name="unknown_error">Honestly we do not know what is happening LOL</string>
     <string name="unable_to_connect_error">We are no able to connect with our services</string>
+    <string name="client_error">Something is wrong</string>
+    <string name="server_error">Something is wrong with our services, if the error persists contact support</string>
+    <string name="empty_content">We dont get anything</string>
+    <string name="error_icon">Error icon</string>
 </resources>

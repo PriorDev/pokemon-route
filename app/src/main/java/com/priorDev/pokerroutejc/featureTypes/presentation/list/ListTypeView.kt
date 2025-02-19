@@ -13,9 +13,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.priorDev.pokerroutejc.core.CommonStates
-import com.priorDev.pokerroutejc.core.components.CommonStatesView
-import com.priorDev.pokerroutejc.core.components.ItemType
-import com.priorDev.pokerroutejc.core.components.PreviewTemplate
+import com.priorDev.pokerroutejc.presentation.reusable.CommonStatesView
+import com.priorDev.pokerroutejc.presentation.reusable.ItemType
+import com.priorDev.pokerroutejc.presentation.reusable.PreviewTemplate
 import com.priorDev.pokerroutejc.utils.Routes
 import com.priorDev.pokerroutejc.featureTypes.domain.TypeData
 import com.priorDev.pokerroutejc.utils.GlobalEventChannel

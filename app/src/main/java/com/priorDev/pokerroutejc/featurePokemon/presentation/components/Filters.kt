@@ -15,7 +15,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.priorDev.pokerroutejc.R
-import com.priorDev.pokerroutejc.core.components.ItemFilter
+import com.priorDev.pokerroutejc.presentation.reusable.ItemFilter
 import com.priorDev.pokerroutejc.featurePokemon.domain.MoveDetailsData
 import com.priorDev.pokerroutejc.featurePokemon.presentation.details.PokemonDetailsEvents
 import com.priorDev.pokerroutejc.featurePokemon.presentation.details.PokemonDetailsStates

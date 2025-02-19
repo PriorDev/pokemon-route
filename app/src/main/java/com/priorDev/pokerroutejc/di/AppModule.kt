@@ -6,6 +6,7 @@ import com.apollographql.apollo3.ApolloClient
 import com.priorDev.pokerroutejc.data.database.MyDataBase
 import com.priorDev.pokerroutejc.data.network.EndPoints
 import com.priorDev.pokerroutejc.data.network.INetWorkService
+import com.priorDev.pokerroutejc.data.network.INetworkCaller
 import com.priorDev.pokerroutejc.data.network.KtorNetworkServiceImp
 import com.priorDev.pokerroutejc.data.network.MakeKtorNetworkCall
 import com.priorDev.pokerroutejc.utils.GlobalEventChannel
@@ -22,6 +23,7 @@ import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.serialization.kotlinx.json.DefaultJson
 import io.ktor.serialization.kotlinx.json.json
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.serialization.json.Json
 import retrofit2.Retrofit
@@ -88,5 +90,13 @@ object AppModule {
             client = client,
             makeKtorNetworkCall = caller
         )
+    }
+
+    @Provides
+    @Singleton
+    fun provideNetworkCaller(
+        dispatcher: CoroutineDispatcher
+    ): INetworkCaller {
+        return MakeKtorNetworkCall(dispatcher)
     }
 }

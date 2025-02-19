@@ -22,7 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.priorDev.pokerroutejc.core.components.ItemType
+import com.priorDev.pokerroutejc.presentation.reusable.ItemType
 import com.priorDev.pokerroutejc.featurePokemon.presentation.details.PokemonDetailsStates
 import com.priorDev.pokerroutejc.R
 

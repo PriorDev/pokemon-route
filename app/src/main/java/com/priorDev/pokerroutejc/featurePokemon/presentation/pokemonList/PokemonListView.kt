@@ -26,8 +26,8 @@ import androidx.paging.PagingState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.priorDev.pokerroutejc.core.CommonStates
-import com.priorDev.pokerroutejc.core.components.DisposableMessage
-import com.priorDev.pokerroutejc.core.components.PreviewTemplate
+import com.priorDev.pokerroutejc.presentation.reusable.DisposableMessage
+import com.priorDev.pokerroutejc.presentation.reusable.PreviewTemplate
 import com.priorDev.pokerroutejc.featurePokemon.domain.PokemonNameData
 import com.priorDev.pokerroutejc.featurePokemon.presentation.components.ItemPokemonName
 import com.priorDev.pokerroutejc.presentation.reusable.PullToRefreshBox

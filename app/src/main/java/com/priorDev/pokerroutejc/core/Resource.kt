@@ -1,6 +1,7 @@
 package com.priorDev.pokerroutejc.core
 
 import com.priorDev.pokerroutejc.data.network.NetworkError
+import com.priorDev.pokerroutejc.presentation.core.UiMessages
 
 sealed class Resource<T> {
     class Success<T>(val data: T?) : Resource<T>()

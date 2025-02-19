@@ -9,7 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.priorDev.pokerroutejc.BottomNavBar
 import com.priorDev.pokerroutejc.R
-import com.priorDev.pokerroutejc.core.NavBottomItems
+import com.priorDev.pokerroutejc.presentation.core.NavBottomItems
 import com.priorDev.pokerroutejc.utils.Routes
 import com.priorDev.pokerroutejc.featurePokemon.presentation.pokemonNavigation
 import com.priorDev.pokerroutejc.featureTypes.presentation.typesNavigation

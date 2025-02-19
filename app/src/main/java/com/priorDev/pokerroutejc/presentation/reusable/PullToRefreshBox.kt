@@ -9,6 +9,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
+@Deprecated(
+    message = "DisposableMessage is deprecated",
+    replaceWith = ReplaceWith("ScreenTemplate")
+)
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun PullToRefreshBox(
