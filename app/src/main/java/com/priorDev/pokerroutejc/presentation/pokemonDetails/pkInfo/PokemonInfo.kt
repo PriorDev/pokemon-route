@@ -16,8 +16,8 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,16 +31,15 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.priorDev.pokerroutejc.R
-import com.priorDev.pokerroutejc.presentation.reusable.PreviewTemplate
 import com.priorDev.pokerroutejc.domain.pokemon.models.AbilityData
 import com.priorDev.pokerroutejc.domain.pokemon.models.AbilityDetailsData
 import com.priorDev.pokerroutejc.domain.pokemon.models.PokemonData
-import com.priorDev.pokerroutejc.ui.Routes
-import com.priorDev.pokerroutejc.presentation.pokemonDetails.PokemonDetailsEvents
-import com.priorDev.pokerroutejc.presentation.pokemonDetails.PokemonDetailsStates
 import com.priorDev.pokerroutejc.domain.types.models.TypeData
 import com.priorDev.pokerroutejc.domain.types.models.getColor
-import com.priorDev.pokerroutejc.utils.GlobalEventChannelImp
+import com.priorDev.pokerroutejc.presentation.pokemonDetails.PokemonDetailsEvents
+import com.priorDev.pokerroutejc.presentation.pokemonDetails.PokemonDetailsStates
+import com.priorDev.pokerroutejc.presentation.reusable.PreviewTemplate
+import com.priorDev.pokerroutejc.ui.Routes
 
 @Composable
 fun PokemonInfo(

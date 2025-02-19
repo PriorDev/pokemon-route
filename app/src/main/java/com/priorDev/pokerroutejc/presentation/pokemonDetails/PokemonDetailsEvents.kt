@@ -20,5 +20,5 @@ sealed class PokemonDetailsEvents {
     data class Navigate(
         val route: Routes,
         val navOptions: NavOptionsBuilder.() -> Unit = {}
-    ): PokemonDetailsEvents()
+    ) : PokemonDetailsEvents()
 }

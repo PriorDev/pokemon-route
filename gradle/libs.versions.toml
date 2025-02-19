@@ -19,7 +19,6 @@ navigationComposeVersion = "2.8.4"
 pagingRuntimeKtxVersion = "3.3.2"
 paletteVersion = "1.0.0"
 roomKtxVersion = "2.6.1"
-runtimeLivedataVersion = "1.7.2"
 serialization = "1.6.3"
 ktor = "2.0.1"
 jupiter = '5.9.3'
@@ -61,7 +60,6 @@ palette = { module = "androidx.palette:palette", version.ref = "paletteVersion" 
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomKtxVersion" }
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomKtxVersion" }
 room-paging = { module = "androidx.room:room-paging", version.ref = "roomKtxVersion" }
-runtime-livedata = { module = "androidx.compose.runtime:runtime-livedata", version.ref = "runtimeLivedataVersion" }
 ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose_ui_version"}
 compose-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "compose_ui_version"}
 

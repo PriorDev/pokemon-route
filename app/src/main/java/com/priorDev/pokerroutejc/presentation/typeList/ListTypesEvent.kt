@@ -8,5 +8,5 @@ sealed class ListTypesEvent {
     data class Navigate(
         val route: Routes,
         val navOptions: NavOptionsBuilder.() -> Unit = {}
-    ): ListTypesEvent()
+    ) : ListTypesEvent()
 }

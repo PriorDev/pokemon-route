@@ -46,7 +46,7 @@ val kPokemonModule = module {
 
     single<PokemonApolloService> {
         PokemonApolloServiceImp(
-            apolloClient = get()
+            apolloCaller = get()
         )
     }
 

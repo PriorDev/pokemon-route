@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.room.Room
 import com.apollographql.apollo3.ApolloClient
 import com.priorDev.pokerroutejc.data.database.MyDataBase
+import com.priorDev.pokerroutejc.data.network.ApolloCaller
+import com.priorDev.pokerroutejc.data.network.ApolloCallerImp
 import com.priorDev.pokerroutejc.data.network.NetworkCaller
 import com.priorDev.pokerroutejc.data.network.NetworkCallerImp
 import com.priorDev.pokerroutejc.data.network.NetworkService
@@ -74,5 +76,11 @@ val kAppModule = module {
         ApolloClient.Builder()
             .serverUrl(EndPoints.QL_BASE_URL)
             .build()
+    }
+
+    single<ApolloCaller> {
+        ApolloCallerImp(
+            apolloClient = get()
+        )
     }
 }

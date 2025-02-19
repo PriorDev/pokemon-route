@@ -12,13 +12,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.priorDev.pokerroutejc.presentation.reusable.ItemType
-import com.priorDev.pokerroutejc.presentation.reusable.PreviewTemplate
-import com.priorDev.pokerroutejc.ui.Routes
 import com.priorDev.pokerroutejc.domain.types.models.TypeData
 import com.priorDev.pokerroutejc.presentation.core.ScreenStates
 import com.priorDev.pokerroutejc.presentation.core.ScreenTemplate
-import com.priorDev.pokerroutejc.utils.GlobalEventChannelImp
+import com.priorDev.pokerroutejc.presentation.reusable.ItemType
+import com.priorDev.pokerroutejc.presentation.reusable.PreviewTemplate
+import com.priorDev.pokerroutejc.ui.Routes
 
 @Composable
 fun ListTypeScreen(

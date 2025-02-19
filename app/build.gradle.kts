@@ -81,7 +81,6 @@ dependencies {
     //lifecycle
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.runtime.compose)
-    implementation(libs.runtime.livedata)
     implementation(libs.kotlinx.serialization.json)
     //Nav Controller
     implementation(libs.navigation.compose)

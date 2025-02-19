@@ -1,7 +1,6 @@
 package com.priorDev.pokerroutejc.presentation.pokemonList
 
 import androidx.navigation.NavOptionsBuilder
-import com.priorDev.pokerroutejc.presentation.typeList.ListTypesEvent
 import com.priorDev.pokerroutejc.ui.Routes
 
 sealed class PokemonListEvent {
@@ -11,5 +10,5 @@ sealed class PokemonListEvent {
     data class Navigate(
         val route: Routes,
         val navOptions: NavOptionsBuilder.() -> Unit = {}
-    ): PokemonListEvent()
+    ) : PokemonListEvent()
 }
