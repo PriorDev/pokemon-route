@@ -11,52 +11,50 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.priorDev.pokerroutejc.core.NavBottomItems
 import com.priorDev.pokerroutejc.utils.Routes
 import com.priorDev.pokerroutejc.utils.navigateToTab
 import com.priorDev.pokerroutejc.utils.toRoute
 
 @Composable
 fun BottomNavBar(
-    navController: NavHostController
+    navController: NavHostController,
+    bottomItems: List<NavBottomItems<out Routes>>,
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
     val selectedTab = currentDestination?.parent?.route.orEmpty()
 
     NavigationBar {
-        NavigationBarItem(
-            selected = selectedTab == Routes.TypeNav.serializer().descriptor.toRoute(),
-            onClick = {
-                navController.navigateToTab(Routes.TypeNav)
-            },
-            icon = {
-                Icon(
-                    painter = painterResource(R.drawable.outline_radio_button_checked_24),
-                    contentDescription = stringResource(R.string.types)
-                )
-            },
-            label = {
-                Text(text = stringResource(R.string.types))
-            }
-        )
-
-        NavigationBarItem(
-            selected = selectedTab == Routes.PokemonNav.serializer().descriptor.toRoute(),
-            onClick = {
-                navController.navigateToTab(Routes.PokemonNav)
-            },
-            icon = {
-                Icon(
-                    painter = painterResource(R.drawable.icon_pokeball),
-                    contentDescription = stringResource(R.string.pokemons),
-                    modifier = Modifier.size(24.dp)
-                )
-            },
-            label = {
-                Text(text = stringResource(R.string.pokemons))
-            }
-        )
+        bottomItems.forEach { item ->
+            val isSelected = selectedTab == item.strRoute
+            NavigationBarItem(
+                selected = isSelected,
+                onClick = {
+                    if(isSelected) {
+                        navController.navigate(item.route) {
+                            popUpTo(navController.graph.findStartDestination().id)
+                            launchSingleTop = true
+                        }
+                    } else {
+                        navController.navigateToTab(item.route)
+                    }
+                },
+                icon = {
+                    Icon(
+                        modifier = Modifier.size(24.dp),
+                        painter = painterResource(item.icon),
+                        contentDescription = stringResource(R.string.go_to_tab, item.title)
+                    )
+                },
+                label = {
+                    Text(text = item.title)
+                }
+            )
+        }
     }
 }

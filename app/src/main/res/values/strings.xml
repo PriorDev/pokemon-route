@@ -31,4 +31,5 @@
     <string name="error_trying_to_reach_remote_source">Error on trying to reach remote source, check your internet connection</string>
     <string name="unexpected_error">Unexpected error</string>
     <string name="search_pokemon_by_name">Search pokemon by name</string>
+    <string name="go_to_tab">Go to tab %s</string>
 </resources>
