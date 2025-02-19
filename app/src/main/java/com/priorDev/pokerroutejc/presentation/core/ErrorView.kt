@@ -84,7 +84,7 @@ fun ErrorView(
     }
 }
 
-class NetworkErrorProvider: PreviewParameterProvider<NetworkError> {
+class NetworkErrorProvider : PreviewParameterProvider<NetworkError> {
     override val values: Sequence<NetworkError>
         get() = sequenceOf(
             NetworkError.ClientError("Client error"),

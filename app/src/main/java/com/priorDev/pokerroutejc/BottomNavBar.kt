@@ -15,7 +15,6 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.priorDev.pokerroutejc.presentation.core.NavBottomItems
-import com.priorDev.pokerroutejc.utils.Routes
 import com.priorDev.pokerroutejc.utils.navigateToTab
 
 @Composable

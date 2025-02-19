@@ -20,7 +20,8 @@ class KtorTypeNetworkServices @Inject constructor(
 
     override suspend fun getType(typeId: Int): NetworkResource {
         val requestData = NetworkRequestData(
-            url = EndPoints.TYPES + "/$typeId"
+            url = EndPoints.TYPES,
+            segments = listOf(typeId.toString())
         )
 
         return networkService.get(requestData)
