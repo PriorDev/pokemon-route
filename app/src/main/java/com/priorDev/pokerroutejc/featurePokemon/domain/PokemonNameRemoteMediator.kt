@@ -4,7 +4,7 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
-import com.priorDev.pokerroutejc.core.MakeNetworkCall
+import com.priorDev.pokerroutejc.data.network.MakeRetrofitNetworkCall
 import com.priorDev.pokerroutejc.core.Resource
 import com.priorDev.pokerroutejc.featurePokemon.data.PokemonService
 import com.priorDev.pokerroutejc.featurePokemon.data.database.PokemonDao
@@ -18,7 +18,7 @@ import java.time.Duration
 class PokemonNameRemoteMediator(
     private val pokemonService: PokemonService,
     private val pokemonDao: PokemonDao,
-    private val makeNetworkCall: MakeNetworkCall,
+    private val makeRetrofitNetworkCall: MakeRetrofitNetworkCall,
 ) : RemoteMediator<Int, PokemonNameEntity>() {
 
     private var isFirstTime = true
@@ -58,7 +58,7 @@ class PokemonNameRemoteMediator(
             ?: state.lastItemOrNull()?.id
             ?: 0
 
-        val response = makeNetworkCall {
+        val response = makeRetrofitNetworkCall {
             pokemonService.getAllPokemons(
                 urlLimitOffset = "pokemon?offset=$offset&limit=${state.config.pageSize}"
             )
@@ -68,7 +68,7 @@ class PokemonNameRemoteMediator(
             is Resource.Loading -> MediatorResult.Error(Throwable("Unknown error"))
 
             is Resource.Error -> {
-                MediatorResult.Error(response.throwable)
+                MediatorResult.Error(response.throwable ?: Throwable("Unknown error"))
             }
 
             is Resource.Success -> {

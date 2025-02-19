@@ -16,13 +16,11 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.priorDev.pokerroutejc.core.CommonStates
 import com.priorDev.pokerroutejc.core.EnumColorTypes
 import com.priorDev.pokerroutejc.core.components.CommonStatesView
@@ -32,7 +30,6 @@ import com.priorDev.pokerroutejc.featurePokemon.presentation.components.PokemonI
 import com.priorDev.pokerroutejc.featurePokemon.presentation.components.SpritesView
 import com.priorDev.pokerroutejc.featurePokemon.presentation.components.WeaknessesAndStrengthView
 import com.priorDev.pokerroutejc.featureTypes.domain.getColor
-import com.priorDev.pokerroutejc.ui.theme.md_theme_light_primary
 import kotlinx.coroutines.launch
 
 @Composable

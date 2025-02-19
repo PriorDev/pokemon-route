@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.apollographql.apollo3.ApolloClient
 import com.priorDev.pokerroutejc.data.database.MyDataBase
+import com.priorDev.pokerroutejc.data.network.EndPoints
 import com.priorDev.pokerroutejc.utils.GlobalEventChannel
 import com.priorDev.pokerroutejc.utils.IGlobalEventChannel
 import dagger.Module
@@ -29,7 +30,7 @@ object AppModule {
     @Provides
     fun providerRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://pokeapi.co/api/v2/")
+            .baseUrl(EndPoints.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
@@ -51,7 +52,7 @@ object AppModule {
     @Singleton
     fun providesApolloClient(): ApolloClient {
         return ApolloClient.Builder()
-            .serverUrl("https://beta.pokeapi.co/graphql/v1beta")
+            .serverUrl(EndPoints.QL_BASE_URL)
             .build()
     }
 

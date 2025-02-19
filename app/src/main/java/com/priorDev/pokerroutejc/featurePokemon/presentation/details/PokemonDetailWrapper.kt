@@ -3,9 +3,7 @@ package com.priorDev.pokerroutejc.featurePokemon.presentation.details
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavType
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
 import com.priorDev.pokerroutejc.utils.Routes
 
 fun NavGraphBuilder.pokemonDetailWrapper() {

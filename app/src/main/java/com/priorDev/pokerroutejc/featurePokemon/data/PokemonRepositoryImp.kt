@@ -1,6 +1,6 @@
 package com.priorDev.pokerroutejc.featurePokemon.data
 
-import com.priorDev.pokerroutejc.core.MakeNetworkCall
+import com.priorDev.pokerroutejc.data.network.MakeRetrofitNetworkCall
 import com.priorDev.pokerroutejc.core.Resource
 import com.priorDev.pokerroutejc.featurePokemon.data.database.PokemonDao
 import com.priorDev.pokerroutejc.featurePokemon.data.database.toDB
@@ -17,7 +17,7 @@ import javax.inject.Inject
 class PokemonRepositoryImp @Inject constructor(
     private val service: PokemonService,
     private val dao: PokemonDao,
-    private val makeNetworkCall: MakeNetworkCall
+    private val makeRetrofitNetworkCall: MakeRetrofitNetworkCall
 ) : PokemonRepository {
     override suspend fun searchPokemonNameByMatch(name: String): Flow<Resource<List<PokemonNameData>>> {
         return flow {
@@ -36,7 +36,7 @@ class PokemonRepositoryImp @Inject constructor(
             val limit = 1281
 
             while (existsNextPage) {
-                val response = makeNetworkCall {
+                val response = makeRetrofitNetworkCall {
                     service.getAllPokemons(
                         urlLimitOffset = "pokemon?offset=$offset&limit=$limit"
                     )
@@ -70,7 +70,7 @@ class PokemonRepositoryImp @Inject constructor(
     override suspend fun getPokemon(pokemonName: String): Flow<Resource<PokemonData>> {
         return flow {
             emit(Resource.Loading())
-            val response = makeNetworkCall {
+            val response = makeRetrofitNetworkCall {
                 service.getPokemon(pokemonName)
             }
 
@@ -91,7 +91,7 @@ class PokemonRepositoryImp @Inject constructor(
         return flow {
             emit(Resource.Loading())
 
-            val response = makeNetworkCall {
+            val response = makeRetrofitNetworkCall {
                 service.getAllPokemons("pokemon?offset=$offSet&limit=$PAGINATION_POKEMON")
             }
 
@@ -113,7 +113,7 @@ class PokemonRepositoryImp @Inject constructor(
             emit(Resource.Loading())
 
             moves.forEach { move ->
-                val response = makeNetworkCall {
+                val response = makeRetrofitNetworkCall {
                     service.getMoveDetails(move.id)
                 }
 
@@ -131,7 +131,7 @@ class PokemonRepositoryImp @Inject constructor(
     override suspend fun getAbility(ability: String): Flow<Resource<AbilityDetailsData>> = flow {
         emit(Resource.Loading())
 
-        val response = makeNetworkCall {
+        val response = makeRetrofitNetworkCall {
             service.getAbility(ability)
         }
 

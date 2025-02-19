@@ -6,8 +6,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.priorDev.pokerroutejc.utils.Routes
 
-inline fun <reified T: Routes.TypeDetails>NavGraphBuilder.detailsTypeWrapper() {
-
+inline fun <reified T : Routes.TypeDetails>NavGraphBuilder.detailsTypeWrapper() {
     composable<T> {
         val viewModel: DetailsTypeViewModel = hiltViewModel()
         val states = viewModel.states.collectAsStateWithLifecycle()

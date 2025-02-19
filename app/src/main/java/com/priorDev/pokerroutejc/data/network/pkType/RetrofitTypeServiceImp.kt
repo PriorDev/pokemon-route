@@ -1,17 +1,22 @@
 package com.priorDev.pokerroutejc.data.network.pkType
 
-import com.priorDev.pokerroutejc.data.network.pkType.response.ContainerTypeResponse
+import com.priorDev.pokerroutejc.data.network.NetworkError
+import com.priorDev.pokerroutejc.data.network.NetworkResource
 import com.priorDev.pokerroutejc.data.network.pkType.response.TypeDetailsResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class TypeServiceImp @Inject constructor(
+@Deprecated(
+    message = "Retrofit is not longer being used since I migrate to Ktor",
+    replaceWith = ReplaceWith("KtorNetworkServiceImp")
+)
+class RetrofitTypeServiceImp @Inject constructor(
     private val api: TypeApi,
-) : TypeService {
-    override suspend fun getAllTypes(): ContainerTypeResponse? {
+) : ITypeService {
+    override suspend fun getAllTypes(): NetworkResource {
         return withContext(Dispatchers.IO) {
-            api.getAllTypes().body()
+            NetworkResource.Fail(NetworkError.UnknownError)
         }
     }
 

@@ -32,4 +32,6 @@
     <string name="unexpected_error">Unexpected error</string>
     <string name="search_pokemon_by_name">Search pokemon by name</string>
     <string name="go_to_tab">Go to tab %s</string>
+    <string name="unknown_error">Honestly we do not know what is happening LOL</string>
+    <string name="unable_to_connect_error">We are no able to connect with our services</string>
 </resources>

@@ -38,24 +38,24 @@ class PokemonDetailsViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             val navArg = savedStateHandle.toRoute<Routes.PkDetails>()
-                repository.getPokemon(navArg.pokemonName).collect { resource ->
-                    when (resource) {
-                        is Resource.Error -> showErrorMessage(resource.uiMessages)
-                        is Resource.Loading -> handleLoadingWheel(resource.isLoading)
-                        is Resource.Success -> {
-                            _states.value = states.value.copy(pokemon = resource.data!!)
-                        }
+            repository.getPokemon(navArg.pokemonName).collect { resource ->
+                when (resource) {
+                    is Resource.Error -> showErrorMessage(resource.uiMessages)
+                    is Resource.Loading -> handleLoadingWheel(resource.isLoading)
+                    is Resource.Success -> {
+                        _states.value = states.value.copy(pokemon = resource.data!!)
                     }
                 }
-
-                launch {
-                    getWeaknesses()
-                }
-
-                launch {
-                    getMoves()
-                }
             }
+
+            launch {
+                getWeaknesses()
+            }
+
+            launch {
+                getMoves()
+            }
+        }
     }
 
     fun onEvent(event: PokemonDetailsEvents) {

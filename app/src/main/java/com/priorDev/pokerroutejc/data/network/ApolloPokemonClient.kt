@@ -9,11 +9,11 @@ import com.priorDev.pokerroutejc.featurePokemon.domain.PokemonNameData
 import com.priorDev.pokerroutejc.featurePokemon.domain.toDomain
 import javax.inject.Inject
 
+@Suppress("TooGenericExceptionCaught")
 class ApolloPokemonClient @Inject constructor(
     private val apolloClient: ApolloClient
-): IPokemonNameClient {
+) : IPokemonNameClient {
     override suspend fun getPokemonByName(name: String): Resource<List<PokemonNameData>> {
-
         return try {
             Resource.Success(
                 apolloClient

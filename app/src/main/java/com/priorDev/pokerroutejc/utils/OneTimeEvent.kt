@@ -1,7 +1,6 @@
 package com.priorDev.pokerroutejc.utils
 
 import androidx.navigation.NavOptionsBuilder
-import kotlinx.serialization.Serializable
 
 sealed interface OneTimeEvent {
     data class OnNavigate(

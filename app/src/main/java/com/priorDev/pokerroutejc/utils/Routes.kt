@@ -13,10 +13,10 @@ sealed class Routes {
     data object PokemonNav : Routes()
 
     @Serializable
-    data object TypesList: Routes()
+    data object TypesList : Routes()
 
     @Serializable
-    open class TypeDetails (val typeId: Int): Routes() {
+    open class TypeDetails(val typeId: Int) : Routes() {
         @Serializable
         data class TypeTab(val id: Int) : TypeDetails(id)
 
@@ -25,10 +25,10 @@ sealed class Routes {
     }
 
     @Serializable
-    data object PokemonList: Routes()
+    data object PokemonList : Routes()
 
     @Serializable
-    data object PkSearch: Routes()
+    data object PkSearch : Routes()
 
     @Serializable
     data class PkDetails(val pokemonName: String) : Routes()

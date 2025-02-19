@@ -10,7 +10,7 @@ fun SerialDescriptor.toRoute(): String {
         .replace(")", "")
 }
 
-fun <T: Routes>NavController.navigateToTab(routeObj: T) {
+fun <T : Routes>NavController.navigateToTab(routeObj: T) {
     navigate(routeObj) {
         popUpTo(graph.findStartDestination().id) {
             saveState = true

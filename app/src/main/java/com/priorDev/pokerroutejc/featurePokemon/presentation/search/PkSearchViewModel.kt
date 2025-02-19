@@ -24,7 +24,7 @@ class PkSearchViewModel @Inject constructor(
     private var searchJob: Job? = null
 
     fun onEvent(event: PkSearchEvent) {
-        when(event) {
+        when (event) {
             is PkSearchEvent.OnSearch -> searchPokemonByName(event.query.lowercase())
 
             PkSearchEvent.OnNavigateUp -> globalEventChannel.navigateUp()
@@ -43,7 +43,7 @@ class PkSearchViewModel @Inject constructor(
                 if (name.isBlank()) {
                     _pokemonNames.clear()
                 } else {
-                    when(val result = pokemonNameClient.getPokemonByName(name)) {
+                    when (val result = pokemonNameClient.getPokemonByName(name)) {
                         is Resource.Error -> {
                             // Do nothing
                         }
@@ -54,8 +54,9 @@ class PkSearchViewModel @Inject constructor(
                         is Resource.Loading -> {
                             // Do nothing
                         }
-                    }                    }
+                    }
                 }
+            }
         }
     }
 }

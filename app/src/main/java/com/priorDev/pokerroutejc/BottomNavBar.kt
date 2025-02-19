@@ -11,14 +11,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.priorDev.pokerroutejc.core.NavBottomItems
 import com.priorDev.pokerroutejc.utils.Routes
 import com.priorDev.pokerroutejc.utils.navigateToTab
-import com.priorDev.pokerroutejc.utils.toRoute
 
 @Composable
 fun BottomNavBar(
@@ -35,7 +33,7 @@ fun BottomNavBar(
             NavigationBarItem(
                 selected = isSelected,
                 onClick = {
-                    if(isSelected) {
+                    if (isSelected) {
                         navController.navigate(item.route) {
                             popUpTo(navController.graph.findStartDestination().id)
                             launchSingleTop = true

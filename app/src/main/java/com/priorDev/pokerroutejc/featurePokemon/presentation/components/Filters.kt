@@ -9,19 +9,18 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.priorDev.pokerroutejc.R
 import com.priorDev.pokerroutejc.core.components.ItemFilter
 import com.priorDev.pokerroutejc.featurePokemon.domain.MoveDetailsData
 import com.priorDev.pokerroutejc.featurePokemon.presentation.details.PokemonDetailsEvents
 import com.priorDev.pokerroutejc.featurePokemon.presentation.details.PokemonDetailsStates
 import com.priorDev.pokerroutejc.featureTypes.domain.TypeData
 import com.priorDev.pokerroutejc.featureTypes.domain.getColor
-import com.priorDev.pokerroutejc.R
 
 @Composable
 fun Filters(

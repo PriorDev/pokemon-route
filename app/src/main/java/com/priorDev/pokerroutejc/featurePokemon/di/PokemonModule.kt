@@ -3,7 +3,7 @@ package com.priorDev.pokerroutejc.featurePokemon.di
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import com.priorDev.pokerroutejc.core.MakeNetworkCall
+import com.priorDev.pokerroutejc.data.network.MakeRetrofitNetworkCall
 import com.priorDev.pokerroutejc.data.database.MyDataBase
 import com.priorDev.pokerroutejc.featurePokemon.data.PokemonService
 import com.priorDev.pokerroutejc.featurePokemon.data.database.PokemonDao
@@ -48,7 +48,7 @@ object PokemonModule {
     fun providerPokemonPager(
         pokemonService: PokemonService,
         pokemonDao: PokemonDao,
-        makeNetworkCall: MakeNetworkCall
+        makeRetrofitNetworkCall: MakeRetrofitNetworkCall
     ): Pager<Int, PokemonNameEntity> {
         return Pager(
             config = PagingConfig(
@@ -59,7 +59,7 @@ object PokemonModule {
             remoteMediator = PokemonNameRemoteMediator(
                 pokemonService = pokemonService,
                 pokemonDao = pokemonDao,
-                makeNetworkCall = makeNetworkCall
+                makeRetrofitNetworkCall = makeRetrofitNetworkCall
             ),
             pagingSourceFactory = {
                 pokemonDao.pagingSource()

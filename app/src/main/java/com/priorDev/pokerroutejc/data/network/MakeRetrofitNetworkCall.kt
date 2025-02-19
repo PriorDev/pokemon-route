@@ -1,12 +1,18 @@
-package com.priorDev.pokerroutejc.core
+package com.priorDev.pokerroutejc.data.network
 
 import com.priorDev.pokerroutejc.R
+import com.priorDev.pokerroutejc.core.Resource
+import com.priorDev.pokerroutejc.core.UiMessages
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import javax.inject.Inject
 
-class MakeNetworkCall @Inject constructor(
+@Deprecated(
+    message = "This MakeNetworkCall is not longer being used since I migrate to Ktor",
+    replaceWith = ReplaceWith("KtorNetworkServiceImp")
+)
+class MakeRetrofitNetworkCall @Inject constructor(
     private val dispatcher: CoroutineDispatcher
 ) {
     @Suppress("TooGenericExceptionCaught")

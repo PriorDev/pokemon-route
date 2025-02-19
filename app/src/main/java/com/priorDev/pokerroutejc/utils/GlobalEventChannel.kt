@@ -32,7 +32,6 @@ object GlobalEventChannel : IGlobalEventChannel {
         }
     }
 
-
     override fun navigateUp() {
         coroutineScope.launch {
             _eventChannel.send(OneTimeEvent.OnNavigateUp)
