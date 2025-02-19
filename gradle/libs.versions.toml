@@ -1,6 +1,7 @@
 [versions]
 accompanistSystemuicontrollerVersion = "0.30.0"
 activityComposeVersion = "1.9.2"
+apolloRuntimeVersion = "3.7.3"
 coilComposeVersion = "2.6.0"
 coreKtxVersion = "1.13.1"
 espressoCoreVersion = "3.6.1"
@@ -25,6 +26,7 @@ serialization = "1.6.3"
 kotlin = "1.9.0"
 
 [libraries]
+apollo-runtime = { module = "com.apollographql.apollo3:apollo-runtime", version.ref = "apolloRuntimeVersion" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization"}
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSystemuicontrollerVersion" }
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityComposeVersion" }

@@ -117,5 +117,5 @@ dependencies {
     // Detekt
     detektPlugins(libs.bundles.detekt)
     //Apollo
-    implementation("com.apollographql.apollo3:apollo-runtime:3.7.3")
+    implementation(libs.apollo.runtime)
 }
