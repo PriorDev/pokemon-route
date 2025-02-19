@@ -3,14 +3,15 @@ plugins {
     kotlin("android")
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
+    id("io.gitlab.arturbosch.detekt") version "1.23.1"
 }
 
 android {
-    namespace = "com.prior_dev.pokerroutejc"
+    namespace = "com.priorDev.pokerroutejc"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.prior_dev.pokerroutejc"
+        applicationId = "com.priorDev.pokerroutejc"
         minSdk = 29
         targetSdk = 33
         versionCode = 4
@@ -46,6 +47,12 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+}
+
+detekt {
+    toolVersion = "1.23.1" // Use the version that matches the plugin
+    buildUponDefaultConfig = true // Start with default config
+    config.setFrom(files("../detekt.yml"))
 }
 
 dependencies {
@@ -98,4 +105,6 @@ dependencies {
     // Paging
     implementation(libs.paging.runtime.ktx)
     implementation(libs.paging.compose)
+    // Detekt
+    detektPlugins(libs.bundles.detekt)
 }
