@@ -4,6 +4,7 @@ import com.priorDev.pokerroutejc.data.network.pokemon.responses.EvolutionRespons
 import com.priorDev.pokerroutejc.domain.pokemon.models.AbilityDetailsData
 import com.priorDev.pokerroutejc.domain.pokemon.models.PokemonData
 import com.priorDev.pokerroutejc.domain.types.models.DamageRelationsData
+import com.priorDev.pokerroutejc.presentation.pokemonDetails.moves.MoveFilterModel
 
 data class PokemonDetailsStates(
     val isLoading: Boolean = true,
@@ -16,5 +17,6 @@ data class PokemonDetailsStates(
     val visibleAbilityDetails: AbilityDetailsData? = null,
     val isAbilityLoading: Boolean? = null,
     val textSearch: String = "",
-    val evolutions: Map<Int?, List<EvolutionResponse>> = emptyMap()
+    val evolutions: Map<Int?, List<EvolutionResponse>> = emptyMap(),
+    val moveFilters: List<MoveFilterModel> = emptyList()
 )

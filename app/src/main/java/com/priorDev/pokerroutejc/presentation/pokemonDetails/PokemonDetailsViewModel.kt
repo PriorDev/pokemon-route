@@ -1,6 +1,5 @@
 package com.priorDev.pokerroutejc.presentation.pokemonDetails
 
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -15,8 +14,10 @@ import com.priorDev.pokerroutejc.domain.pokemon.models.MoveDetailsData
 import com.priorDev.pokerroutejc.data.PokemonRepo
 import com.priorDev.pokerroutejc.domain.pokemon.useCases.PokemonUseCases
 import com.priorDev.pokerroutejc.domain.types.models.DamageRelationsData
+import com.priorDev.pokerroutejc.presentation.pokemonDetails.moves.MoveFilterModel
 import com.priorDev.pokerroutejc.ui.Routes
 import com.priorDev.pokerroutejc.utils.GlobalEventChannel
+import com.priorDev.pokerroutejc.utils.orZero
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -81,8 +82,7 @@ class PokemonDetailsViewModel(
         when (event) {
             PokemonDetailsEvents.OnDismiss -> onDismiss()
             is PokemonDetailsEvents.OnGenerationSelect -> onGenerationSelect(event.generation)
-            PokemonDetailsEvents.OnToggleFilterVisibility -> onToggleFilterVisibility()
-            is PokemonDetailsEvents.OnTypeSelect -> onTypeSelect(event.typeId)
+            is PokemonDetailsEvents.OnTypeCheck -> onTypeCheck(event.filter)
             is PokemonDetailsEvents.OnAbilityClick -> onAbilityClick(event.ability)
             PokemonDetailsEvents.OnAbilityDismiss -> onAbilityDismiss()
             is PokemonDetailsEvents.OnSearchTextChange -> onSearchTextChanged(event.text)
@@ -138,19 +138,38 @@ class PokemonDetailsViewModel(
         filterMoves()
     }
 
-    private fun onTypeSelect(typeId: Int) {
-        _states.value = states.value.copy(
-            selectedTypeId = typeId
-        )
+    private fun onTypeCheck(filter: MoveFilterModel) {
+        val updateFilter = _states.value.moveFilters.map {
+            if (it.type.id == filter.type.id) {
+                it.copy(checked = !it.checked)
+            } else {
+                it
+            }
+        }
 
-        filterMoves()
-    }
+        _states.update {
+            it.copy(moveFilters = updateFilter)
+        }
 
-    private fun onToggleFilterVisibility() {
-        _states.value = states.value.let { states ->
-            states.copy(
-                isFiltersExpanded = !states.isFiltersExpanded
-            )
+        if (updateFilter.any { it.checked }) {
+            println("----|update move list")
+            _moves
+                .flatMap { it.value }
+                .forEach { moveDetails ->
+                    updateFilter
+                        .firstOrNull { it.type.id == moveDetails.type?.id }
+                        ?.let { filter ->
+                            println("----|update move list ${moveDetails.name} value ${filter.checked}")
+                            moveDetails.visible = filter.checked
+                        }
+                }
+        } else {
+            println("---|show all moves")
+            _moves
+                .flatMap { it.value }
+                .forEach { moveDetails ->
+                    moveDetails.visible = true
+                }
         }
     }
 
@@ -199,9 +218,26 @@ class PokemonDetailsViewModel(
         when (response) {
             is Resource.Error -> TODO()
             is Resource.Success -> {
-                _moves.putAll(
-                    response.data.orEmpty()
-                )
+                _moves.putAll(response.data.orEmpty())
+
+                val types = response.data
+                    ?.asSequence()
+                    ?.flatMap { it.value }
+                    ?.mapNotNull { it.type }
+                    ?.distinct()
+                    ?.sortedBy { it.name }
+                    ?.map {
+                        MoveFilterModel(
+                            checked = false,
+                            type = it
+                        )
+                    }
+                    .orEmpty()
+                    .toList()
+
+                _states.update {
+                    it.copy(moveFilters = types)
+                }
             }
         }
     }

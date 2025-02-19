@@ -6,6 +6,7 @@ import com.priorDev.pokerroutejc.domain.types.models.toModel
 import com.priorDev.pokerroutejc.utils.orZero
 
 data class MoveDetailsData(
+    var visible: Boolean = true,
     val learnMethod: String,
     val name: String,
     val accuracy: Int,

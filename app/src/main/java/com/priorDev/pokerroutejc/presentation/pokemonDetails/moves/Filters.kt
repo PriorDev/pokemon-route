@@ -61,32 +61,32 @@ fun TypeFilters(
     types: List<TypeData>,
     onEvents: (PokemonDetailsEvents) -> Unit
 ) {
-    LazyRow(
-        horizontalArrangement = Arrangement.spacedBy(4.dp),
-        modifier = Modifier
-            .padding(8.dp)
-    ) {
-        item {
-            ItemFilter(
-                text = stringResource(id = R.string.all),
-                isSelected = states.selectedTypeId == 0,
-                onClick = {
-                    onEvents(PokemonDetailsEvents.OnTypeSelect(0))
-                }
-            )
-        }
-        items(types) { type ->
-            ItemFilter(
-                text = type.name,
-                isSelected = type.id == states.selectedTypeId,
-                selectedBackGroundColor = type.getColor(),
-                selectedTextColor = Color.Black,
-                onClick = {
-                    onEvents(PokemonDetailsEvents.OnTypeSelect(type.id))
-                }
-            )
-        }
-    }
+//    LazyRow(
+//        horizontalArrangement = Arrangement.spacedBy(4.dp),
+//        modifier = Modifier
+//            .padding(8.dp)
+//    ) {
+//        item {
+//            ItemFilter(
+//                text = stringResource(id = R.string.all),
+//                isSelected = states.selectedTypeId == 0,
+//                onClick = {
+//                    onEvents(PokemonDetailsEvents.OnTypeCheck(0))
+//                }
+//            )
+//        }
+//        items(types) { type ->
+//            ItemFilter(
+//                text = type.name,
+//                isSelected = type.id == states.selectedTypeId,
+//                selectedBackGroundColor = type.getColor(),
+//                selectedTextColor = Color.Black,
+//                onClick = {
+//                    onEvents(PokemonDetailsEvents.OnTypeCheck(type.id))
+//                }
+//            )
+//        }
+//    }
 }
 
 @Composable
