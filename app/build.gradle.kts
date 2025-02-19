@@ -1,5 +1,3 @@
-import org.gradle.internal.impldep.org.junit.Test
-
 plugins {
     id("com.android.application")
     kotlin("android")
@@ -47,6 +45,7 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
+        freeCompilerArgs += "-Xcontext-receivers"
     }
     buildFeatures {
         compose = true
