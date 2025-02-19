@@ -15,7 +15,6 @@ import androidx.compose.material.icons.outlined.FilterAlt
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -27,13 +26,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.priorDev.pokerroutejc.R
 import com.priorDev.pokerroutejc.domain.pokemon.models.MoveDetailsData
+import com.priorDev.pokerroutejc.presentation.core.ScreenTemplate
 import com.priorDev.pokerroutejc.presentation.pokemonDetails.PokemonDetailsEvents
-import com.priorDev.pokerroutejc.presentation.pokemonDetails.PokemonDetailsStates
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun MovesView(
-    states: PokemonDetailsStates,
+fun PokemonMovesView(
+    pkMovesState: PokemonMovesState,
     movesList: Map<String, List<MoveDetailsData>>,
     onEvents: (PokemonDetailsEvents) -> Unit,
 ) {
@@ -42,7 +41,9 @@ fun MovesView(
     var isFiltersExpanded by remember { mutableStateOf(false) }
     var isBottomSheetVisible by remember { mutableStateOf(false) }
 
-    Scaffold(
+    ScreenTemplate(
+        errorState = pkMovesState.errorState,
+        loadingIndicator = pkMovesState.loading,
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
@@ -56,8 +57,7 @@ fun MovesView(
                 )
             }
         }
-    ) { innerPadding ->
-
+    ) {
         MoveBottomSheet(
             isVisible = isBottomSheetVisible,
             onDismiss = {
@@ -66,18 +66,12 @@ fun MovesView(
                     PokemonDetailsEvents.SelectMove(null)
                 )
             },
-            move = states.selectedMove,
+            move = pkMovesState.selectedMove,
             sheetState = moveSheetState
         )
 
         Box {
-            LazyColumn(
-                contentPadding = innerPadding
-            ) {
-                item {
-                    //Filters(states = states, moveList = movesList, onEvents = onEvents)
-                }
-
+            LazyColumn {
                 movesList
                     .entries
                     .reversed()
@@ -111,7 +105,7 @@ fun MovesView(
             }
 
             FilterBox(
-                filters = states.moveFilters,
+                filters = pkMovesState.moveCriteria,
                 onDismiss = {
                     isFiltersExpanded = false
                 },

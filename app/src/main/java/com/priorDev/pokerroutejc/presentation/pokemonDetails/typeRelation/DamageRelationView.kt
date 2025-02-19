@@ -12,7 +12,6 @@ import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -29,11 +28,11 @@ import com.priorDev.pokerroutejc.presentation.pokemonDetails.PokemonDetailsState
 import com.priorDev.pokerroutejc.R
 
 @Composable
-fun WeaknessesAndStrengthView(
+fun DamageRelationView(
     states: PokemonDetailsStates,
     modifier: Modifier = Modifier
 ) {
-    val weaknessesAndStrengths = states.weaknessesAndStrengths
+    val weaknessesAndStrengths = states.damageRelations
     val cellCount = 2
 
     Card(

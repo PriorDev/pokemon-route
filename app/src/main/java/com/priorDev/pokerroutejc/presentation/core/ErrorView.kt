@@ -34,16 +34,17 @@ import com.priorDev.pokerroutejc.presentation.reusable.PreviewTemplate
 
 @Composable
 fun ErrorView(
-    errorState: ErrorState
+    errorState: ErrorState?
 ) {
-    if (errorState.networkError is NetworkError.None) return
+    errorState?.let {
+        when (errorState.displayAs) {
+            DisplayError.Dialog -> {
+                ErrorDialog(errorState)
+            }
 
-    when (errorState.displayAs) {
-        DisplayError.Dialog -> {
-            ErrorDialog(errorState)
-        }
-        DisplayError.FullScreen -> {
-            FullScreenError(errorState)
+            DisplayError.FullScreen -> {
+                FullScreenError(errorState)
+            }
         }
     }
 }

@@ -28,7 +28,6 @@ fun ListTypeScreen(
     ScreenTemplate(
         loadingIndicator = screenState.loadingIndicator,
         errorState = screenState.error,
-        dialogModel = screenState.dialogModel,
         onRefresh = {
             onEvent(ListTypesEvent.Refresh)
         }

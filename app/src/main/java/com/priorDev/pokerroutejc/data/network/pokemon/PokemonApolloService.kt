@@ -8,7 +8,9 @@ import com.priorDev.pokerroutejc.domain.pokemon.models.PokemonNameData
 
 interface PokemonApolloService {
     suspend fun getPokemonByName(name: String): ResourceFlow<List<PokemonNameData>>
+
     suspend fun getEvolutionChain(pokemonId: Int): ResourceFlow<Map<Int?, List<EvolutionResponse>>>
+
     suspend fun getPkMoves(
         pokemonId: Int,
         generationName: String,

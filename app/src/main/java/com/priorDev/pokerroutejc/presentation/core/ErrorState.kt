@@ -13,3 +13,15 @@ data class ErrorState(
     val onDismiss: () -> Unit = {},
     val isDismissButtonVisible: Boolean = false
 )
+
+fun NetworkError.retryFullScreen(
+    onAction: () -> Unit
+): ErrorState {
+    return ErrorState(
+        displayAs = DisplayError.FullScreen,
+        networkError = this,
+        actionButtonText = UiMessages.StringResource(R.string.retry),
+        onAction = onAction,
+        isActionButtonVisible = true,
+    )
+}

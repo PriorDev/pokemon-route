@@ -21,20 +21,20 @@ import androidx.compose.ui.Modifier
 @Composable
 fun ScreenTemplate(
     modifier: Modifier = Modifier,
-    errorState: ErrorState,
-    dialogModel: AlertDialogModel,
+    errorState: ErrorState?,
     loadingIndicator: LoadingIndicator,
     topBar: @Composable () -> Unit = {},
+    floatingActionButton: @Composable () -> Unit = {},
     content: @Composable () -> Unit
 ) {
     Scaffold(
         topBar = topBar,
-        modifier = modifier
+        floatingActionButton = floatingActionButton,
+        modifier = modifier,
     ) { innerPadding ->
         ScreenTemplate(
             loadingIndicator = loadingIndicator,
             errorState = errorState,
-            dialogModel = dialogModel,
             content = content,
             modifier = Modifier.padding(innerPadding)
         )
@@ -46,8 +46,7 @@ fun ScreenTemplate(
 fun ScreenTemplate(
     modifier: Modifier = Modifier,
     loadingIndicator: LoadingIndicator,
-    errorState: ErrorState,
-    dialogModel: AlertDialogModel,
+    errorState: ErrorState?,
     onRefresh: () -> Unit,
     content: @Composable () -> Unit,
 ) {
@@ -60,7 +59,6 @@ fun ScreenTemplate(
         ScreenTemplate(
             loadingIndicator = loadingIndicator,
             errorState = errorState,
-            dialogModel = dialogModel,
             content = content,
             modifier = modifier.pullRefresh(pullRefreshState)
         )
@@ -77,8 +75,7 @@ fun ScreenTemplate(
 fun ScreenTemplate(
     modifier: Modifier = Modifier,
     loadingIndicator: LoadingIndicator,
-    errorState: ErrorState,
-    dialogModel: AlertDialogModel,
+    errorState: ErrorState?,
     content: @Composable () -> Unit
 ) {
     Box(
@@ -86,12 +83,11 @@ fun ScreenTemplate(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
-        CustomAlertDialog(dialogModel)
-
         content()
 
         when (loadingIndicator) {
             LoadingIndicator.None,
+
             LoadingIndicator.Refreshing -> {
                 // Don't display anything
             }
