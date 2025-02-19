@@ -1,11 +1,11 @@
 package com.priorDev.pokerroutejc.featurePokemon.di
 
 import com.priorDev.pokerroutejc.featurePokemon.data.PokemonRepositoryImp
-import com.priorDev.pokerroutejc.featurePokemon.data.PokemonService
-import com.priorDev.pokerroutejc.featurePokemon.data.network.PokemonServiceImp
+import com.priorDev.pokerroutejc.featurePokemon.data.IPokemonNetworkService
 import com.priorDev.pokerroutejc.featurePokemon.data.PokemonRepository
 import com.priorDev.pokerroutejc.data.network.ApolloPokemonClient
 import com.priorDev.pokerroutejc.data.network.IPokemonNameClient
+import com.priorDev.pokerroutejc.data.network.pokemon.PokemonNetworkService
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -29,5 +29,5 @@ abstract class RepositoryModule {
 
     @Binds
     @ViewModelScoped
-    abstract fun provicesPokemonService(service: PokemonServiceImp): PokemonService
+    abstract fun provicesPokemonService(service: PokemonNetworkService): IPokemonNetworkService
 }

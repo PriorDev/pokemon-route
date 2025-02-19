@@ -4,9 +4,8 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
-import com.priorDev.pokerroutejc.data.network.MakeRetrofitNetworkCall
-import com.priorDev.pokerroutejc.core.ResourceFlow
-import com.priorDev.pokerroutejc.featurePokemon.data.PokemonService
+import com.priorDev.pokerroutejc.data.network.NetworkResource
+import com.priorDev.pokerroutejc.featurePokemon.data.IPokemonNetworkService
 import com.priorDev.pokerroutejc.featurePokemon.data.database.PokemonDao
 import com.priorDev.pokerroutejc.featurePokemon.data.database.PokemonNameEntity
 import com.priorDev.pokerroutejc.featurePokemon.data.database.toDB
@@ -16,9 +15,8 @@ import java.time.Duration
 
 @OptIn(ExperimentalPagingApi::class)
 class PokemonNameRemoteMediator(
-    private val pokemonService: PokemonService,
-    private val pokemonDao: PokemonDao,
-    private val makeRetrofitNetworkCall: MakeRetrofitNetworkCall,
+    private val pokemonNetworkService: IPokemonNetworkService,
+    private val pokemonDao: PokemonDao
 ) : RemoteMediator<Int, PokemonNameEntity>() {
 
     private var isFirstTime = true
@@ -58,28 +56,22 @@ class PokemonNameRemoteMediator(
             ?: state.lastItemOrNull()?.id
             ?: 0
 
-        val response = makeRetrofitNetworkCall {
-            pokemonService.getAllPokemons(
-                urlLimitOffset = "pokemon?offset=$offset&limit=${state.config.pageSize}"
-            )
-        }
+        val response = pokemonNetworkService.getAllPokemons(
+            offset = offset,
+            limit = state.config.pageSize,
+        )
 
         return when (response) {
-            is ResourceFlow.Loading -> MediatorResult.Error(Throwable("Unknown error"))
-
-            is ResourceFlow.Error -> {
-                MediatorResult.Error(response.throwable ?: Throwable("Unknown error"))
+            is NetworkResource.Fail -> {
+                MediatorResult.Error(response.exeption ?: Throwable("Unknown error"))
             }
+            is NetworkResource.Success -> {
+                val pokemons = response.data.pokemons.map { it.toDB() }
 
-            is ResourceFlow.Success -> {
-                val pokemons = response.data?.pokemons?.map { it.toDB() }
-
-                if (pokemons != null) {
-                    pokemonDao.insert(pokemons)
-                }
+                pokemonDao.insert(pokemons)
 
                 MediatorResult.Success(
-                    endOfPaginationReached = response.data?.next.isNullOrEmpty()
+                    endOfPaginationReached = response.data.next.isNullOrEmpty()
                 )
             }
         }

@@ -19,8 +19,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.priorDev.pokerroutejc.R
 import com.priorDev.pokerroutejc.data.network.EndPoints
-import com.priorDev.pokerroutejc.data.network.pokemon.EvolutionResponse
-import com.priorDev.pokerroutejc.data.network.pokemon.EvolutionTriggerResponse
+import com.priorDev.pokerroutejc.data.network.pokemon.responses.EvolutionResponse
+import com.priorDev.pokerroutejc.data.network.pokemon.responses.EvolutionTriggerResponse
 import com.priorDev.pokerroutejc.featurePokemon.presentation.details.PokemonDetailsStates
 import com.priorDev.pokerroutejc.presentation.reusable.PreviewTemplate
 
@@ -66,7 +66,7 @@ fun EvolutionChainView(
 
 @Preview
 @Composable
-private fun EvolutionChainPreview(modifier: Modifier = Modifier) {
+private fun EvolutionChainPreview() {
     PreviewTemplate {
         EvolutionChainView(
             states = PokemonDetailsStates(

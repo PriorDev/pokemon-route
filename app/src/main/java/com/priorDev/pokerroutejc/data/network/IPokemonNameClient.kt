@@ -1,7 +1,7 @@
 package com.priorDev.pokerroutejc.data.network
 
 import com.priorDev.pokerroutejc.core.ResourceFlow
-import com.priorDev.pokerroutejc.data.network.pokemon.EvolutionResponse
+import com.priorDev.pokerroutejc.data.network.pokemon.responses.EvolutionResponse
 import com.priorDev.pokerroutejc.featurePokemon.domain.PokemonNameData
 
 interface IPokemonNameClient {

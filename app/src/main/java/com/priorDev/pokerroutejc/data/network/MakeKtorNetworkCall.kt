@@ -45,7 +45,7 @@ class MakeKtorNetworkCall @Inject constructor(
                 }
             } catch (e: Exception) {
                 Log.e("MakeKtorNetworkCall", e.message.orEmpty())
-                NetworkResource.Fail(NetworkError.UnableToConnect)
+                NetworkResource.Fail(NetworkError.UnableToConnect, e)
             }
         }
     }

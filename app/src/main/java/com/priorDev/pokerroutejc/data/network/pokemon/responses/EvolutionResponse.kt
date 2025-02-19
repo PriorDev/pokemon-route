@@ -1,4 +1,4 @@
-package com.priorDev.pokerroutejc.data.network.pokemon
+package com.priorDev.pokerroutejc.data.network.pokemon.responses
 
 import com.priorDev.GetEvolutionChainIdQuery
 
@@ -9,8 +9,7 @@ data class EvolutionResponse(
     val evolutionTriggerResponse: List<EvolutionTriggerResponse>
 )
 
-fun GetEvolutionChainIdQuery.Pokemon_v2_pokemonspecy1
-    .toResponse(): EvolutionResponse {
+fun GetEvolutionChainIdQuery.Pokemon_v2_pokemonspecy1.toResponse(): EvolutionResponse {
     return EvolutionResponse(
         specieId = id,
         name = name,

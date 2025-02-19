@@ -1,4 +1,4 @@
-package com.priorDev.pokerroutejc.data.network.pokemon
+package com.priorDev.pokerroutejc.data.network.pokemon.responses
 
 data class EvolutionTriggerResponse(
     val minLevel: Int?,

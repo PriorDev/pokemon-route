@@ -12,7 +12,7 @@ class KtorNetworkServiceImp @Inject constructor(
     override suspend fun <T> get(
         requestData: NetworkRequestData
     ): NetworkResource<T> {
-        return makeKtorNetworkCall<T>(requestData.typeInfo) {
+        return makeKtorNetworkCall(requestData.typeInfo) {
             client.get(requestData.url) {
                 url {
                     // Add segments to the URL

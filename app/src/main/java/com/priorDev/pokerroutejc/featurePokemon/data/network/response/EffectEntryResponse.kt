@@ -1,10 +1,12 @@
 package com.priorDev.pokerroutejc.featurePokemon.data.network.response
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class EffectEntryResponse(
     val effect: String,
     val language: LanguageResponse,
-    @SerializedName("short_effect")
+    @SerialName("short_effect")
     val shortEffect: String
 )

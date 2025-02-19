@@ -6,25 +6,17 @@ import assertk.assertions.isInstanceOf
 import com.priorDev.pokerroutejc.core.ResourceFlow
 import com.priorDev.pokerroutejc.data.TypeRepoFake
 import com.priorDev.pokerroutejc.data.network.NetworkError
-import com.priorDev.pokerroutejc.featureTypes.domain.ITypeRepository
 import com.priorDev.pokerroutejc.presentation.core.DisplayError
 import com.priorDev.pokerroutejc.presentation.core.LoadingIndicator
 import com.priorDev.pokerroutejc.utils.MainCoroutineExtension
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(MainCoroutineExtension::class)
 class ListTypeViewModelTest {
-    private lateinit var repository: ITypeRepository
     private lateinit var listTypeViewModel: ListTypeViewModel
-
-    @BeforeEach
-    fun setUp() {
-
-    }
 
     @Test
     fun `Test getAllTypesFlow, repo return Loading, update state`() = runTest {

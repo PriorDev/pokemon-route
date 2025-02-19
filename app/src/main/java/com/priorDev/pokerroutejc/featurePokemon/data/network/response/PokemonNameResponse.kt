@@ -1,13 +1,16 @@
 package com.priorDev.pokerroutejc.featurePokemon.data.network.response
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class ContainerPokemonNameResponse(
-    @SerializedName("next") val next: String?,
-    @SerializedName("results") val pokemons: List<PokemonNameResponse>
+    @SerialName("next") val next: String?,
+    @SerialName("results") val pokemons: List<PokemonNameResponse>
 )
 
+@Serializable
 data class PokemonNameResponse(
-    @SerializedName("url") val url: String,
-    @SerializedName("name") val name: String,
+    @SerialName("url") val url: String,
+    @SerialName("name") val name: String,
 )

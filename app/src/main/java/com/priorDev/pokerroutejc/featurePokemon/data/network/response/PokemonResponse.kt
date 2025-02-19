@@ -1,54 +1,64 @@
 package com.priorDev.pokerroutejc.featurePokemon.data.network.response
 
-import com.google.gson.annotations.SerializedName
 import com.priorDev.pokerroutejc.data.network.pkType.response.TypeResponse
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class PokemonResponse(
-    @SerializedName("id") val id: Int,
-    @SerializedName("name") val name: String,
-    @SerializedName("sprites") val spritesResponse: SpritesResponse,
-    @SerializedName("abilities") val abilities: List<AbilityResponse>,
-    @SerializedName("moves") val moves: List<MoveResponse>,
-    @SerializedName("stats") val stats: List<StatResponse>,
-    @SerializedName("types") val types: List<TypeContainerResponse>,
+    @SerialName("id") val id: Int,
+    @SerialName("name") val name: String,
+    @SerialName("sprites") val spritesResponse: SpritesResponse,
+    @SerialName("abilities") val abilities: List<AbilityResponse>,
+    @SerialName("moves") val moves: List<MoveResponse>,
+    @SerialName("stats") val stats: List<StatResponse>,
+    @SerialName("types") val types: List<TypeContainerResponse>,
 )
 
+@Serializable
 data class SpritesResponse(
-    @SerializedName("front_default") val frontDefault: String?,
-    @SerializedName("front_shiny") val frontShiny: String?,
-    @SerializedName("back_shiny") val backShiny: String?,
-    @SerializedName("other") val others: OthersSpritesResponse,
+    @SerialName("front_default") val frontDefault: String?,
+    @SerialName("front_shiny") val frontShiny: String?,
+    @SerialName("back_shiny") val backShiny: String?,
+    @SerialName("other") val others: OthersSpritesResponse,
 )
 
+@Serializable
 data class OthersSpritesResponse(
-    @SerializedName("official-artwork") val officialArtwork: OfficialArtWorkResponse
+    @SerialName("official-artwork") val officialArtwork: OfficialArtWorkResponse
 )
 
+@Serializable
 data class OfficialArtWorkResponse(
-    @SerializedName("front_default") val frontDefault: String?,
-    @SerializedName("front_shiny") val frontShiny: String?,
+    @SerialName("front_default") val frontDefault: String?,
+    @SerialName("front_shiny") val frontShiny: String?,
 )
 
+@Serializable
 data class AbilityResponse(
-    @SerializedName("ability") val ability: AbilityNameResponse,
-    @SerializedName("is_hidden") val isHidden: Boolean,
+    @SerialName("ability") val ability: AbilityNameResponse,
+    @SerialName("is_hidden") val isHidden: Boolean,
 )
 
+@Serializable
 data class AbilityNameResponse(
-    @SerializedName("name") val name: String,
+    @SerialName("name") val name: String,
 )
 
+@Serializable
 data class StatResponse(
-    @SerializedName("base_stat") val baseStat: Int,
-    @SerializedName("effort") val effort: Int,
-    @SerializedName("stat") val stat: StatsNameResponse,
+    @SerialName("base_stat") val baseStat: Int,
+    @SerialName("effort") val effort: Int,
+    @SerialName("stat") val stat: StatsNameResponse,
 )
 
+@Serializable
 data class StatsNameResponse(
-    @SerializedName("name") val name: String,
+    @SerialName("name") val name: String,
 )
 
+@Serializable
 data class TypeContainerResponse(
-    @SerializedName("slot") val slot: Int,
-    @SerializedName("type") val type: TypeResponse,
+    @SerialName("slot") val slot: Int,
+    @SerialName("type") val type: TypeResponse,
 )

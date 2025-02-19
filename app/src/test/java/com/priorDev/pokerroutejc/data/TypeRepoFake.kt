@@ -7,10 +7,8 @@ import com.priorDev.pokerroutejc.featureTypes.domain.TypeDetailsData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class TypeRepoFake: ITypeRepository {
-    var getAllTypeFlow = flow<ResourceFlow<List<TypeData>>> {
-
-    }
+class TypeRepoFake : ITypeRepository {
+    var getAllTypeFlow = flow<ResourceFlow<List<TypeData>>> { }
     override suspend fun getAllTypesFlow(isRefresh: Boolean): Flow<ResourceFlow<List<TypeData>>> {
         return getAllTypeFlow
     }

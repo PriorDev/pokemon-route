@@ -3,9 +3,8 @@ package com.priorDev.pokerroutejc.featurePokemon.di
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import com.priorDev.pokerroutejc.data.network.MakeRetrofitNetworkCall
 import com.priorDev.pokerroutejc.data.database.MyDataBase
-import com.priorDev.pokerroutejc.featurePokemon.data.PokemonService
+import com.priorDev.pokerroutejc.featurePokemon.data.IPokemonNetworkService
 import com.priorDev.pokerroutejc.featurePokemon.data.database.PokemonDao
 import com.priorDev.pokerroutejc.featurePokemon.data.database.PokemonNameEntity
 import com.priorDev.pokerroutejc.featurePokemon.data.network.PokemonApi
@@ -35,10 +34,10 @@ object PokemonModule {
     @ViewModelScoped
     @Provides
     fun providerPokemonUseCases(
-        ITypeRepository: ITypeRepository
+        typeRepository: ITypeRepository
     ): PokemonUseCases {
         return PokemonUseCases(
-            GetWeaknessesAndStrengths(ITypeRepository)
+            GetWeaknessesAndStrengths(typeRepository)
         )
     }
 
@@ -46,9 +45,8 @@ object PokemonModule {
     @Provides
     @ViewModelScoped
     fun providerPokemonPager(
-        pokemonService: PokemonService,
+        pokemonNetworkService: IPokemonNetworkService,
         pokemonDao: PokemonDao,
-        makeRetrofitNetworkCall: MakeRetrofitNetworkCall
     ): Pager<Int, PokemonNameEntity> {
         return Pager(
             config = PagingConfig(
@@ -57,9 +55,8 @@ object PokemonModule {
                 prefetchDistance = PAGE_SIZE / 2,
             ),
             remoteMediator = PokemonNameRemoteMediator(
-                pokemonService = pokemonService,
+                pokemonNetworkService = pokemonNetworkService,
                 pokemonDao = pokemonDao,
-                makeRetrofitNetworkCall = makeRetrofitNetworkCall
             ),
             pagingSourceFactory = {
                 pokemonDao.pagingSource()

@@ -1,9 +1,11 @@
 package com.priorDev.pokerroutejc.featurePokemon.data.network.response
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class AbilityDetailsResponse(
     val name: String,
-    @SerializedName("effect_entries")
+    @SerialName("effect_entries")
     val effectEntries: List<EffectEntryResponse>,
 )

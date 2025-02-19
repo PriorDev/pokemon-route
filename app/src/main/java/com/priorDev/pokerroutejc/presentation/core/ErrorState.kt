@@ -3,7 +3,7 @@ package com.priorDev.pokerroutejc.presentation.core
 import com.priorDev.pokerroutejc.R
 import com.priorDev.pokerroutejc.data.network.NetworkError
 
-data class ErrorState (
+data class ErrorState(
     val displayAs: DisplayError = DisplayError.Dialog,
     val networkError: NetworkError = NetworkError.None,
     val actionButtonText: UiMessages = UiMessages.StringResource(R.string.retry),
