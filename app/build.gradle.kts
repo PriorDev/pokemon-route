@@ -1,3 +1,5 @@
+import org.gradle.internal.impldep.org.junit.Test
+
 plugins {
     id("com.android.application")
     kotlin("android")
@@ -7,6 +9,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     id("com.apollographql.apollo3").version("3.7.3")
     alias(libs.plugins.compose.compiler)
+    id("de.mannodermaus.android-junit5") version "1.9.3.0"
 }
 
 apollo {
@@ -77,9 +80,6 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
-    //Test
-    testImplementation(libs.junit)
-
     //Material
     implementation(libs.material)
     implementation(libs.material3)
@@ -110,8 +110,6 @@ dependencies {
     //Cargar imagenes desde internet
     implementation(libs.coil.compose)
     implementation(libs.palette)
-    //Test coroutines
-    testImplementation(libs.kotlinx.coroutines.test)
     // Paging
     implementation(libs.paging.runtime.ktx)
     implementation(libs.paging.compose)
@@ -126,4 +124,14 @@ dependencies {
     implementation(libs.ktor.client.logging)
     implementation(libs.ktor.client.content.negotiation)
     implementation(libs.ktor.serialization.json)
+    //Test
+    testImplementation(libs.junit)
+    testImplementation(libs.junit.jupiter)
+    testRuntimeOnly(libs.junit.jupiter.engine)
+    testImplementation(libs.junit.jupiter.params)
+    testImplementation(libs.assertk)
+    testImplementation(libs.mockk)
+    androidTestImplementation(libs.mockk.android)
+    //Test coroutines
+    testImplementation(libs.kotlinx.coroutines.test)
 }

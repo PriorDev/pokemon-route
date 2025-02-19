@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class KtorNetworkServiceImp @Inject constructor(
     private val client: HttpClient,
-    private val makeKtorNetworkCall: MakeKtorNetworkCall,
+    private val makeKtorNetworkCall: INetworkCaller,
 ) : INetWorkService {
     override suspend fun get(
         requestData: NetworkRequestData,
