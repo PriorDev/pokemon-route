@@ -85,6 +85,7 @@ kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-t
 mockk = { module = "io.mockk:mockk", version = "1.12.5"}
 mockk-android = { module = "io.mockk:mockk-android", version = "1.12.5"}
 assertk = "com.willowtreeapps.assertk:assertk:0.26.1"
+turbine = "app.cash.turbine:turbine:0.7.0"
 
 [bundles]
 detekt = ["detekt-formatting", "detekt-cli", "detekt-rules-compose"]
