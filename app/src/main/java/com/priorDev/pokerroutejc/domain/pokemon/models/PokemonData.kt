@@ -6,6 +6,7 @@ import com.priorDev.pokerroutejc.data.network.pokemon.responses.SpritesResponse
 import com.priorDev.pokerroutejc.data.network.pokemon.responses.StatResponse
 import com.priorDev.pokerroutejc.domain.types.models.TypeData
 import com.priorDev.pokerroutejc.domain.types.models.toDomain
+import com.priorDev.pokerroutejc.utils.capitalized
 
 data class PokemonData(
     val id: Int = 0,
@@ -43,7 +44,7 @@ data class StatData(
 fun PokemonResponse.toDomain(): PokemonData {
     return PokemonData(
         id = id,
-        name = name,
+        name = name.capitalized(),
         sprites = spritesResponse.toDomain(),
         abilities = abilities.map { it.toDomain() },
         stats = stats.map { it.toDomain() },

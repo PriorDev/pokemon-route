@@ -12,9 +12,9 @@
     <string name="hidden_ability">Hiden Ability</string>
     <string name="stats">Basic Stats</string>
     <string name="shiny">Shiny</string>
-    <string name="sprites">Sprites</string>
+    <string name="sprites">%s sprites</string>
     <string name="damagex4">Damage x4</string>
-    <string name="weakness_and_strengths">Weakness and strengths</string>
+    <string name="weakness_and_strengths">%s type relation</string>
     <string name="damage_x1_4">Damage ¼</string>
     <string name="weaknesses">Weaknesses</string>
     <string name="power">Power</string>
@@ -26,7 +26,7 @@
     <string name="machine">Machine \n%s</string>
     <string name="method">Method %s</string>
     <string name="group">Group</string>
-    <string name="moves">Moves</string>
+    <string name="moves">%s moves</string>
     <string name="all">All</string>
     <string name="filters">Filtros</string>
     <string name="error_trying_to_reach_remote_source">Error on trying to reach remote source, check your internet connection</string>
@@ -52,7 +52,7 @@
     <string name="item">Item:</string>
     <string name="move">Move:</string>
     <string name="location">Location:</string>
-    <string name="evolution_chain">Evolution chain</string>
+    <string name="evolution_chain">%s evolution chain</string>
     <string name="evolves_in">Evolves in</string>
     <string name="filter">Filter</string>
 </resources>

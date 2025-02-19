@@ -7,7 +7,12 @@ import com.priorDev.pokerroutejc.ui.Routes
 sealed class PokemonDetailsEvents {
     data class OnGenerationSelect(val generation: String) : PokemonDetailsEvents()
 
-    data class OnTypeCheck(val filter: MoveFilterModel) : PokemonDetailsEvents()
+    data class ToggleMoveFilterCheck(val filter: MoveFilterModel) : PokemonDetailsEvents()
+
+    data class ToggleLearnMethodExpand(
+        val learnMethod: String,
+        val isExpanded: Boolean
+    ) : PokemonDetailsEvents()
 
     data class OnAbilityClick(val ability: String) : PokemonDetailsEvents()
 

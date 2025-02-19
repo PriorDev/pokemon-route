@@ -17,7 +17,6 @@ import com.priorDev.pokerroutejc.domain.types.models.DamageRelationsData
 import com.priorDev.pokerroutejc.presentation.pokemonDetails.moves.MoveFilterModel
 import com.priorDev.pokerroutejc.ui.Routes
 import com.priorDev.pokerroutejc.utils.GlobalEventChannel
-import com.priorDev.pokerroutejc.utils.orZero
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -82,14 +81,26 @@ class PokemonDetailsViewModel(
         when (event) {
             PokemonDetailsEvents.OnDismiss -> onDismiss()
             is PokemonDetailsEvents.OnGenerationSelect -> onGenerationSelect(event.generation)
-            is PokemonDetailsEvents.OnTypeCheck -> onTypeCheck(event.filter)
+            is PokemonDetailsEvents.ToggleMoveFilterCheck -> toggleFilterMoveCheck(event.filter)
             is PokemonDetailsEvents.OnAbilityClick -> onAbilityClick(event.ability)
             PokemonDetailsEvents.OnAbilityDismiss -> onAbilityDismiss()
             is PokemonDetailsEvents.OnSearchTextChange -> onSearchTextChanged(event.text)
             is PokemonDetailsEvents.Navigate -> {
                 globalEvent.navigate(event.route, event.navOptions)
             }
+
+            is PokemonDetailsEvents.ToggleLearnMethodExpand -> toggleLearnMethodExpand(event)
         }
+    }
+
+    private fun toggleLearnMethodExpand(event: PokemonDetailsEvents.ToggleLearnMethodExpand) {
+        val updateList = moves[event.learnMethod]
+            ?.map { moveDetails ->
+                moveDetails.copy(visible = event.isExpanded)
+            }
+            .orEmpty()
+
+        _moves.replace(event.learnMethod, updateList)
     }
 
     private fun onSearchTextChanged(text: String) {
@@ -138,7 +149,7 @@ class PokemonDetailsViewModel(
         filterMoves()
     }
 
-    private fun onTypeCheck(filter: MoveFilterModel) {
+    private fun toggleFilterMoveCheck(filter: MoveFilterModel) {
         val updateFilter = _states.value.moveFilters.map {
             if (it.type.id == filter.type.id) {
                 it.copy(checked = !it.checked)
@@ -152,19 +163,16 @@ class PokemonDetailsViewModel(
         }
 
         if (updateFilter.any { it.checked }) {
-            println("----|update move list")
             _moves
                 .flatMap { it.value }
                 .forEach { moveDetails ->
                     updateFilter
                         .firstOrNull { it.type.id == moveDetails.type?.id }
                         ?.let { filter ->
-                            println("----|update move list ${moveDetails.name} value ${filter.checked}")
                             moveDetails.visible = filter.checked
                         }
                 }
         } else {
-            println("---|show all moves")
             _moves
                 .flatMap { it.value }
                 .forEach { moveDetails ->

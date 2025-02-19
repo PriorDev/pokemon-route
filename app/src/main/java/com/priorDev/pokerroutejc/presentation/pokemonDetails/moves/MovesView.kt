@@ -3,6 +3,7 @@ package com.priorDev.pokerroutejc.presentation.pokemonDetails.moves
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -29,14 +30,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.priorDev.pokerroutejc.R
@@ -82,36 +83,11 @@ fun MovesView(
                     .reversed()
                     .forEach { (learnMethod, moves) ->
                         stickyHeader {
-                            Row {
-                                Text(
-                                    text = learnMethod,
-                                    style = MaterialTheme.typography.headlineSmall,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer,
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .background(MaterialTheme.colorScheme.secondaryContainer)
-                                        .padding(4.dp)
-                                )
-
-                                IconToggleButton(
-                                    checked = moves.isNotEmpty(),
-                                    onCheckedChange = {
-
-                                    }
-                                ) {
-                                    if (moves.isEmpty()) {
-                                        Icon(
-                                            imageVector = Icons.Outlined.KeyboardArrowDown,
-                                            contentDescription = stringResource(R.string.filter)
-                                        )
-                                    } else {
-                                        Icon(
-                                            imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowLeft,
-                                            contentDescription = stringResource(R.string.filter)
-                                        )
-                                    }
-                                }
-                            }
+                            StickyHeader(
+                                learnMethod = learnMethod,
+                                moves = moves,
+                                onEvents = onEvents
+                            )
                         }
 
                         items(moves.filter { it.visible }) { move ->
@@ -135,9 +111,62 @@ fun MovesView(
                 },
                 expandedFilters = expandedFilters,
                 onItemClick = {
-                    onEvents(PokemonDetailsEvents.OnTypeCheck(it))
+                    onEvents(PokemonDetailsEvents.ToggleMoveFilterCheck(it))
                 }
             )
+        }
+    }
+}
+
+@Composable
+private fun StickyHeader(
+    learnMethod: String,
+    moves: List<MoveDetailsData>,
+    onEvents: (PokemonDetailsEvents) -> Unit
+) {
+    val isExpanded by remember(moves) {
+        derivedStateOf { moves.any { it.visible } }
+    }
+    Card(
+        shape = RectangleShape
+    ) {
+        Row(
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.secondaryContainer)
+                .fillMaxWidth()
+                .padding(4.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = learnMethod,
+                style = MaterialTheme.typography.headlineSmall,
+                color = MaterialTheme.colorScheme.onSecondaryContainer,
+            )
+
+            IconToggleButton(
+                checked = isExpanded,
+                onCheckedChange = {
+                    onEvents(
+                        PokemonDetailsEvents.ToggleLearnMethodExpand(
+                            learnMethod = learnMethod,
+                            isExpanded = it
+                        )
+                    )
+                }
+            ) {
+                if (isExpanded) {
+                    Icon(
+                        imageVector = Icons.Outlined.KeyboardArrowDown,
+                        contentDescription = stringResource(R.string.filter)
+                    )
+                } else {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowLeft,
+                        contentDescription = stringResource(R.string.filter)
+                    )
+                }
+            }
         }
     }
 }

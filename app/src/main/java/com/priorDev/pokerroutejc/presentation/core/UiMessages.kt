@@ -15,7 +15,9 @@ sealed class UiMessages {
     fun asString(): String {
         return when (this) {
             is DynamicMessage -> message
-            is StringResource -> stringResource(id = stringId, args)
+            is StringResource -> {
+                stringResource(id = stringId, *args)
+            }
         }
     }
 }

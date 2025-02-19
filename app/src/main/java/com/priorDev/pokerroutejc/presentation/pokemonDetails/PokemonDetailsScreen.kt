@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.priorDev.pokerroutejc.R
 import com.priorDev.pokerroutejc.core.CommonStates
@@ -43,6 +44,7 @@ import com.priorDev.pokerroutejc.presentation.pokemonDetails.sprites.SpritesView
 import com.priorDev.pokerroutejc.presentation.pokemonDetails.typeRelation.WeaknessesAndStrengthView
 import com.priorDev.pokerroutejc.presentation.reusable.CommonStatesView
 import com.priorDev.pokerroutejc.presentation.utils.PageItem
+import com.priorDev.pokerroutejc.utils.capitalized
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -58,14 +60,17 @@ fun PokemonDetailsScreen(
     val scope = rememberCoroutineScope()
 
     val pages = listOf(
-        PageItem(index = 0, title = UiMessages.StringResource(R.string.evolution_chain)) {
+        PageItem(
+            index = 0,
+            title = UiMessages.StringResource(R.string.evolution_chain, states.pokemon.name)
+        ) {
             EvolutionChainView(
                 states = states
             )
         },
         PageItem(
             index = 1,
-            title = UiMessages.DynamicMessage("#${states.pokemon.id} ${states.pokemon.name.uppercase()}")
+            title = UiMessages.DynamicMessage(states.pokemon.name)
         ) {
             PokemonInfo(
                 modifier = Modifier.fillMaxWidth(),
@@ -74,7 +79,10 @@ fun PokemonDetailsScreen(
                 cardPadding = cardPadding
             )
         },
-        PageItem(index = 2, title = UiMessages.StringResource(R.string.weakness_and_strengths)) {
+        PageItem(
+            index = 2,
+            title = UiMessages.StringResource(R.string.weakness_and_strengths, states.pokemon.name)
+        ) {
             WeaknessesAndStrengthView(
                 states = states,
                 modifier = Modifier.padding(cardPadding)
@@ -82,7 +90,7 @@ fun PokemonDetailsScreen(
         },
         PageItem(
             index = 3,
-            title = UiMessages.StringResource(R.string.moves)
+            title = UiMessages.StringResource(R.string.moves, states.pokemon.name)
         ) {
             MovesView(
                 states = states,
@@ -90,7 +98,10 @@ fun PokemonDetailsScreen(
                 onEvents = onEvents,
             )
         },
-        PageItem(index = 4, title = UiMessages.StringResource(R.string.sprites)) {
+        PageItem(
+            index = 4,
+            title = UiMessages.StringResource(R.string.sprites, states.pokemon.name)
+        ) {
             SpritesView(states = states)
         }
     )
@@ -116,8 +127,9 @@ fun PokemonDetailsScreen(
                         Text(
                             text = pages[pagerState.currentPage].title.asString(),
                             textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.headlineMedium,
-                            fontWeight = FontWeight.Bold,
+                            style = MaterialTheme.typography.headlineSmall,
+                            overflow = TextOverflow.Ellipsis,
+                            maxLines = 1
                         )
 
                         PageIndicator(pageCount = pages.size, pagerState = pagerState, scope = scope)
