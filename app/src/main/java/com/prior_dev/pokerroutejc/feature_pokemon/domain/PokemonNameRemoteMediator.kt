@@ -14,6 +14,7 @@ import com.prior_dev.pokerroutejc.feature_pokemon.data.database.PokemonNameEntit
 import com.prior_dev.pokerroutejc.feature_pokemon.data.database.toDB
 import com.prior_dev.pokerroutejc.utils.orZero
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import java.time.Duration
 
@@ -21,9 +22,10 @@ import java.time.Duration
 class PokemonNameRemoteMediator(
     private val pokemonService: PokemonService,
     private val pokemonDao: PokemonDao,
-    private val pokemonDb: MyDataBase,
-    private val makeNetworkCall: MakeNetworkCall
+    private val makeNetworkCall: MakeNetworkCall,
 ): RemoteMediator<Int, PokemonNameEntity>() {
+
+    private var isFirstTime = true
 
     override suspend fun load(
         loadType: LoadType,
@@ -31,8 +33,13 @@ class PokemonNameRemoteMediator(
     ): MediatorResult {
         return when (loadType) {
             LoadType.REFRESH -> {
-                //pokemonDao.eraseNames()
-                MediatorResult.Success(endOfPaginationReached = false)
+                if (isFirstTime) {
+                    isFirstTime = false
+                    MediatorResult.Success(endOfPaginationReached = false)
+                } else {
+                    pokemonDao.eraseNames()
+                    fetchData(state)
+                }
             }
 
             LoadType.PREPEND -> MediatorResult.Success(endOfPaginationReached = true)
@@ -69,12 +76,10 @@ class PokemonNameRemoteMediator(
             }
 
             is Resource.Success -> {
-                pokemonDb.withTransaction {
-                    val pokemons = response.data?.pokemons?.map { it.toDB() }
+                val pokemons = response.data?.pokemons?.map { it.toDB() }
 
-                    if (pokemons != null) {
-                        pokemonDao.insert(pokemons)
-                    }
+                if (pokemons != null) {
+                    pokemonDao.insert(pokemons)
                 }
 
                 MediatorResult.Success(

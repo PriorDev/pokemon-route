@@ -28,11 +28,17 @@ class PokemonSearchViewModel @Inject constructor(
     private val _commonStates = MutableStateFlow(CommonStates())
     val commonStates = _commonStates.asStateFlow()
 
+    private val _isRefreshing = MutableStateFlow(false)
+    val isRefreshing = _isRefreshing.asStateFlow()
+
     val pokemonList = pager
         .flow
         .map { pagingData ->
             _commonStates.update { it.copy(isLoading = false) }
-            pagingData.map { it.toDomain() }
+            _isRefreshing.update { false }
+            pagingData.map { pokemon ->
+                pokemon.toDomain()
+            }
         }
         .cachedIn(viewModelScope)
 
@@ -42,7 +48,13 @@ class PokemonSearchViewModel @Inject constructor(
         when(event){
             is PokemonSearchEvent.OnSearchText -> onSearchText(event.text)
             PokemonSearchEvent.OnDismiss -> onDismiss()
+            PokemonSearchEvent.OnRefresh -> onRefresh()
         }
+    }
+
+    private fun onRefresh() {
+        _isRefreshing.update { true }
+
     }
 
     private fun onSearchText(text: String){

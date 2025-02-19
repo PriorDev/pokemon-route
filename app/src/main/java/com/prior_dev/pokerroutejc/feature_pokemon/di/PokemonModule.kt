@@ -49,7 +49,6 @@ object PokemonModule {
     fun providerPokemonPager(
         pokemonService: PokemonService,
         pokemonDao: PokemonDao,
-        pokemonDb: MyDataBase,
         makeNetworkCall: MakeNetworkCall
     ): Pager<Int, PokemonNameEntity> {
         return Pager(
@@ -61,7 +60,6 @@ object PokemonModule {
             remoteMediator = PokemonNameRemoteMediator(
                 pokemonService = pokemonService,
                 pokemonDao = pokemonDao,
-                pokemonDb = pokemonDb,
                 makeNetworkCall = makeNetworkCall
             ),
             pagingSourceFactory = {

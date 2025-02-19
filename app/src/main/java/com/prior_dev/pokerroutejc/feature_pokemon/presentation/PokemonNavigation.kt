@@ -1,5 +1,6 @@
 package com.prior_dev.pokerroutejc.feature_pokemon.presentation
 
+import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
@@ -23,13 +24,15 @@ fun NavGraphBuilder.pokemonNavigation() {
     ){
         composable(RoutesPokemon.SearchRoute.route){
             val viewModel: PokemonSearchViewModel = hiltViewModel()
-            val commonStates = viewModel.commonStates.collectAsStateWithLifecycle()
+            val commonStates by viewModel.commonStates.collectAsStateWithLifecycle()
+            val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
             val pokemonList = viewModel.pokemonList.collectAsLazyPagingItems()
 
             PokemonSearchView(
-                commonStates = commonStates.value,
+                commonStates = commonStates,
                 pokemonList = pokemonList,
                 onEvent = viewModel::onEvent,
+                isRefreshing = isRefreshing
             )
         }
 
