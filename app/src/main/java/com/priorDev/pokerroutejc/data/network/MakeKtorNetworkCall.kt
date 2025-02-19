@@ -9,7 +9,7 @@ import javax.inject.Inject
 @Suppress("TooGenericExceptionCaught")
 class MakeKtorNetworkCall @Inject constructor(
     private val dispatcher: CoroutineDispatcher
-): INetworkCaller {
+) : INetworkCaller {
     override suspend operator fun invoke(
         call: suspend () -> HttpResponse
     ): NetworkResource {

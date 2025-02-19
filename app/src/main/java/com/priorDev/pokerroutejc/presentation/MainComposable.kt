@@ -1,8 +1,6 @@
 package com.priorDev.pokerroutejc.presentation
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -11,11 +9,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.priorDev.pokerroutejc.BottomNavBar
 import com.priorDev.pokerroutejc.R
-import com.priorDev.pokerroutejc.presentation.core.NavBottomItems
-import com.priorDev.pokerroutejc.utils.Routes
 import com.priorDev.pokerroutejc.featurePokemon.presentation.pokemonNavigation
 import com.priorDev.pokerroutejc.featureTypes.presentation.typesNavigation
+import com.priorDev.pokerroutejc.presentation.core.NavBottomItems
 import com.priorDev.pokerroutejc.utils.GlobalEventHandler
+import com.priorDev.pokerroutejc.utils.Routes
 import com.priorDev.pokerroutejc.utils.toRoute
 
 @Composable

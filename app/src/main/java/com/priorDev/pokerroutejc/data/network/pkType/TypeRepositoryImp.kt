@@ -25,7 +25,6 @@ class TypeRepositoryImp @Inject constructor(
 ) : TypeRepository {
     override suspend fun getAllTypesFlow(isRefresh: Boolean): Flow<ResourceFlow<List<TypeData>>> {
         return flow {
-
             emit(
                 ResourceFlow.Loading(loadingIndicator = spinningWheelOrRefresh(isRefresh))
             )
@@ -38,7 +37,7 @@ class TypeRepositoryImp @Inject constructor(
 
     override suspend fun getAllTypes(): ResourceFlow<List<TypeData>> {
         // Single source of truth DATABASE
-        when(val networkResult = service.getAllTypes()) {
+        when (val networkResult = service.getAllTypes()) {
             is NetworkResource.Fail -> {
                 return ResourceFlow.Error(networkErrorType = networkResult.error)
             }

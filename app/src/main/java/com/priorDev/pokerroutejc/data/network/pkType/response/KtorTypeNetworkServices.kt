@@ -23,6 +23,6 @@ class KtorTypeNetworkServices @Inject constructor(
             url = EndPoints.TYPES + "/$typeId"
         )
 
-        return  networkService.get(requestData)
+        return networkService.get(requestData)
     }
 }

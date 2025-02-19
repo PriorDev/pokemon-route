@@ -8,7 +8,7 @@ sealed class LoadingIndicator {
 }
 
 fun spinningWheelOrRefresh(isRefreshing: Boolean): LoadingIndicator {
-    return  if (isRefreshing) {
+    return if (isRefreshing) {
         LoadingIndicator.Refreshing
     } else {
         LoadingIndicator.SolidSpinningWheel

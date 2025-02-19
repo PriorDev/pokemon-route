@@ -56,7 +56,7 @@ fun CustomAlertDialog(
 
 @Composable
 @Preview
-fun CustomAlertDialogPreview() {
+private fun CustomAlertDialogPreview() {
     PreviewTemplate {
         CustomAlertDialog(
             AlertDialogModel(

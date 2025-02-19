@@ -2,11 +2,11 @@ package com.priorDev.pokerroutejc.data.network.pkType
 
 import com.priorDev.pokerroutejc.data.network.NetworkError
 import com.priorDev.pokerroutejc.data.network.NetworkResource
-import com.priorDev.pokerroutejc.data.network.pkType.response.TypeDetailsResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
+@Suppress("UnusedPrivateProperty")
 @Deprecated(
     message = "Retrofit is not longer being used since I migrate to Ktor",
     replaceWith = ReplaceWith("KtorNetworkServiceImp")
@@ -22,7 +22,7 @@ class RetrofitTypeServiceImp @Inject constructor(
 
     override suspend fun getType(typeId: Int): NetworkResource {
         return withContext(Dispatchers.IO) {
-            //api.getType("type/$typeId").body()
+            // api.getType("type/$typeId").body()
             NetworkResource.Fail(NetworkError.UnknownError)
         }
     }
