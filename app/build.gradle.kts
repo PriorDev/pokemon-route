@@ -6,6 +6,7 @@ plugins {
     id("io.gitlab.arturbosch.detekt") version "1.23.1"
     alias(libs.plugins.kotlin.serialization)
     id("com.apollographql.apollo3").version("3.7.3")
+    alias(libs.plugins.compose.compiler)
 }
 
 apollo {
@@ -48,7 +49,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.2"
+        kotlinCompilerExtensionVersion = "1.5.14"
     }
     packaging {
         resources {
