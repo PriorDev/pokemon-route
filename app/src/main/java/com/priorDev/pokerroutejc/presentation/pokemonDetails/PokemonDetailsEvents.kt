@@ -1,6 +1,7 @@
 package com.priorDev.pokerroutejc.presentation.pokemonDetails
 
 import androidx.navigation.NavOptionsBuilder
+import com.priorDev.pokerroutejc.domain.pokemon.models.MoveDetailsData
 import com.priorDev.pokerroutejc.presentation.pokemonDetails.moves.MoveFilterModel
 import com.priorDev.pokerroutejc.ui.Routes
 
@@ -15,6 +16,8 @@ sealed class PokemonDetailsEvents {
     ) : PokemonDetailsEvents()
 
     data class OnAbilityClick(val ability: String) : PokemonDetailsEvents()
+
+    data class SelectMove(val move: MoveDetailsData?) : PokemonDetailsEvents()
 
     data class OnSearchTextChange(val text: String) : PokemonDetailsEvents()
 

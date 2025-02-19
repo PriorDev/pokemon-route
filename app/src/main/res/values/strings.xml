@@ -17,10 +17,10 @@
     <string name="weakness_and_strengths">%s type relation</string>
     <string name="damage_x1_4">Damage ¼</string>
     <string name="weaknesses">Weaknesses</string>
-    <string name="power">Power</string>
-    <string name="accuracy">Accuracy</string>
-    <string name="pp">PP</string>
-    <string name="priority">Priority</string>
+    <string name="power">Power \n%s</string>
+    <string name="accuracy">Accuracy \n%s</string>
+    <string name="pp">PP \n%s</string>
+    <string name="priority">Priority \n%s</string>
     <string name="Damage">Damage \n%s</string>
     <string name="learned_at">Learn at \n%s</string>
     <string name="machine">Machine \n%s</string>

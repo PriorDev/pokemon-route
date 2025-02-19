@@ -38,7 +38,9 @@ fun GetPkMovesQuery.Pokemon_v2_pokemonmofe.toModel(): MoveDetailsData {
         effect = pokemon_v2_move?.pokemon_v2_moveeffect
             ?.pokemon_v2_moveeffecteffecttexts
             ?.firstOrNull() // filter by language
-            ?.effect.orEmpty(),
+            ?.effect
+            .orEmpty()
+            .replaceFirst("\$effect_chance%", pokemon_v2_move?.move_effect_chance.toString()),
         machineNumber = pokemon_v2_move?.pokemon_v2_machines
             ?.firstOrNull() // filter by generations
             ?.pokemon_v2_item

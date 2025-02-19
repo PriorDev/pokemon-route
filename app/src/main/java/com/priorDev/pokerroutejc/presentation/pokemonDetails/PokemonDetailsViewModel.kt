@@ -90,6 +90,10 @@ class PokemonDetailsViewModel(
             }
 
             is PokemonDetailsEvents.ToggleLearnMethodExpand -> toggleLearnMethodExpand(event)
+
+            is PokemonDetailsEvents.SelectMove -> {
+                _states.value = states.value.copy(selectedMove = event.move)
+            }
         }
     }
 

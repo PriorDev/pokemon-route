@@ -36,6 +36,7 @@ query getPkMoves(
                 pokemon_v2_generation {
                     name
                 },
+                move_effect_chance
                 pokemon_v2_moveeffect {
                     pokemon_v2_moveeffecteffecttexts{
                         effect
