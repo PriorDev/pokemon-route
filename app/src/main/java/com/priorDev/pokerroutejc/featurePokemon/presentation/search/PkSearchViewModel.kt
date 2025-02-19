@@ -4,10 +4,9 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.priorDev.pokerroutejc.core.Resource
-import com.priorDev.pokerroutejc.featurePokemon.data.network.IPokemonNameClient
+import com.priorDev.pokerroutejc.data.network.IPokemonNameClient
 import com.priorDev.pokerroutejc.featurePokemon.domain.PokemonNameData
 import com.priorDev.pokerroutejc.utils.IGlobalEventChannel
-import com.priorDev.pokerroutejc.utils.Routes
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay

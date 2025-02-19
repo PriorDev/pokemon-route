@@ -1,4 +1,4 @@
-package com.priorDev.pokerroutejc.featurePokemon.data.network
+package com.priorDev.pokerroutejc.data.network
 
 import com.priorDev.pokerroutejc.core.Resource
 import com.priorDev.pokerroutejc.featurePokemon.domain.PokemonNameData

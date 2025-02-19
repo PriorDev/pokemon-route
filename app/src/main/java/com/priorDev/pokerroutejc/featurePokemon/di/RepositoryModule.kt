@@ -4,8 +4,8 @@ import com.priorDev.pokerroutejc.featurePokemon.data.PokemonRepositoryImp
 import com.priorDev.pokerroutejc.featurePokemon.data.PokemonService
 import com.priorDev.pokerroutejc.featurePokemon.data.network.PokemonServiceImp
 import com.priorDev.pokerroutejc.featurePokemon.data.PokemonRepository
-import com.priorDev.pokerroutejc.featurePokemon.data.network.ApolloPokemonClient
-import com.priorDev.pokerroutejc.featurePokemon.data.network.IPokemonNameClient
+import com.priorDev.pokerroutejc.data.network.ApolloPokemonClient
+import com.priorDev.pokerroutejc.data.network.IPokemonNameClient
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

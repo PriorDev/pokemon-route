@@ -1,4 +1,4 @@
-package com.priorDev.pokerroutejc.featurePokemon.data.network
+package com.priorDev.pokerroutejc.data.network
 
 import com.apollographql.apollo3.ApolloClient
 import com.priorDev.SearchPokemonNameQuery
