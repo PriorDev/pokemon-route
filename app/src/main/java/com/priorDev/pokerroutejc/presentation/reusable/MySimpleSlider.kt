@@ -1,10 +1,10 @@
 package com.priorDev.pokerroutejc.presentation.reusable
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Slider
-import androidx.compose.material.SliderDefaults
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Slider
+import androidx.compose.material3.SliderDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,12 +17,12 @@ fun MySimpleSlider(
     valueRange: ClosedFloatingPointRange<Float> = 1f..250f,
     onValueChange: (Float) -> Unit = { },
     enable: Boolean = false,
-    disableColor: Color = MaterialTheme.colors.onBackground
+    disableColor: Color = MaterialTheme.colorScheme.onBackground
 ) {
     Column(modifier) {
         Text(
             text = "$label:     $value",
-            style = MaterialTheme.typography.body1,
+            style = MaterialTheme.typography.bodyMedium,
             color = disableColor
         )
 

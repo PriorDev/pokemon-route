@@ -16,11 +16,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.LinearProgressIndicator
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -55,11 +55,11 @@ fun MovesView(
                     Text(
                         text = stringResource(id = R.string.moves),
                         textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.h4,
+                        style = MaterialTheme.typography.headlineLarge,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier
                             .align(Alignment.Center)
-                            .background(MaterialTheme.colors.background)
+                            .background(MaterialTheme.colorScheme.background)
                             .fillMaxWidth(.6f)
                     )
 
@@ -74,12 +74,13 @@ fun MovesView(
                             modifier = Modifier
                                 .align(Alignment.BottomEnd)
                                 .padding(0.dp)
-                                .background(MaterialTheme.colors.primary),
+                                .background(MaterialTheme.colorScheme.primary),
                             onClick = { onEvents(PokemonDetailsEvents.OnToggleFilterVisibility) }
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Menu,
                                 contentDescription = stringResource(id = R.string.filters),
+                                tint = MaterialTheme.colorScheme.onPrimary
                             )
                         }
                     }

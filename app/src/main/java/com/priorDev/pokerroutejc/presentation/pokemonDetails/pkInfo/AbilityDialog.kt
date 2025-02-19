@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -34,7 +34,7 @@ fun AbilityDialog(
             modifier = Modifier.fillMaxWidth()
                 .background(
                     shape = RoundedCornerShape(8.dp),
-                    color = MaterialTheme.colors.background
+                    color = MaterialTheme.colorScheme.background
                 )
                 .padding(16.dp)
         ) {
@@ -45,7 +45,7 @@ fun AbilityDialog(
                             .fillMaxWidth(),
                         text = ability.name,
                         textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.h6
+                        style = MaterialTheme.typography.headlineMedium
                     )
                     Divider()
                     Text(

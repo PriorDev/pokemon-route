@@ -1,6 +1,6 @@
 package com.priorDev.pokerroutejc.presentation.reusable
 
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -16,9 +16,9 @@ fun ShadowText(
     text: String,
     overflow: TextOverflow,
     modifier: Modifier = Modifier,
-    style: TextStyle = MaterialTheme.typography.body1,
-    shadowColor: Color = MaterialTheme.colors.background,
-    color: Color = MaterialTheme.colors.onBackground,
+    style: TextStyle = MaterialTheme.typography.bodyMedium,
+    shadowColor: Color = MaterialTheme.colorScheme.background,
+    color: Color = MaterialTheme.colorScheme.onBackground,
     textAlign: TextAlign = TextAlign.Start,
     maxLines: Int = Int.MAX_VALUE
 ) {

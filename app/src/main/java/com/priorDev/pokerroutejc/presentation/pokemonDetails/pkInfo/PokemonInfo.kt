@@ -16,7 +16,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -74,7 +74,7 @@ fun PokemonInfo(
 
                     Text(
                         text = "#${pokemon.id} ${pokemon.name.uppercase()}",
-                        style = MaterialTheme.typography.h4,
+                        style = MaterialTheme.typography.headlineLarge,
                         fontWeight = FontWeight.Black,
                         modifier = Modifier
                             .fillMaxWidth()
@@ -133,7 +133,7 @@ fun PokemonInfo(
 private fun PokemonBasicStats(pokemon: PokemonData) {
     Text(
         text = stringResource(id = R.string.stats),
-        style = MaterialTheme.typography.h6,
+        style = MaterialTheme.typography.headlineMedium,
         modifier = Modifier
             .fillMaxWidth()
             .padding(4.dp),
@@ -167,7 +167,7 @@ private fun PokemonAbilities(
         ) {
             Text(
                 text = stringResource(id = R.string.abilities),
-                style = MaterialTheme.typography.h6,
+                style = MaterialTheme.typography.headlineMedium,
                 modifier = Modifier
                     .padding(horizontal = 4.dp),
                 textAlign = TextAlign.Center
@@ -194,7 +194,7 @@ private fun PokemonAbilities(
         ) {
             Text(
                 text = stringResource(id = R.string.hidden_ability),
-                style = MaterialTheme.typography.h6,
+                style = MaterialTheme.typography.headlineMedium,
                 modifier = Modifier
             )
 
