@@ -44,7 +44,6 @@ fun PokemonDetailsView(
 ) {
     val cardPadding = PaddingValues(horizontal = 32.dp, vertical = 16.dp)
     val scope = rememberCoroutineScope()
-    val systemUiController = rememberSystemUiController()
 
     val colorTypes = if (states.pokemon.types.isEmpty()) {
         listOf(
@@ -56,20 +55,6 @@ fun PokemonDetailsView(
             states.pokemon.types.first().getColor(),
             states.pokemon.types.last().getColor()
         )
-    }
-
-    DisposableEffect(systemUiController, colorTypes.first()) {
-        systemUiController.setSystemBarsColor(
-            color = colorTypes.first(),
-            darkIcons = true
-        )
-
-        onDispose {
-            systemUiController.setSystemBarsColor(
-                color = md_theme_light_primary,
-                darkIcons = true
-            )
-        }
     }
 
     CommonStatesView(
