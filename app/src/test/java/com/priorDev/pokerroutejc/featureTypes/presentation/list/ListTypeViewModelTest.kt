@@ -5,7 +5,9 @@ import assertk.assertThat
 import assertk.assertions.isInstanceOf
 import com.priorDev.pokerroutejc.core.ResourceFlow
 import com.priorDev.pokerroutejc.data.TypeRepoFake
-import com.priorDev.pokerroutejc.data.network.NetworkError
+import com.priorDev.pokerroutejc.data.network.utils.NetworkError
+import com.priorDev.pokerroutejc.presentation.typeList.ListTypeViewModel
+import com.priorDev.pokerroutejc.presentation.typeList.ListTypesEvent
 import com.priorDev.pokerroutejc.presentation.core.DisplayError
 import com.priorDev.pokerroutejc.presentation.core.LoadingIndicator
 import com.priorDev.pokerroutejc.utils.MainCoroutineExtension

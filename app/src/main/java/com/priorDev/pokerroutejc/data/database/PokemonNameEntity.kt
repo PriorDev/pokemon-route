@@ -3,7 +3,7 @@ package com.priorDev.pokerroutejc.data.database
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.priorDev.pokerroutejc.core.getIdFromPokeUrl
-import com.priorDev.pokerroutejc.featurePokemon.data.network.response.PokemonNameResponse
+import com.priorDev.pokerroutejc.data.network.pokemon.responses.PokemonNameResponse
 
 @Entity(tableName = "PokemonNameEntity")
 data class PokemonNameEntity(

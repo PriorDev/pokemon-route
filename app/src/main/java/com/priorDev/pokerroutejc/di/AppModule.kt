@@ -5,11 +5,11 @@ import android.util.Log
 import androidx.room.Room
 import com.apollographql.apollo3.ApolloClient
 import com.priorDev.pokerroutejc.data.database.MyDataBase
-import com.priorDev.pokerroutejc.data.network.EndPoints
-import com.priorDev.pokerroutejc.data.network.INetWorkService
-import com.priorDev.pokerroutejc.data.network.INetworkCaller
-import com.priorDev.pokerroutejc.data.network.KtorNetworkServiceImp
-import com.priorDev.pokerroutejc.data.network.MakeKtorNetworkCall
+import com.priorDev.pokerroutejc.data.network.utils.EndPoints
+import com.priorDev.pokerroutejc.data.network.NetworkService
+import com.priorDev.pokerroutejc.data.network.NetworkCaller
+import com.priorDev.pokerroutejc.data.network.NetworkServiceKtor
+import com.priorDev.pokerroutejc.data.network.NetworkCallerImp
 import com.priorDev.pokerroutejc.utils.GlobalEventChannel
 import com.priorDev.pokerroutejc.utils.IGlobalEventChannel
 import dagger.Module
@@ -79,9 +79,9 @@ object AppModule {
     @Singleton
     fun provideNetworkService(
         client: HttpClient,
-        caller: MakeKtorNetworkCall
-    ): INetWorkService {
-        return KtorNetworkServiceImp(
+        caller: NetworkCallerImp
+    ): NetworkService {
+        return NetworkServiceKtor(
             client = client,
             makeKtorNetworkCall = caller
         )
@@ -91,7 +91,7 @@ object AppModule {
     @Singleton
     fun provideNetworkCaller(
         dispatcher: CoroutineDispatcher
-    ): INetworkCaller {
-        return MakeKtorNetworkCall(dispatcher)
+    ): NetworkCaller {
+        return NetworkCallerImp(dispatcher)
     }
 }

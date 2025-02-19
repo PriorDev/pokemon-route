@@ -1,6 +1,7 @@
 package com.priorDev.pokerroutejc.utils
 
 import androidx.navigation.NavOptionsBuilder
+import com.priorDev.pokerroutejc.ui.Routes
 
 sealed interface OneTimeEvent {
     data class OnNavigate(

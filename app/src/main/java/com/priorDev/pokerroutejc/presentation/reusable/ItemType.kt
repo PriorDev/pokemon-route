@@ -15,8 +15,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.priorDev.pokerroutejc.featureTypes.domain.TypeData
-import com.priorDev.pokerroutejc.featureTypes.domain.getColor
+import com.priorDev.pokerroutejc.domain.types.models.TypeData
+import com.priorDev.pokerroutejc.domain.types.models.getColor
 
 @Composable
 fun ItemType(

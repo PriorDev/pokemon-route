@@ -29,7 +29,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import com.priorDev.pokerroutejc.R
-import com.priorDev.pokerroutejc.data.network.NetworkError
+import com.priorDev.pokerroutejc.data.network.utils.NetworkError
 import com.priorDev.pokerroutejc.presentation.reusable.PreviewTemplate
 
 @Composable

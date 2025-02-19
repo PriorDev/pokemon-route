@@ -7,14 +7,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.priorDev.pokerroutejc.BottomNavBar
 import com.priorDev.pokerroutejc.R
-import com.priorDev.pokerroutejc.featurePokemon.presentation.pokemonNavigation
-import com.priorDev.pokerroutejc.featureTypes.presentation.typesNavigation
 import com.priorDev.pokerroutejc.presentation.core.NavBottomItems
 import com.priorDev.pokerroutejc.utils.GlobalEventHandler
-import com.priorDev.pokerroutejc.utils.Routes
-import com.priorDev.pokerroutejc.utils.toRoute
+import com.priorDev.pokerroutejc.ui.Routes
+import com.priorDev.pokerroutejc.presentation.utils.toRoute
 
 @Composable
 fun MainComposable() {

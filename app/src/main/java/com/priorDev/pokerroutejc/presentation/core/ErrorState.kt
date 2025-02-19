@@ -1,7 +1,7 @@
 package com.priorDev.pokerroutejc.presentation.core
 
 import com.priorDev.pokerroutejc.R
-import com.priorDev.pokerroutejc.data.network.NetworkError
+import com.priorDev.pokerroutejc.data.network.utils.NetworkError
 
 data class ErrorState(
     val displayAs: DisplayError = DisplayError.Dialog,

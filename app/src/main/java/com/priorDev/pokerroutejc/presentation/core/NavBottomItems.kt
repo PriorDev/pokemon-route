@@ -1,7 +1,7 @@
 package com.priorDev.pokerroutejc.presentation.core
 
 import androidx.annotation.DrawableRes
-import com.priorDev.pokerroutejc.utils.Routes
+import com.priorDev.pokerroutejc.ui.Routes
 
 data class NavBottomItems(
     val route: Routes,

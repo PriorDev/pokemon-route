@@ -1,6 +1,6 @@
 package com.priorDev.pokerroutejc.core
 
-import com.priorDev.pokerroutejc.data.network.NetworkError
+import com.priorDev.pokerroutejc.data.network.utils.NetworkError
 import com.priorDev.pokerroutejc.presentation.core.LoadingIndicator
 import com.priorDev.pokerroutejc.presentation.core.UiMessages
 
