@@ -2,7 +2,7 @@ package com.priorDev.pokerroutejc.data.network
 
 import com.apollographql.apollo3.ApolloClient
 import com.priorDev.SearchPokemonNameQuery
-import com.priorDev.pokerroutejc.core.Resource
+import com.priorDev.pokerroutejc.core.ResourceFlow
 import com.priorDev.pokerroutejc.presentation.core.UiMessages
 import com.priorDev.pokerroutejc.core.orDefault
 import com.priorDev.pokerroutejc.featurePokemon.domain.PokemonNameData
@@ -13,9 +13,9 @@ import javax.inject.Inject
 class ApolloPokemonClient @Inject constructor(
     private val apolloClient: ApolloClient
 ) : IPokemonNameClient {
-    override suspend fun getPokemonByName(name: String): Resource<List<PokemonNameData>> {
+    override suspend fun getPokemonByName(name: String): ResourceFlow<List<PokemonNameData>> {
         return try {
-            Resource.Success(
+            ResourceFlow.Success(
                 apolloClient
                     .query(SearchPokemonNameQuery("%$name%"))
                     .execute()
@@ -26,7 +26,7 @@ class ApolloPokemonClient @Inject constructor(
                     .orEmpty()
             )
         } catch (e: Exception) {
-            Resource.Error(
+            ResourceFlow.Error(
                 uiMessages = UiMessages.DynamicMessage(e.message.orDefault("Unknown error")),
                 throwable = e
             )

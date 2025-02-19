@@ -3,7 +3,7 @@ package com.priorDev.pokerroutejc.featurePokemon.presentation.search
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.priorDev.pokerroutejc.core.Resource
+import com.priorDev.pokerroutejc.core.ResourceFlow
 import com.priorDev.pokerroutejc.data.network.IPokemonNameClient
 import com.priorDev.pokerroutejc.featurePokemon.domain.PokemonNameData
 import com.priorDev.pokerroutejc.utils.IGlobalEventChannel
@@ -44,14 +44,14 @@ class PkSearchViewModel @Inject constructor(
                     _pokemonNames.clear()
                 } else {
                     when (val result = pokemonNameClient.getPokemonByName(name)) {
-                        is Resource.Error -> {
+                        is ResourceFlow.Error -> {
                             // Do nothing
                         }
-                        is Resource.Success -> {
+                        is ResourceFlow.Success -> {
                             _pokemonNames.clear()
                             _pokemonNames.addAll(result.data.orEmpty())
                         }
-                        is Resource.Loading -> {
+                        is ResourceFlow.Loading -> {
                             // Do nothing
                         }
                     }

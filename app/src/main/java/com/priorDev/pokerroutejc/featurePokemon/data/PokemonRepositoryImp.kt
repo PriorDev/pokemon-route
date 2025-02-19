@@ -1,7 +1,7 @@
 package com.priorDev.pokerroutejc.featurePokemon.data
 
 import com.priorDev.pokerroutejc.data.network.MakeRetrofitNetworkCall
-import com.priorDev.pokerroutejc.core.Resource
+import com.priorDev.pokerroutejc.core.ResourceFlow
 import com.priorDev.pokerroutejc.featurePokemon.data.database.PokemonDao
 import com.priorDev.pokerroutejc.featurePokemon.data.database.toDB
 import com.priorDev.pokerroutejc.featurePokemon.domain.AbilityDetailsData
@@ -19,15 +19,15 @@ class PokemonRepositoryImp @Inject constructor(
     private val dao: PokemonDao,
     private val makeRetrofitNetworkCall: MakeRetrofitNetworkCall
 ) : PokemonRepository {
-    override suspend fun searchPokemonNameByMatch(name: String): Flow<Resource<List<PokemonNameData>>> {
+    override suspend fun searchPokemonNameByMatch(name: String): Flow<ResourceFlow<List<PokemonNameData>>> {
         return flow {
-            emit(Resource.Loading())
+            emit(ResourceFlow.Loading())
 
             val likeName = "%$name%"
             val pokemons = dao.getPokemonNameByMatch(likeName)
             if (pokemons.isNotEmpty()) {
-                emit(Resource.Success(pokemons.map { it.toDomain() }.sortedBy { it.name }))
-                emit(Resource.Loading(false))
+                emit(ResourceFlow.Success(pokemons.map { it.toDomain() }.sortedBy { it.name }))
+                emit(ResourceFlow.Loading(false))
                 return@flow
             }
 
@@ -42,7 +42,7 @@ class PokemonRepositoryImp @Inject constructor(
                     )
                 }
 
-                if (response is Resource.Success) {
+                if (response is ResourceFlow.Success) {
                     response.data?.let { nameContainer ->
                         existsNextPage = nameContainer.next != null
                         dao.insert(nameContainer.pokemons.map { it.toDB() })
@@ -56,95 +56,95 @@ class PokemonRepositoryImp @Inject constructor(
             val pokemonDB = dao.getPokemonNameByMatch(likeName)
 
             emit(
-                Resource.Success(
+                ResourceFlow.Success(
                     pokemonDB
                         .map { it.toDomain() }
                         .sortedBy { it.name }
                 )
             )
 
-            emit(Resource.Loading(false))
+            emit(ResourceFlow.Loading(false))
         }
     }
 
-    override suspend fun getPokemon(pokemonName: String): Flow<Resource<PokemonData>> {
+    override suspend fun getPokemon(pokemonName: String): Flow<ResourceFlow<PokemonData>> {
         return flow {
-            emit(Resource.Loading())
+            emit(ResourceFlow.Loading())
             val response = makeRetrofitNetworkCall {
                 service.getPokemon(pokemonName)
             }
 
-            if (response is Resource.Success) {
+            if (response is ResourceFlow.Success) {
                 response.data?.let { pokemon ->
-                    emit(Resource.Success(pokemon.toDomain()))
+                    emit(ResourceFlow.Success(pokemon.toDomain()))
                 }
-            } else if (response is Resource.Error) {
+            } else if (response is ResourceFlow.Error) {
                 val error = response.uiMessages
-                emit(Resource.Error(uiMessages = error, throwable = response.throwable))
+                emit(ResourceFlow.Error(uiMessages = error, throwable = response.throwable))
             }
 
-            emit(Resource.Loading(false))
+            emit(ResourceFlow.Loading(false))
         }
     }
 
-    override suspend fun getPokemonNamePaging(offSet: Int): Flow<Resource<List<PokemonNameData>>> {
+    override suspend fun getPokemonNamePaging(offSet: Int): Flow<ResourceFlow<List<PokemonNameData>>> {
         return flow {
-            emit(Resource.Loading())
+            emit(ResourceFlow.Loading())
 
             val response = makeRetrofitNetworkCall {
                 service.getAllPokemons("pokemon?offset=$offSet&limit=$PAGINATION_POKEMON")
             }
 
-            if (response is Resource.Success) {
+            if (response is ResourceFlow.Success) {
                 response.data?.let { container ->
-                    emit(Resource.Success(container.pokemons.map { it.toDomain() }))
+                    emit(ResourceFlow.Success(container.pokemons.map { it.toDomain() }))
                 }
-            } else if (response is Resource.Error) {
+            } else if (response is ResourceFlow.Error) {
                 val error = response.uiMessages
-                emit(Resource.Error(uiMessages = error, throwable = response.throwable))
+                emit(ResourceFlow.Error(uiMessages = error, throwable = response.throwable))
             }
 
-            emit(Resource.Loading(false))
+            emit(ResourceFlow.Loading(false))
         }
     }
 
-    override suspend fun getMoveDetails(moves: List<MoveData>): Flow<Resource<MoveDetailsData>> {
+    override suspend fun getMoveDetails(moves: List<MoveData>): Flow<ResourceFlow<MoveDetailsData>> {
         return flow {
-            emit(Resource.Loading())
+            emit(ResourceFlow.Loading())
 
             moves.forEach { move ->
                 val response = makeRetrofitNetworkCall {
                     service.getMoveDetails(move.id)
                 }
 
-                if (response is Resource.Success) {
+                if (response is ResourceFlow.Success) {
                     response.data?.let {
-                        emit(Resource.Success(it.toDomain(move)))
+                        emit(ResourceFlow.Success(it.toDomain(move)))
                     }
                 }
             }
 
-            emit(Resource.Loading(false))
+            emit(ResourceFlow.Loading(false))
         }
     }
 
-    override suspend fun getAbility(ability: String): Flow<Resource<AbilityDetailsData>> = flow {
-        emit(Resource.Loading())
+    override suspend fun getAbility(ability: String): Flow<ResourceFlow<AbilityDetailsData>> = flow {
+        emit(ResourceFlow.Loading())
 
         val response = makeRetrofitNetworkCall {
             service.getAbility(ability)
         }
 
-        if (response is Resource.Success) {
+        if (response is ResourceFlow.Success) {
             response.data?.let {
-                emit(Resource.Success(it.toDomain()))
+                emit(ResourceFlow.Success(it.toDomain()))
             }
-        } else if (response is Resource.Error) {
+        } else if (response is ResourceFlow.Error) {
             val error = response.uiMessages
-            emit(Resource.Error(uiMessages = error, throwable = response.throwable))
+            emit(ResourceFlow.Error(uiMessages = error, throwable = response.throwable))
         }
 
-        emit(Resource.Loading(false))
+        emit(ResourceFlow.Loading(false))
     }
 
     companion object {

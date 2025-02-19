@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.priorDev.pokerroutejc.core.CommonStates
-import com.priorDev.pokerroutejc.core.Resource
+import com.priorDev.pokerroutejc.core.ResourceFlow
 import com.priorDev.pokerroutejc.utils.Routes
 import com.priorDev.pokerroutejc.featureTypes.domain.TypeDetailsData
 import com.priorDev.pokerroutejc.featureTypes.domain.TypeRepository
@@ -32,11 +32,11 @@ class DetailsTypeViewModel @Inject constructor(
             repository.getTypeFlow(args.typeId)
                 .collect { result ->
                     when (result) {
-                        is Resource.Error -> _states.value = states.value.copy(uiMessages = result.uiMessages)
-                        is Resource.Loading -> {
+                        is ResourceFlow.Error -> _states.value = states.value.copy(uiMessages = result.uiMessages)
+                        is ResourceFlow.Loading -> {
                             _states.value = states.value.copy(isLoading = result.isLoading)
                         }
-                        is Resource.Success -> {
+                        is ResourceFlow.Success -> {
                             result.data?.let {
                                 _details.value = it
                             }

@@ -1,7 +1,7 @@
 package com.priorDev.pokerroutejc.data.network
 
 import com.priorDev.pokerroutejc.R
-import com.priorDev.pokerroutejc.core.Resource
+import com.priorDev.pokerroutejc.core.ResourceFlow
 import com.priorDev.pokerroutejc.presentation.core.UiMessages
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
@@ -18,19 +18,19 @@ class MakeRetrofitNetworkCall @Inject constructor(
     @Suppress("TooGenericExceptionCaught")
     suspend operator fun <T>invoke(
         call: suspend () -> T
-    ): Resource<T> {
+    ): ResourceFlow<T> {
         return withContext(dispatcher) {
             try {
-                Resource.Success(call())
+                ResourceFlow.Success(call())
             } catch (e: HttpException) {
                 println(e.printStackTrace())
-                Resource.Error(
+                ResourceFlow.Error(
                     uiMessages = UiMessages.StringResource(R.string.error_trying_to_reach_remote_source),
                     throwable = e
                 )
             } catch (e: Exception) {
                 println(e.printStackTrace())
-                Resource.Error(
+                ResourceFlow.Error(
                     UiMessages.StringResource(R.string.unexpected_error),
                     throwable = e
                 )

@@ -1,6 +1,6 @@
 package com.priorDev.pokerroutejc.featurePokemon.data
 
-import com.priorDev.pokerroutejc.core.Resource
+import com.priorDev.pokerroutejc.core.ResourceFlow
 import com.priorDev.pokerroutejc.featurePokemon.domain.AbilityDetailsData
 import com.priorDev.pokerroutejc.featurePokemon.domain.MoveData
 import com.priorDev.pokerroutejc.featurePokemon.domain.MoveDetailsData
@@ -10,13 +10,13 @@ import kotlinx.coroutines.flow.Flow
 
 interface PokemonRepository {
 
-    suspend fun searchPokemonNameByMatch(name: String): Flow<Resource<List<PokemonNameData>>>
+    suspend fun searchPokemonNameByMatch(name: String): Flow<ResourceFlow<List<PokemonNameData>>>
 
-    suspend fun getPokemon(pokemonName: String): Flow<Resource<PokemonData>>
+    suspend fun getPokemon(pokemonName: String): Flow<ResourceFlow<PokemonData>>
 
-    suspend fun getPokemonNamePaging(offSet: Int): Flow<Resource<List<PokemonNameData>>>
+    suspend fun getPokemonNamePaging(offSet: Int): Flow<ResourceFlow<List<PokemonNameData>>>
 
-    suspend fun getMoveDetails(moves: List<MoveData>): Flow<Resource<MoveDetailsData>>
+    suspend fun getMoveDetails(moves: List<MoveData>): Flow<ResourceFlow<MoveDetailsData>>
 
-    suspend fun getAbility(ability: String): Flow<Resource<AbilityDetailsData>>
+    suspend fun getAbility(ability: String): Flow<ResourceFlow<AbilityDetailsData>>
 }

@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.priorDev.pokerroutejc.core.CommonStates
-import com.priorDev.pokerroutejc.core.Resource
+import com.priorDev.pokerroutejc.core.ResourceFlow
 import com.priorDev.pokerroutejc.presentation.core.UiMessages
 import com.priorDev.pokerroutejc.featurePokemon.domain.AbilityDetailsData
 import com.priorDev.pokerroutejc.featurePokemon.domain.MoveDetailsData
@@ -40,9 +40,9 @@ class PokemonDetailsViewModel @Inject constructor(
             val navArg = savedStateHandle.toRoute<Routes.PkDetails>()
             repository.getPokemon(navArg.pokemonName).collect { resource ->
                 when (resource) {
-                    is Resource.Error -> showErrorMessage(resource.uiMessages)
-                    is Resource.Loading -> handleLoadingWheel(resource.isLoading)
-                    is Resource.Success -> {
+                    is ResourceFlow.Error -> showErrorMessage(resource.uiMessages)
+                    is ResourceFlow.Loading -> handleLoadingWheel(resource.isLoading)
+                    is ResourceFlow.Success -> {
                         _states.value = states.value.copy(pokemon = resource.data!!)
                     }
                 }
@@ -86,17 +86,17 @@ class PokemonDetailsViewModel @Inject constructor(
         viewModelScope.launch {
             repository.getAbility(ability).collect { resource ->
                 when (resource) {
-                    is Resource.Error -> {
+                    is ResourceFlow.Error -> {
                         _states.value = states.value.copy(
                             visibleAbilityDetails = AbilityDetailsData(
                                 effect = resource.uiMessages.toString()
                             )
                         )
                     }
-                    is Resource.Loading -> {
+                    is ResourceFlow.Loading -> {
                         _states.value = states.value.copy(isAbilityLoading = resource.isLoading)
                     }
-                    is Resource.Success -> {
+                    is ResourceFlow.Success -> {
                         _states.value = states.value.copy(visibleAbilityDetails = resource.data)
                     }
                 }
@@ -157,9 +157,9 @@ class PokemonDetailsViewModel @Inject constructor(
         )
 
         when (resource) {
-            is Resource.Error -> showErrorMessage(resource.uiMessages)
-            is Resource.Loading -> handleLoadingWheel(resource.isLoading)
-            is Resource.Success -> {
+            is ResourceFlow.Error -> showErrorMessage(resource.uiMessages)
+            is ResourceFlow.Loading -> handleLoadingWheel(resource.isLoading)
+            is ResourceFlow.Success -> {
                 _states.value = states.value.copy(
                     weaknessesAndStrengths = resource.data ?: DamageRelationsData()
                 )
@@ -171,11 +171,11 @@ class PokemonDetailsViewModel @Inject constructor(
         _moves.clear()
         repository.getMoveDetails(states.value.pokemon.moves).collect { resource ->
             when (resource) {
-                is Resource.Error -> showErrorMessage(resource.uiMessages)
-                is Resource.Loading -> {
+                is ResourceFlow.Error -> showErrorMessage(resource.uiMessages)
+                is ResourceFlow.Loading -> {
                     _states.value = states.value.copy(isLoading = resource.isLoading)
                 }
-                is Resource.Success -> {
+                is ResourceFlow.Success -> {
                     resource.data?.let { move ->
                         _moves.add(move)
                     }

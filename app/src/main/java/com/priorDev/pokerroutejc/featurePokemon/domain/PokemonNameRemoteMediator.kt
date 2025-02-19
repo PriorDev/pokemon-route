@@ -5,7 +5,7 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import com.priorDev.pokerroutejc.data.network.MakeRetrofitNetworkCall
-import com.priorDev.pokerroutejc.core.Resource
+import com.priorDev.pokerroutejc.core.ResourceFlow
 import com.priorDev.pokerroutejc.featurePokemon.data.PokemonService
 import com.priorDev.pokerroutejc.featurePokemon.data.database.PokemonDao
 import com.priorDev.pokerroutejc.featurePokemon.data.database.PokemonNameEntity
@@ -65,13 +65,13 @@ class PokemonNameRemoteMediator(
         }
 
         return when (response) {
-            is Resource.Loading -> MediatorResult.Error(Throwable("Unknown error"))
+            is ResourceFlow.Loading -> MediatorResult.Error(Throwable("Unknown error"))
 
-            is Resource.Error -> {
+            is ResourceFlow.Error -> {
                 MediatorResult.Error(response.throwable ?: Throwable("Unknown error"))
             }
 
-            is Resource.Success -> {
+            is ResourceFlow.Success -> {
                 val pokemons = response.data?.pokemons?.map { it.toDB() }
 
                 if (pokemons != null) {

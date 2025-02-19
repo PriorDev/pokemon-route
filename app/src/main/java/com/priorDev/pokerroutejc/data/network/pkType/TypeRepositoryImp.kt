@@ -1,6 +1,6 @@
 package com.priorDev.pokerroutejc.data.network.pkType
 
-import com.priorDev.pokerroutejc.core.Resource
+import com.priorDev.pokerroutejc.core.ResourceFlow
 import com.priorDev.pokerroutejc.data.database.TypeDao
 import com.priorDev.pokerroutejc.data.database.toDB
 import com.priorDev.pokerroutejc.data.network.NetworkError
@@ -13,7 +13,6 @@ import com.priorDev.pokerroutejc.featureTypes.domain.TypeRepository
 import com.priorDev.pokerroutejc.featureTypes.domain.toDomain
 import com.priorDev.pokerroutejc.presentation.core.LoadingIndicator
 import io.ktor.client.call.body
-import io.ktor.client.statement.bodyAsText
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -22,21 +21,21 @@ class TypeRepositoryImp @Inject constructor(
     private val service: ITypeService,
     private val dao: TypeDao,
 ) : TypeRepository {
-    override suspend fun getAllTypesFlow(): Flow<Resource<List<TypeData>>> {
+    override suspend fun getAllTypesFlow(): Flow<ResourceFlow<List<TypeData>>> {
         // Single source of truth DATABASE
         return flow {
-            emit(Resource.Loading(loadingIndicator = LoadingIndicator.SpinningWheel))
+            emit(ResourceFlow.Loading(loadingIndicator = LoadingIndicator.SpinningWheel))
 
             emit(getAllTypes())
 
-            emit(Resource.Loading(loadingIndicator = LoadingIndicator.None))
+            emit(ResourceFlow.Loading(loadingIndicator = LoadingIndicator.None))
         }
     }
 
-    override suspend fun getTypeFlow(typeId: Int): Flow<Resource<TypeDetailsData>> {
+    override suspend fun getTypeFlow(typeId: Int): Flow<ResourceFlow<TypeDetailsData>> {
         // Single source of truth DATABASE
         return flow {
-            emit(Resource.Loading())
+            emit(ResourceFlow.Loading())
 
             val networkResource = service.getType(typeId)
 
@@ -50,19 +49,19 @@ class TypeRepositoryImp @Inject constructor(
             val damageRelationEntity = dao.getDamageRelationByTypeId(typeId = typeId)
 
             if (damageRelationEntity.isEmpty()) {
-                emit(Resource.Error(networkErrorType = NetworkError.EmptyContent))
+                emit(ResourceFlow.Error(networkErrorType = NetworkError.EmptyContent))
             } else {
-                emit(Resource.Success(damageRelationEntity.toDomain()))
+                emit(ResourceFlow.Success(damageRelationEntity.toDomain()))
             }
 
-            emit(Resource.Loading(false))
+            emit(ResourceFlow.Loading(false))
         }
     }
 
-    override suspend fun getAllTypes(): Resource<List<TypeData>> {
+    override suspend fun getAllTypes(): ResourceFlow<List<TypeData>> {
         when(val networkResult = service.getAllTypes()) {
             is NetworkResource.Fail -> {
-                return Resource.Error(networkErrorType = networkResult.error)
+                return ResourceFlow.Error(networkErrorType = networkResult.error)
             }
             is NetworkResource.Success -> {
                 val container: ContainerTypeResponse = networkResult.response.body()
@@ -77,21 +76,21 @@ class TypeRepositoryImp @Inject constructor(
         val typeList = typesEntity.map { it.toDomain() }
 
         return if (typeList.isEmpty()) {
-            Resource.Error(networkErrorType = NetworkError.EmptyContent)
+            ResourceFlow.Error(networkErrorType = NetworkError.EmptyContent)
         } else {
-            Resource.Success(typeList)
+            ResourceFlow.Success(typeList)
         }
     }
 
-    override suspend fun getType(typeId: Int): Resource<TypeDetailsData> {
+    override suspend fun getType(typeId: Int): ResourceFlow<TypeDetailsData> {
         return when (val networkResource = service.getType(typeId)) {
             is NetworkResource.Fail -> {
-                Resource.Error(networkErrorType = NetworkError.EmptyContent)
+                ResourceFlow.Error(networkErrorType = NetworkError.EmptyContent)
             }
 
             is NetworkResource.Success -> {
                 val typeDetails: TypeDetailsResponse = networkResource.response.body()
-                Resource.Success(typeDetails.toDomain())
+                ResourceFlow.Success(typeDetails.toDomain())
             }
         }
     }

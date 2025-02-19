@@ -3,7 +3,7 @@ package com.priorDev.pokerroutejc.featureTypes.presentation.list
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.priorDev.pokerroutejc.core.Resource
+import com.priorDev.pokerroutejc.core.ResourceFlow
 import com.priorDev.pokerroutejc.featureTypes.domain.TypeData
 import com.priorDev.pokerroutejc.featureTypes.domain.TypeRepository
 import com.priorDev.pokerroutejc.presentation.core.ScreenStates
@@ -29,21 +29,21 @@ class ListTypeViewModel @Inject constructor(
             repository.getAllTypesFlow()
                 .collect { result ->
                     when (result) {
-                        is Resource.Error -> {
+                        is ResourceFlow.Error -> {
                             _screenStates.update {
                                 it.copy(
                                     networkError = result.networkErrorType
                                 )
                             }
                         }
-                        is Resource.Loading -> {
+                        is ResourceFlow.Loading -> {
                             _screenStates.update {
                                 it.copy(
                                     loadingIndicator = result.loadingIndicator
                                 )
                             }
                         }
-                        is Resource.Success -> {
+                        is ResourceFlow.Success -> {
                             result.data?.let {
                                 _typesList.addAll(it)
                             }

@@ -1,6 +1,6 @@
 package com.priorDev.pokerroutejc.featurePokemon.domain.useCases
 
-import com.priorDev.pokerroutejc.core.Resource
+import com.priorDev.pokerroutejc.core.ResourceFlow
 import com.priorDev.pokerroutejc.featureTypes.domain.DamageRelationsData
 import com.priorDev.pokerroutejc.featureTypes.domain.TypeData
 import com.priorDev.pokerroutejc.featureTypes.domain.TypeDetailsData
@@ -17,33 +17,33 @@ class GetWeaknessesAndStrengths @Inject constructor(
     @Suppress("CyclomaticComplexMethod")
     suspend operator fun invoke(
         pokemonTypes: List<TypeData>
-    ): Resource<DamageRelationsData> {
+    ): ResourceFlow<DamageRelationsData> {
         when (val allTypesResource = repository.getAllTypes()) {
-            is Resource.Error -> {
-                return Resource.Error(
+            is ResourceFlow.Error -> {
+                return ResourceFlow.Error(
                     uiMessages = allTypesResource.uiMessages,
                     throwable = allTypesResource.throwable
                 )
             }
-            is Resource.Loading -> { }
-            is Resource.Success -> allTypes = allTypesResource.data!!
+            is ResourceFlow.Loading -> { }
+            is ResourceFlow.Success -> allTypes = allTypesResource.data!!
         }
 
         pokemonTypes.forEach { type ->
             when (val typeResource = repository.getType(type.id)) {
-                is Resource.Error -> {
-                    return Resource.Error(
+                is ResourceFlow.Error -> {
+                    return ResourceFlow.Error(
                         uiMessages = typeResource.uiMessages,
                         throwable = typeResource.throwable
                     )
                 }
-                is Resource.Loading -> { }
-                is Resource.Success -> pokemonTypesDetails.add(typeResource.data!!)
+                is ResourceFlow.Loading -> { }
+                is ResourceFlow.Success -> pokemonTypesDetails.add(typeResource.data!!)
             }
         }
 
         if (pokemonTypesDetails.size == 1) {
-            return Resource.Success(pokemonTypesDetails.first().damageRelationsData)
+            return ResourceFlow.Success(pokemonTypesDetails.first().damageRelationsData)
         }
 
         allTypes.forEach { enemyType ->
@@ -79,7 +79,7 @@ class GetWeaknessesAndStrengths @Inject constructor(
             )
         }
 
-        return Resource.Success(damageRelationsData)
+        return ResourceFlow.Success(damageRelationsData)
     }
 
     private fun addDamageFromRelation(
