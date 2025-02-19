@@ -25,6 +25,7 @@ import com.priorDev.pokerroutejc.core.CommonStates
 import com.priorDev.pokerroutejc.core.EnumColorTypes
 import com.priorDev.pokerroutejc.presentation.reusable.CommonStatesView
 import com.priorDev.pokerroutejc.featurePokemon.domain.MoveDetailsData
+import com.priorDev.pokerroutejc.featurePokemon.presentation.components.EvolutionChainView
 import com.priorDev.pokerroutejc.featurePokemon.presentation.components.MovesView
 import com.priorDev.pokerroutejc.featurePokemon.presentation.components.PokemonInfo
 import com.priorDev.pokerroutejc.featurePokemon.presentation.components.SpritesView
@@ -61,9 +62,10 @@ fun PokemonDetailsView(
 
     if (commonStates.isLoading) return
 
-    val pageCount = 4
+    val pageCount = 5
     val pagerState = rememberPagerState(
-        pageCount = { pageCount }
+        pageCount = { pageCount },
+        initialPage = 1
     )
 
     Box(
@@ -106,6 +108,12 @@ fun PokemonDetailsView(
         ) { page ->
             when (page) {
                 0 -> {
+                    EvolutionChainView(
+                        states = states
+                    )
+                }
+
+                1 -> {
                     PokemonInfo(
                         modifier = Modifier.fillMaxWidth(),
                         states = states,
@@ -114,14 +122,14 @@ fun PokemonDetailsView(
                     )
                 }
 
-                1 -> {
+                2 -> {
                     WeaknessesAndStrengthView(
                         states = states,
                         modifier = Modifier.padding(cardPadding)
                     )
                 }
 
-                2 -> {
+                3 -> {
                     MovesView(
                         states = states,
                         movesList = movesList,
@@ -129,7 +137,7 @@ fun PokemonDetailsView(
                     )
                 }
 
-                3 -> {
+                4 -> {
                     SpritesView(
                         modifier = Modifier.padding(cardPadding),
                         states = states

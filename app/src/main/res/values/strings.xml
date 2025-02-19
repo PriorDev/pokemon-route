@@ -42,4 +42,15 @@
     <string name="use_offline_data">Use offline data</string>
     <string name="retry">Retry</string>
     <string name="dismiss">Dismiss</string>
+    <string name="evolves_throw">Evolves throw</string>
+    <string name="level">Level: %s</string>
+    <string name="happiness">Happiness: %s</string>
+    <string name="min_affection">Affection: %s</string>
+    <string name="time_of_day">In the </string>
+    <string name="needs_overworld_rain">Needs overworld rain</string>
+    <string name="item">Item:</string>
+    <string name="move">Move:</string>
+    <string name="location">Location:</string>
+    <string name="evolution_chain">Evolution chain</string>
+    <string name="evolves_in">Evolves in</string>
 </resources>

@@ -17,6 +17,7 @@ import com.priorDev.pokerroutejc.utils.Routes
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -54,6 +55,22 @@ class PokemonDetailsViewModel @Inject constructor(
 
             launch {
                 getMoves()
+            }
+
+            launch {
+                getEvolutions()
+            }
+        }
+    }
+
+    private suspend fun getEvolutions() {
+        when (val response = repository.getEvolutionChain(states.value.pokemon.id)) {
+            is ResourceFlow.Error -> TODO()
+            is ResourceFlow.Loading -> TODO()
+            is ResourceFlow.Success -> {
+                _states.update {
+                    it.copy(evolutions = response.data.orEmpty())
+                }
             }
         }
     }

@@ -2,6 +2,8 @@ package com.priorDev.pokerroutejc.featurePokemon.data
 
 import com.priorDev.pokerroutejc.data.network.MakeRetrofitNetworkCall
 import com.priorDev.pokerroutejc.core.ResourceFlow
+import com.priorDev.pokerroutejc.data.network.IPokemonNameClient
+import com.priorDev.pokerroutejc.data.network.pokemon.EvolutionResponse
 import com.priorDev.pokerroutejc.featurePokemon.data.database.PokemonDao
 import com.priorDev.pokerroutejc.featurePokemon.data.database.toDB
 import com.priorDev.pokerroutejc.featurePokemon.domain.AbilityDetailsData
@@ -17,7 +19,8 @@ import javax.inject.Inject
 class PokemonRepositoryImp @Inject constructor(
     private val service: PokemonService,
     private val dao: PokemonDao,
-    private val makeRetrofitNetworkCall: MakeRetrofitNetworkCall
+    private val makeRetrofitNetworkCall: MakeRetrofitNetworkCall,
+    private val graphQLClient: IPokemonNameClient
 ) : PokemonRepository {
     override suspend fun searchPokemonNameByMatch(name: String): Flow<ResourceFlow<List<PokemonNameData>>> {
         return flow {
@@ -145,6 +148,10 @@ class PokemonRepositoryImp @Inject constructor(
         }
 
         emit(ResourceFlow.Loading(false))
+    }
+
+    override suspend fun getEvolutionChain(id: Int): ResourceFlow<Map<Int?, List<EvolutionResponse>>> {
+        return graphQLClient.getEvolutionChain(id)
     }
 
     companion object {

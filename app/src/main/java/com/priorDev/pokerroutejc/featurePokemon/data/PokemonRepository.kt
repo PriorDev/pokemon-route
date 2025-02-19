@@ -1,6 +1,7 @@
 package com.priorDev.pokerroutejc.featurePokemon.data
 
 import com.priorDev.pokerroutejc.core.ResourceFlow
+import com.priorDev.pokerroutejc.data.network.pokemon.EvolutionResponse
 import com.priorDev.pokerroutejc.featurePokemon.domain.AbilityDetailsData
 import com.priorDev.pokerroutejc.featurePokemon.domain.MoveData
 import com.priorDev.pokerroutejc.featurePokemon.domain.MoveDetailsData
@@ -19,4 +20,6 @@ interface PokemonRepository {
     suspend fun getMoveDetails(moves: List<MoveData>): Flow<ResourceFlow<MoveDetailsData>>
 
     suspend fun getAbility(ability: String): Flow<ResourceFlow<AbilityDetailsData>>
+
+    suspend fun getEvolutionChain(id: Int): ResourceFlow<Map<Int?, List<EvolutionResponse>>>
 }

@@ -1,0 +1,28 @@
+query GetEvolutionChainId($pokemon_id: Int) {
+    pokemon_v2_pokemonspecies(where: {id: {_eq: $pokemon_id}}) {
+        pokemon_v2_evolutionchain {
+            pokemon_v2_pokemonspecies {
+                name
+                id
+                evolves_from_species_id
+                pokemon_v2_pokemonevolutions {
+                    min_level
+                    min_happiness
+                    min_affection
+                    needs_overworld_rain
+                    time_of_day
+                    trade_species_id
+                    pokemon_v2_item {
+                        name
+                    }
+                    pokemon_v2_move {
+                        name
+                    }
+                    pokemon_v2_location {
+                        name
+                    }
+                }
+            }
+        }
+    }
+}
