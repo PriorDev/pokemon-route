@@ -74,7 +74,9 @@ fun PokemonDetailsView(
         return
 
     val pageCount = 4
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState(
+        pageCount = { pageCount }
+    )
 
     Box(
         Modifier
@@ -109,7 +111,6 @@ fun PokemonDetailsView(
         }
 
         HorizontalPager(
-            pageCount = pageCount,
             state = pagerState,
             modifier = Modifier
                 .offset(y = 30.dp)

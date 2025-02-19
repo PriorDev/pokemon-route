@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.prior_dev.pokerroutejc"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.prior_dev.pokerroutejc"
@@ -39,7 +39,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.2.0"
+        kotlinCompilerExtensionVersion = "1.5.2"
     }
     packaging {
         resources {
@@ -49,9 +49,9 @@ android {
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.10.1")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
-    implementation("androidx.activity:activity-compose:1.7.2")
+    implementation(libs.core.ktx)
+    implementation(libs.lifecycle.runtime.ktx)
+    implementation(libs.activity.compose)
     implementation(libs.composeUi)
     implementation(libs.compose.preview)
 
@@ -59,40 +59,40 @@ dependencies {
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.compose.test.manifest)
 
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    androidTestImplementation(libs.ext.junit)
+    androidTestImplementation(libs.espresso.core)
 
     //Test
     testImplementation(libs.junit)
 
     //Material
-    implementation("androidx.compose.material:material:1.2.0")
-    implementation("androidx.compose.material3:material3:1.1.1")
+    implementation(libs.material)
+    implementation(libs.material3)
 
     //lifecycle
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
-    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.1")
+    implementation(libs.lifecycle.runtime.ktx.v261)
+    implementation(libs.lifecycle.runtime.compose)
     //Life data
-    implementation("androidx.compose.runtime:runtime-livedata:1.5.0")
+    implementation(libs.runtime.livedata)
     //SerializedName
-    implementation("com.google.code.gson:gson:2.9.0")
+    implementation(libs.gson)
     // Retrofit
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
     //Dager-hilt
     implementation(libs.dagger.hitl)
     kapt(libs.dagger.hilt.compiler)
-    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+    implementation(libs.hilt.navigation.compose)
     //Nav Controller
-    implementation("androidx.navigation:navigation-compose:2.5.2")
+    implementation(libs.navigation.compose)
     //Room
-    implementation("androidx.room:room-ktx:2.5.2")
-    kapt("androidx.room:room-compiler:2.5.2")
+    implementation(libs.room.ktx)
+    kapt(libs.room.compiler)
     //System ui Controll
-    implementation("com.google.accompanist:accompanist-systemuicontroller:0.30.0")
+    implementation(libs.accompanist.systemuicontroller)
     //Cargar imagenes desde internet
-    implementation("io.coil-kt:coil-compose:2.2.2")
-    implementation("androidx.palette:palette:1.0.0")
+    implementation(libs.coil.compose)
+    implementation(libs.palette)
     //Test coroutines
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
+    testImplementation(libs.kotlinx.coroutines.test)
 }
