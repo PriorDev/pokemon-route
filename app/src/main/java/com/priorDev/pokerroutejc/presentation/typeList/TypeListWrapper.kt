@@ -16,7 +16,7 @@ fun NavGraphBuilder.typeListWrapper() {
         val screenStates = viewModel.screenStates.collectAsStateWithLifecycle()
         val typesList = viewModel.typesList
 
-        ListTypeView(
+        ListTypeScreen(
             screenState = screenStates.value,
             typeList = typesList,
             onEvent = viewModel::onEvent

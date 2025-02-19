@@ -90,8 +90,10 @@ fun PokemonInfo(
                         pokemon.types.forEach { type ->
                             Button(
                                 onClick = {
-                                    GlobalEventChannelImp.navigate(
-                                        Routes.TypeDetails.PokemonTab(type.id)
+                                    onEvents(
+                                        PokemonDetailsEvents.Navigate(
+                                            Routes.TypeDetails.PokemonTab(type.id)
+                                        )
                                     )
                                 },
                                 colors = ButtonDefaults.buttonColors(backgroundColor = type.getColor()),

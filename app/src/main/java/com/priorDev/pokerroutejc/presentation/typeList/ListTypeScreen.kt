@@ -21,7 +21,7 @@ import com.priorDev.pokerroutejc.presentation.core.ScreenTemplate
 import com.priorDev.pokerroutejc.utils.GlobalEventChannelImp
 
 @Composable
-fun ListTypeView(
+fun ListTypeScreen(
     screenState: ScreenStates,
     typeList: List<TypeData>,
     onEvent: (ListTypesEvent) -> Unit
@@ -48,8 +48,10 @@ fun ListTypeView(
                     type = type,
                     style = MaterialTheme.typography.titleLarge,
                     onClick = {
-                        GlobalEventChannelImp.navigate(
-                            route = Routes.TypeDetails.TypeTab(type.id)
+                        onEvent(
+                            ListTypesEvent.Navigate(
+                                Routes.TypeDetails.TypeTab(type.id)
+                            )
                         )
                     }
                 )
@@ -72,7 +74,7 @@ private fun ListTypeViewPreview() {
     )
 
     PreviewTemplate {
-        ListTypeView(
+        ListTypeScreen(
             screenState = ScreenStates(),
             typeList = types,
             onEvent = {}

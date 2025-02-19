@@ -67,7 +67,7 @@ val kAppModule = module {
     }
 
     single<GlobalEventChannel> {
-        GlobalEventChannelImp
+        GlobalEventChannelImp()
     }
 
     single {

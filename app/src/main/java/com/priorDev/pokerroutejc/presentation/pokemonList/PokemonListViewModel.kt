@@ -46,6 +46,10 @@ class PokemonListViewModel(
             PokemonListEvent.OnSearch -> {
                 globalEventChannel.navigate(Routes.PkSearch)
             }
+
+            is PokemonListEvent.Navigate -> {
+                globalEventChannel.navigate(event.route, event.navOptions)
+            }
         }
     }
 

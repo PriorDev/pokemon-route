@@ -14,6 +14,7 @@ import com.priorDev.pokerroutejc.data.PokemonRepo
 import com.priorDev.pokerroutejc.domain.pokemon.useCases.PokemonUseCases
 import com.priorDev.pokerroutejc.domain.types.models.DamageRelationsData
 import com.priorDev.pokerroutejc.ui.Routes
+import com.priorDev.pokerroutejc.utils.GlobalEventChannel
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,7 +24,8 @@ import kotlinx.coroutines.launch
 class PokemonDetailsViewModel(
     private val repository: PokemonRepo,
     savedStateHandle: SavedStateHandle,
-    private val useCases: PokemonUseCases
+    private val useCases: PokemonUseCases,
+    private val globalEvent: GlobalEventChannel
 ) : ViewModel() {
     private val _commonStates = MutableStateFlow(CommonStates())
     val commonStates = _commonStates.asStateFlow()
@@ -82,6 +84,9 @@ class PokemonDetailsViewModel(
             is PokemonDetailsEvents.OnAbilityClick -> onAbilityClick(event.ability)
             PokemonDetailsEvents.OnAbilityDismiss -> onAbilityDismiss()
             is PokemonDetailsEvents.OnSearchTextChange -> onSearchTextChanged(event.text)
+            is PokemonDetailsEvents.Navigate -> {
+                globalEvent.navigate(event.route, event.navOptions)
+            }
         }
     }
 

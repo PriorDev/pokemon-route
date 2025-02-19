@@ -86,7 +86,11 @@ fun PokemonListView(
                     ItemPokemonName(
                         pokemon = pokemon,
                         modifier = Modifier.clickable {
-                            GlobalEventChannelImp.navigate(Routes.PkDetails(pokemon.name))
+                            onEvent(
+                                PokemonListEvent.Navigate(
+                                    Routes.PkDetails(pokemon.name)
+                                )
+                            )
                         }
                     )
                 }

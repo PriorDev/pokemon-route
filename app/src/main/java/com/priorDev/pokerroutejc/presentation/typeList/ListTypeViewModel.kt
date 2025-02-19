@@ -13,6 +13,7 @@ import com.priorDev.pokerroutejc.presentation.core.ErrorState
 import com.priorDev.pokerroutejc.presentation.core.ScreenStates
 import com.priorDev.pokerroutejc.presentation.core.UiMessages
 import com.priorDev.pokerroutejc.presentation.utils.flowSubscriber
+import com.priorDev.pokerroutejc.utils.GlobalEventChannel
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.onStart
@@ -20,7 +21,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class ListTypeViewModel(
-    private val repository: TypeRepo
+    private val repository: TypeRepo,
+    private val globalEvent: GlobalEventChannel
 ) : ViewModel() {
     private val _typesList = mutableStateListOf<TypeData>()
     val typesList: List<TypeData> = _typesList
@@ -36,6 +38,10 @@ class ListTypeViewModel(
         when (event) {
             ListTypesEvent.Refresh -> {
                 getAllTypes(isRefresh = true)
+            }
+
+            is ListTypesEvent.Navigate -> {
+                globalEvent.navigate(event.route, event.navOptions)
             }
         }
     }

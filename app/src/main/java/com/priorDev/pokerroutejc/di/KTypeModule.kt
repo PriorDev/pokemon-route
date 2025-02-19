@@ -30,7 +30,8 @@ val kTypeModule = module {
 
     viewModel {
         ListTypeViewModel(
-            repository = get()
+            repository = get(),
+            globalEvent = get()
         )
     }
 
