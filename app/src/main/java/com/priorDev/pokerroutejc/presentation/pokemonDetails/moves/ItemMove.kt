@@ -1,134 +1,136 @@
 package com.priorDev.pokerroutejc.presentation.pokemonDetails.moves
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.text.selection.SelectionContainer
-import androidx.compose.material.Card
-import androidx.compose.material.Divider
+import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.priorDev.pokerroutejc.core.EnumColorTypes
-import com.priorDev.pokerroutejc.presentation.reusable.ItemType
-import com.priorDev.pokerroutejc.domain.pokemon.models.MoveDetailsData
-import com.priorDev.pokerroutejc.domain.pokemon.models.VersionGroupDetailData
-import com.priorDev.pokerroutejc.domain.types.models.TypeData
-import com.priorDev.pokerroutejc.domain.types.models.getColor
 import com.priorDev.pokerroutejc.R
+import com.priorDev.pokerroutejc.domain.pokemon.models.MoveDetailsData
+import com.priorDev.pokerroutejc.domain.types.models.TypeData
+import com.priorDev.pokerroutejc.presentation.reusable.ItemType
+import com.priorDev.pokerroutejc.presentation.reusable.PreviewTemplate
 
 @Composable
 fun ItemMove(
     move: MoveDetailsData,
     modifier: Modifier = Modifier
 ) {
-    val backgroundColor = move.type?.getColor() ?: EnumColorTypes.Normal.color
     Card(
-        modifier = modifier,
-        backgroundColor = backgroundColor,
-        elevation = 4.dp
+        modifier = modifier
     ) {
         Column(
-            Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-                .background(MaterialTheme.colorScheme.background),
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier = Modifier
+                .padding(8.dp)
         ) {
-            Row {
-                move.type?.let {
-                    ItemType(type = it, modifier = Modifier.padding(8.dp), elevation = 0.dp)
+            Text(
+                text = move.name,
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            move.type?.let {
+                ItemType(
+                    type = it,
+                    modifier = Modifier.height(32.dp),
+                    elevation = 0.dp
+                )
+            }
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = stringResource(id = R.string.Damage, move.damageClass),
+                    modifier = Modifier.padding(horizontal = 4.dp),
+                    textAlign = TextAlign.Center
+                )
+
+                if(move.machineNumber.isNotEmpty()) {
+                    Text(
+                        text = stringResource(id = R.string.machine, move.machineNumber),
+                        modifier = Modifier.padding(horizontal = 4.dp),
+                        textAlign = TextAlign.Center
+                    )
                 }
 
-                SelectionContainer {
+                if(move.level > 0) {
                     Text(
-                        text = move.name.uppercase(),
-                        style = MaterialTheme.typography.headlineSmall,
-                        fontWeight = FontWeight.Bold,
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis,
-                        textAlign = TextAlign.Center,
-                        color = Color.Black,
-                        modifier = Modifier
-                            .background(backgroundColor)
-                            .fillMaxWidth()
+                        text = stringResource(id = R.string.learned_at, move.level),
+                        modifier = Modifier.padding(start = 4.dp),
+                        textAlign = TextAlign.Center
                     )
                 }
             }
-
-            Text(
-                text = stringResource(id = R.string.type_of_damage, move.damageName.uppercase()),
-                fontWeight = FontWeight.Bold
-            )
-
-            Text(text = move.generationName.uppercase())
-            Divider()
-            Row(
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(text = stringResource(id = R.string.power) + " ${move.power}")
-
-                Text(text = stringResource(id = R.string.accuracy) + " ${move.accuracy}")
-            }
-            Row(
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(text = stringResource(id = R.string.pp) + " ${move.pp}")
-                Text(text = stringResource(id = R.string.priority) + " ${move.priority}")
-            }
-
-            Divider()
-
-            SelectionContainer {
-                Text(text = move.effect, modifier = Modifier.fillMaxWidth(.98f))
-            }
-
-            LazyRow(
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-                modifier = Modifier
-                    .padding(8.dp)
-            ) {
-                val versions = move.versionGroupDetails.distinctBy { it.moveLearnMethodId }
-                items(versions) { version ->
-                    Card(elevation = 4.dp) {
-                        Column(
-                            Modifier
-                                .fillMaxWidth()
-                                .padding(4.dp)
-                        ) {
-                            Text(
-                                text = stringResource(id = R.string.learned_at)
-                                    .plus(version.levelLearnedAt)
-                                    .uppercase()
-                            )
-                            Text(
-                                text = stringResource(id = R.string.method)
-                                    .plus(version.moveLearnMethodName)
-                                    .uppercase()
-                            )
-                        }
-                    }
-                }
-            }
         }
+
+//            Text(text = move.generationName.uppercase())
+//            Divider()
+//            Row(
+//                horizontalArrangement = Arrangement.SpaceEvenly,
+//                verticalAlignment = Alignment.CenterVertically,
+//                modifier = Modifier.fillMaxWidth()
+//            ) {
+//                Text(text = stringResource(id = R.string.power) + " ${move.power}")
+//
+//                Text(text = stringResource(id = R.string.accuracy) + " ${move.accuracy}")
+//            }
+//            Row(
+//                horizontalArrangement = Arrangement.SpaceEvenly,
+//                verticalAlignment = Alignment.CenterVertically,
+//                modifier = Modifier.fillMaxWidth()
+//            ) {
+//                Text(text = stringResource(id = R.string.pp) + " ${move.pp}")
+//                Text(text = stringResource(id = R.string.priority) + " ${move.priority}")
+//            }
+//
+//            Divider()
+//
+//            SelectionContainer {
+//                Text(text = move.effect, modifier = Modifier.fillMaxWidth(.98f))
+//            }
+
+//            LazyRow(
+//                horizontalArrangement = Arrangement.spacedBy(16.dp),
+//                modifier = Modifier
+//                    .padding(8.dp)
+//            ) {
+//                val versions = move.versionGroupDetails.distinctBy { it.moveLearnMethodId }
+//                items(versions) { version ->
+//                    Card(elevation = 4.dp) {
+//                        Column(
+//                            Modifier
+//                                .fillMaxWidth()
+//                                .padding(4.dp)
+//                        ) {
+//                            Text(
+//                                text = stringResource(id = R.string.learned_at)
+//                                    .plus(version.levelLearnedAt)
+//                                    .uppercase()
+//                            )
+//                            Text(
+//                                text = stringResource(id = R.string.method)
+//                                    .plus(version.moveLearnMethodName)
+//                                    .uppercase()
+//                            )
+//                        }
+//                    }
+//                }
+//            }
     }
 }
 
@@ -137,34 +139,21 @@ fun ItemMove(
 @Composable
 private fun ItemMovePreview() {
     val move = MoveDetailsData(
-        isVisible = true,
         name = "Nombre",
-        id = "0".toLong(),
-        versionGroupDetails = listOf(
-            VersionGroupDetailData(
-                levelLearnedAt = 1,
-                moveLearnMethodId = "0".toLong(),
-                moveLearnMethodName = "Subir de nivel",
-                versionGroupId = "0".toLong(),
-                versionGroupName = "Version Gold"
-            ),
-            VersionGroupDetailData(
-                levelLearnedAt = 1,
-                moveLearnMethodId = "0".toLong(),
-                moveLearnMethodName = "Subir de nivel",
-                versionGroupId = "0".toLong(),
-                versionGroupName = "Version Gold"
-            ),
-        ),
         accuracy = 5,
         power = 5,
         pp = 5,
         priority = 5,
         type = TypeData(1, "fire"),
-        damageName = "Fisico",
+        damageClass = "Fisico",
         generationName = "Gold",
-        effect = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+        effect = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        learnMethod = "Learn Method",
+        machineNumber = "",
+        level = 3
     )
-
-    ItemMove(move = move)
+    
+    PreviewTemplate {
+        ItemMove(move = move)
+    }
 }

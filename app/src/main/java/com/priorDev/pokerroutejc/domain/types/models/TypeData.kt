@@ -1,5 +1,7 @@
 package com.priorDev.pokerroutejc.domain.types.models
 
+import androidx.compose.ui.graphics.Color
+import com.priorDev.GetPkMovesQuery
 import com.priorDev.pokerroutejc.core.EnumColorTypes
 import com.priorDev.pokerroutejc.core.getIdFromPokeUrl
 import com.priorDev.pokerroutejc.data.database.TypeEntity
@@ -22,6 +24,16 @@ fun TypeEntity.toDomain() =
         name = name,
     )
 
-fun TypeData.getColor() =
-    EnumColorTypes.values()
-        .firstOrNull { it.type == this.name }?.color ?: EnumColorTypes.Normal.color
+fun TypeData.getColor(): Color {
+    return EnumColorTypes.entries
+        .firstOrNull { it.type == this.name }
+        ?.color
+        ?: EnumColorTypes.Normal.color
+}
+
+fun GetPkMovesQuery.Pokemon_v2_type.toModel(): TypeData {
+    return TypeData(
+        id = id,
+        name = name,
+    )
+}

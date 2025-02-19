@@ -78,6 +78,7 @@ dependencies {
     //Material
     implementation(libs.material)
     implementation(libs.material3)
+    implementation(libs.material.icons.extended)
     //lifecycle
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.runtime.compose)

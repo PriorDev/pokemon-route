@@ -1,10 +1,12 @@
 package com.priorDev.pokerroutejc.presentation.pokemonDetails
 
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.priorDev.pokerroutejc.Resource
 import com.priorDev.pokerroutejc.core.CommonStates
 import com.priorDev.pokerroutejc.core.ResourceFlow
 import com.priorDev.pokerroutejc.presentation.core.UiMessages
@@ -33,8 +35,8 @@ class PokemonDetailsViewModel(
     private val _states = MutableStateFlow(PokemonDetailsStates())
     val states = _states.asStateFlow()
 
-    private val _moves = mutableStateListOf<MoveDetailsData>()
-    val moves: List<MoveDetailsData> = _moves
+    private val _moves = mutableStateMapOf<String, List<MoveDetailsData>>()
+    val moves: Map<String, List<MoveDetailsData>> = _moves
 
     init {
         viewModelScope.launch {
@@ -153,22 +155,22 @@ class PokemonDetailsViewModel(
     }
 
     private fun filterMoves() {
-        _moves.forEach { move ->
-            val selectedGeneration = states.value.selectedGeneration.lowercase()
-            val isGenerationMatch = selectedGeneration.isEmpty()
-                .or(move.generationName.lowercase() == selectedGeneration)
-
-            val selectedType = states.value.selectedTypeId
-            val isTypeMatch = selectedType == 0 || selectedType == (move.type?.id ?: 0)
-
-            val isTextSearchMatch = if (states.value.textSearch == "") {
-                true
-            } else {
-                move.name.contains(states.value.textSearch)
-            }
-
-            move.isVisible = isGenerationMatch && isTypeMatch && isTextSearchMatch
-        }
+//        _moves.forEach { move ->
+//            val selectedGeneration = states.value.selectedGeneration.lowercase()
+//            val isGenerationMatch = selectedGeneration.isEmpty()
+//                .or(move.generationName.lowercase() == selectedGeneration)
+//
+//            val selectedType = states.value.selectedTypeId
+//            val isTypeMatch = selectedType == 0 || selectedType == (move.type?.id ?: 0)
+//
+//            val isTextSearchMatch = if (states.value.textSearch == "") {
+//                true
+//            } else {
+//                move.name.contains(states.value.textSearch)
+//            }
+//
+//            move.isVisible = isGenerationMatch && isTypeMatch && isTextSearchMatch
+//        }
     }
 
     private suspend fun getWeaknesses() {
@@ -188,18 +190,18 @@ class PokemonDetailsViewModel(
     }
 
     private suspend fun getMoves() {
-        _moves.clear()
-        repository.getMoveDetails(states.value.pokemon.moves).collect { resource ->
-            when (resource) {
-                is ResourceFlow.Error -> showErrorMessage(resource.uiMessages)
-                is ResourceFlow.Loading -> {
-                    _states.value = states.value.copy(isLoading = resource.isLoading)
-                }
-                is ResourceFlow.Success -> {
-                    resource.data?.let { move ->
-                        _moves.add(move)
-                    }
-                }
+        val response = repository.getPkMoves(
+            pokemonId = states.value.pokemon.id,
+            generationName = "generation-ix",
+            language = "en"
+        )
+
+        when (response) {
+            is Resource.Error -> TODO()
+            is Resource.Success -> {
+                _moves.putAll(
+                    response.data.orEmpty()
+                )
             }
         }
     }

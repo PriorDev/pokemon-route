@@ -2,14 +2,18 @@ package com.priorDev.pokerroutejc.data.network.pokemon
 
 import com.apollographql.apollo3.api.Optional
 import com.priorDev.GetEvolutionChainIdQuery
+import com.priorDev.GetPkMovesQuery
 import com.priorDev.SearchPokemonNameQuery
+import com.priorDev.pokerroutejc.Resource
 import com.priorDev.pokerroutejc.core.ResourceFlow
 import com.priorDev.pokerroutejc.data.network.ApolloCaller
 import com.priorDev.pokerroutejc.data.network.pokemon.responses.EvolutionResponse
 import com.priorDev.pokerroutejc.data.network.pokemon.responses.toResponse
 import com.priorDev.pokerroutejc.data.network.utils.NetworkResource
+import com.priorDev.pokerroutejc.domain.pokemon.models.MoveDetailsData
 import com.priorDev.pokerroutejc.domain.pokemon.models.PokemonNameData
 import com.priorDev.pokerroutejc.domain.pokemon.models.toDomain
+import com.priorDev.pokerroutejc.domain.pokemon.models.toModel
 
 @Suppress("TooGenericExceptionCaught")
 class PokemonApolloServiceImp(
@@ -68,6 +72,41 @@ class PokemonApolloServiceImp(
                     .groupBy { it.evolvesFromSpecieId }
 
                 ResourceFlow.Success(evolutionsList)
+            }
+        }
+    }
+
+    override suspend fun getPkMoves(
+        pokemonId: Int,
+        generationName: String,
+        language: String
+    ): Resource<Map<String, List<MoveDetailsData>>> {
+        val response = apolloCaller.invoke(
+            GetPkMovesQuery(
+                Optional.present(pokemonId),
+                Optional.present(generationName),
+                Optional.present(language)
+            )
+        )
+
+        return when (response) {
+            is NetworkResource.Fail -> {
+                Resource.Error(
+                    networkErrorType = response.error,
+                    throwable = response.exception
+                )
+            }
+
+            is NetworkResource.Success -> {
+                val moveList = response.data
+                    .pokemon_v2_pokemon
+                    .flatMap { it.pokemon_v2_pokemonmoves }
+                    .map {
+                        it.toModel()
+                    }
+                    .groupBy { it.learnMethod }
+
+                Resource.Success(moveList)
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.priorDev.pokerroutejc.presentation.pokemonDetails.pkInfo
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,15 +13,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Card
-import androidx.compose.material.Divider
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -31,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.priorDev.pokerroutejc.R
+import com.priorDev.pokerroutejc.core.EnumColorTypes
 import com.priorDev.pokerroutejc.domain.pokemon.models.AbilityData
 import com.priorDev.pokerroutejc.domain.pokemon.models.AbilityDetailsData
 import com.priorDev.pokerroutejc.domain.pokemon.models.PokemonData
@@ -50,6 +56,17 @@ fun PokemonInfo(
 ) {
     val scrollState = rememberScrollState()
     val pokemon = states.pokemon
+    val colorTypes = if (states.pokemon.types.isEmpty()) {
+        listOf(
+            EnumColorTypes.Normal.color,
+            EnumColorTypes.Normal.color,
+        )
+    } else {
+        listOf(
+            states.pokemon.types.first().getColor(),
+            states.pokemon.types.last().getColor()
+        )
+    }
 
     states.isAbilityLoading?.let { isLoading ->
         AbilityDialog(
@@ -62,25 +79,18 @@ fun PokemonInfo(
     Box(
         modifier = modifier
             .verticalScroll(scrollState)
+            .background(Brush.linearGradient(colorTypes))
     ) {
         Column {
             Spacer(modifier = Modifier.height(100.dp))
             Card(
-                modifier = Modifier.padding(cardPadding)
+                modifier = Modifier.padding(cardPadding),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceContainerLowest
+                )
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Spacer(modifier = Modifier.height(110.dp))
-
-                    Text(
-                        text = "#${pokemon.id} ${pokemon.name.uppercase()}",
-                        style = MaterialTheme.typography.headlineLarge,
-                        fontWeight = FontWeight.Black,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(4.dp),
-                        textAlign = TextAlign.Center,
-                    )
-                    Spacer(modifier = Modifier.height(16.dp))
 
                     Row(
                         horizontalArrangement = Arrangement.Center,
@@ -95,7 +105,10 @@ fun PokemonInfo(
                                         )
                                     )
                                 },
-                                colors = ButtonDefaults.buttonColors(backgroundColor = type.getColor()),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = type.getColor(),
+                                    contentColor = Color.Black
+                                ),
                                 modifier = Modifier.padding(horizontal = 16.dp)
                             ) {
                                 Text(text = type.name.uppercase())
@@ -174,7 +187,7 @@ private fun PokemonAbilities(
                 textAlign = TextAlign.Center
             )
 
-            Divider(Modifier.fillMaxWidth(.8f))
+            HorizontalDivider(Modifier.fillMaxWidth(.8f))
 
             pokemon.abilities.filter { !it.isHidden }.forEach { ability ->
                 val color = pokemon.types.first().getColor()
@@ -182,7 +195,6 @@ private fun PokemonAbilities(
                     onClick = {
                         onEvent(PokemonDetailsEvents.OnAbilityClick(ability.name))
                     },
-                    colors = ButtonDefaults.buttonColors(backgroundColor = color)
                 ) {
                     Text(text = ability.name)
                 }
@@ -207,7 +219,6 @@ private fun PokemonAbilities(
                     onClick = {
                         onEvent(PokemonDetailsEvents.OnAbilityClick(ability.name))
                     },
-                    colors = ButtonDefaults.buttonColors(backgroundColor = color)
                 ) {
                     Text(text = ability.name)
                 }

@@ -52,6 +52,7 @@ ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negoti
 lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycleRuntimeKtxVersion" }
 lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 material = { module = "androidx.compose.material:material", version.ref = "materialVersion" }
+material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "compose_ui_version" }
 material3 = { module = "androidx.compose.material3:material3", version.ref = "material3Version" }
 navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationComposeVersion" }
 paging-compose = { module = "androidx.paging:paging-compose", version.ref = "pagingRuntimeKtxVersion" }

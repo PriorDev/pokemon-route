@@ -21,9 +21,10 @@
     <string name="accuracy">Accuracy</string>
     <string name="pp">PP</string>
     <string name="priority">Priority</string>
-    <string name="type_of_damage">Type of damage %s</string>
-    <string name="learned_at">Learned at </string>
-    <string name="method">Method </string>
+    <string name="Damage">Damage \n%s</string>
+    <string name="learned_at">Learn at \n%s</string>
+    <string name="machine">Machine \n%s</string>
+    <string name="method">Method %s</string>
     <string name="group">Group</string>
     <string name="moves">Moves</string>
     <string name="all">All</string>
@@ -53,4 +54,5 @@
     <string name="location">Location:</string>
     <string name="evolution_chain">Evolution chain</string>
     <string name="evolves_in">Evolves in</string>
+    <string name="filter">Filter</string>
 </resources>

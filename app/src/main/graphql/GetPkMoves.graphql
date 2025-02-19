@@ -1,0 +1,58 @@
+query getPkMoves(
+    $pokemon_id: Int,
+    $generation_name: String,
+    $language: String
+) {
+    pokemon_v2_pokemon(where: {id: {_eq: $pokemon_id}}) {
+        pokemon_v2_pokemonmoves(
+            order_by: {version_group_id: desc}
+            where: {pokemon_v2_versiongroup:{pokemon_v2_generation: {name: {_eq: $generation_name}}}}
+        ) {
+            level
+            pokemon_v2_movelearnmethod {
+                pokemon_v2_movelearnmethodnames(
+                    where: {pokemon_v2_language: {name: {_eq: $language}}}
+                ) {
+                    name
+                }
+            }
+            pokemon_v2_move {
+                pokemon_v2_movenames(
+                    where: {pokemon_v2_language: {name: {_eq: $language}}}
+                ) {
+                    name
+                }
+                accuracy,
+                power,
+                pp,
+                priority,
+                pokemon_v2_type {
+                    id,
+                    name,
+                },
+                pokemon_v2_movedamageclass {
+                    name
+                },
+                pokemon_v2_generation {
+                    name
+                },
+                pokemon_v2_moveeffect {
+                    pokemon_v2_moveeffecteffecttexts{
+                        effect
+                    }
+                },
+                pokemon_v2_machines(
+                    where: {pokemon_v2_versiongroup:{pokemon_v2_generation: {name: {_eq: $generation_name}}}}
+                ) {
+                    pokemon_v2_item {
+                        pokemon_v2_itemnames(
+                            where: {pokemon_v2_language: {name: {_eq: $language}}}
+                        ){
+                            name
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

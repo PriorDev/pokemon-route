@@ -4,16 +4,42 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material3.Scaffold
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+
+@Composable
+fun ScreenTemplate(
+    modifier: Modifier = Modifier,
+    errorState: ErrorState,
+    dialogModel: AlertDialogModel,
+    loadingIndicator: LoadingIndicator,
+    topBar: @Composable () -> Unit = {},
+    content: @Composable () -> Unit
+) {
+    Scaffold(
+        topBar = topBar,
+        modifier = modifier
+    ) { innerPadding ->
+        ScreenTemplate(
+            loadingIndicator = loadingIndicator,
+            errorState = errorState,
+            dialogModel = dialogModel,
+            content = content,
+            modifier = Modifier.padding(innerPadding)
+        )
+    }
+}
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
