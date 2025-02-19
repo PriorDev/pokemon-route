@@ -1,0 +1,10 @@
+query SearchPokemonName($name_query: String!) {
+    pokemon_v2_pokemon(
+        where: {
+            name: {_like: $name_query}
+        }
+    ) {
+        id
+        name
+    }
+}

@@ -16,7 +16,7 @@ sealed class Routes {
     data object TypesList: Routes()
 
     @Serializable
-    open class TypeDetails (val typeId: Int) {
+    open class TypeDetails (val typeId: Int): Routes() {
         @Serializable
         data class TypeTab(val id: Int) : TypeDetails(id)
 

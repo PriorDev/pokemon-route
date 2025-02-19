@@ -45,7 +45,7 @@ fun ListTypeView(
                 type = type,
                 style = MaterialTheme.typography.titleLarge,
                 onClick = {
-                    GlobalEventChannel.onNavigate(
+                    GlobalEventChannel.navigate(
                         route = Routes.TypeDetails.TypeTab(type.id)
                     )
                 }

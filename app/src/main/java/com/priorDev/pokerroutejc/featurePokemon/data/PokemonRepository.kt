@@ -1,6 +1,11 @@
-package com.priorDev.pokerroutejc.featurePokemon.domain
+package com.priorDev.pokerroutejc.featurePokemon.data
 
 import com.priorDev.pokerroutejc.core.Resource
+import com.priorDev.pokerroutejc.featurePokemon.domain.AbilityDetailsData
+import com.priorDev.pokerroutejc.featurePokemon.domain.MoveData
+import com.priorDev.pokerroutejc.featurePokemon.domain.MoveDetailsData
+import com.priorDev.pokerroutejc.featurePokemon.domain.PokemonData
+import com.priorDev.pokerroutejc.featurePokemon.domain.PokemonNameData
 import kotlinx.coroutines.flow.Flow
 
 interface PokemonRepository {

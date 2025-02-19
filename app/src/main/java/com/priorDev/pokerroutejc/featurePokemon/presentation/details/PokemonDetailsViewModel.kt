@@ -10,7 +10,7 @@ import com.priorDev.pokerroutejc.core.Resource
 import com.priorDev.pokerroutejc.core.UiMessages
 import com.priorDev.pokerroutejc.featurePokemon.domain.AbilityDetailsData
 import com.priorDev.pokerroutejc.featurePokemon.domain.MoveDetailsData
-import com.priorDev.pokerroutejc.featurePokemon.domain.PokemonRepository
+import com.priorDev.pokerroutejc.featurePokemon.data.PokemonRepository
 import com.priorDev.pokerroutejc.featurePokemon.domain.useCases.PokemonUseCases
 import com.priorDev.pokerroutejc.featureTypes.domain.DamageRelationsData
 import com.priorDev.pokerroutejc.utils.Routes

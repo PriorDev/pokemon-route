@@ -11,3 +11,7 @@ fun String.getIdFromPokeUrl(): Int {
 fun String.getLongIdFromPokeUrl(): Long {
     return this.substring(0, this.length - 1).split("/").last().toLong()
 }
+
+fun String?.orDefault(value: String): String {
+    return this ?: value
+}

@@ -18,27 +18,13 @@ object GlobalEventChannel : IGlobalEventChannel {
         }
     }
 
-    override fun onNavigate(
-        destinationRoute: String,
+    override fun navigate(
+        route: Routes,
         navOptions: NavOptionsBuilder.() -> Unit
     ) {
         coroutineScope.launch {
             _eventChannel.send(
                 OneTimeEvent.OnNavigate(
-                    destinationRoute = destinationRoute,
-                    navOptions = navOptions
-                )
-            )
-        }
-    }
-
-    override fun <T : Any> onNavigate(
-        route: T,
-        navOptions: NavOptionsBuilder.() -> Unit
-    ) {
-        coroutineScope.launch {
-            _eventChannel.send(
-                OneTimeEvent.OnNavigateX(
                     route = route,
                     navOptions = navOptions
                 )
@@ -47,7 +33,7 @@ object GlobalEventChannel : IGlobalEventChannel {
     }
 
 
-    override fun sendNavigateUpEvent() {
+    override fun navigateUp() {
         coroutineScope.launch {
             _eventChannel.send(OneTimeEvent.OnNavigateUp)
         }

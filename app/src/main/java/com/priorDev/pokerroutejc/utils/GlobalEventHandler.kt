@@ -9,13 +9,6 @@ fun GlobalEventHandler(navController: NavHostController) {
         when (event) {
             is OneTimeEvent.OnNavigate -> {
                 navController.navigate(
-                    route = event.destinationRoute,
-                    builder = event.navOptions
-                )
-            }
-
-            is OneTimeEvent.OnNavigateX<*> -> {
-                navController.navigate(
                     route = event.route,
                     builder = event.navOptions
                 )

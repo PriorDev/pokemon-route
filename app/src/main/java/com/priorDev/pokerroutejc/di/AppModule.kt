@@ -2,6 +2,7 @@ package com.priorDev.pokerroutejc.di
 
 import android.content.Context
 import androidx.room.Room
+import com.apollographql.apollo3.ApolloClient
 import com.priorDev.pokerroutejc.data.database.MyDataBase
 import com.priorDev.pokerroutejc.utils.GlobalEventChannel
 import com.priorDev.pokerroutejc.utils.IGlobalEventChannel
@@ -39,4 +40,12 @@ object AppModule {
     @Provides
     @Singleton
     fun providesGlobalEventChannel(): IGlobalEventChannel = GlobalEventChannel
+
+    @Provides
+    @Singleton
+    fun providesApolloClient(): ApolloClient {
+        return ApolloClient.Builder()
+            .serverUrl("https://beta.pokeapi.co/graphql/v1beta")
+            .build()
+    }
 }

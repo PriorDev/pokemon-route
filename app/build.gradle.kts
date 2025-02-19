@@ -5,6 +5,13 @@ plugins {
     id("dagger.hilt.android.plugin")
     id("io.gitlab.arturbosch.detekt") version "1.23.1"
     alias(libs.plugins.kotlin.serialization)
+    id("com.apollographql.apollo3").version("3.7.3")
+}
+
+apollo {
+    service("service") {
+        packageName.set("com.priorDev")
+    }
 }
 
 android {
@@ -109,4 +116,6 @@ dependencies {
     implementation(libs.paging.compose)
     // Detekt
     detektPlugins(libs.bundles.detekt)
+    //Apollo
+    implementation("com.apollographql.apollo3:apollo-runtime:3.7.3")
 }

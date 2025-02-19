@@ -90,7 +90,7 @@ fun PokemonInfo(
                         pokemon.types.forEach { type ->
                             Button(
                                 onClick = {
-                                    GlobalEventChannel.onNavigate(
+                                    GlobalEventChannel.navigate(
                                         Routes.TypeDetails.PokemonTab(type.id)
                                     )
                                 },

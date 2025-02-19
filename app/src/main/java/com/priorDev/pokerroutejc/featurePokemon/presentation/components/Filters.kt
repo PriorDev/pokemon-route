@@ -23,7 +23,6 @@ import com.priorDev.pokerroutejc.featureTypes.domain.TypeData
 import com.priorDev.pokerroutejc.featureTypes.domain.getColor
 import com.priorDev.pokerroutejc.R
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun Filters(
     states: PokemonDetailsStates,

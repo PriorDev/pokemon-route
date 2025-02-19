@@ -9,7 +9,6 @@ import com.priorDev.pokerroutejc.featurePokemon.domain.MoveData
 import com.priorDev.pokerroutejc.featurePokemon.domain.MoveDetailsData
 import com.priorDev.pokerroutejc.featurePokemon.domain.PokemonData
 import com.priorDev.pokerroutejc.featurePokemon.domain.PokemonNameData
-import com.priorDev.pokerroutejc.featurePokemon.domain.PokemonRepository
 import com.priorDev.pokerroutejc.featurePokemon.domain.toDomain
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
