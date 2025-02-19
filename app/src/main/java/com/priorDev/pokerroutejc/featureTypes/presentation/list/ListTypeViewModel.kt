@@ -31,7 +31,7 @@ class ListTypeViewModel @Inject constructor(
     fun onEvent(event: ListTypesEvent) {
         when (event) {
             ListTypesEvent.Refresh -> {
-                getAllTypes(isRefresh = false)
+                getAllTypes(isRefresh = true)
             }
         }
     }

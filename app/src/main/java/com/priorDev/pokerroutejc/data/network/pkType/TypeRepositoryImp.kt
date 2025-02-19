@@ -53,7 +53,6 @@ class TypeRepositoryImp @Inject constructor(
         val typesEntity = dao.getAllTypes()
         val typeList = typesEntity.map { it.toDomain() }
 
-        delay(10000)
         return if (typeList.isEmpty()) {
             ResourceFlow.Error(networkErrorType = NetworkError.EmptyContent)
         } else {
