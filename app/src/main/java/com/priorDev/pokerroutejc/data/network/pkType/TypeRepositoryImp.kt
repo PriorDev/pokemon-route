@@ -5,15 +5,12 @@ import com.priorDev.pokerroutejc.data.database.TypeDao
 import com.priorDev.pokerroutejc.data.database.toDB
 import com.priorDev.pokerroutejc.data.network.NetworkError
 import com.priorDev.pokerroutejc.data.network.NetworkResource
-import com.priorDev.pokerroutejc.data.network.pkType.response.ContainerTypeResponse
-import com.priorDev.pokerroutejc.data.network.pkType.response.TypeDetailsResponse
 import com.priorDev.pokerroutejc.featureTypes.domain.TypeData
 import com.priorDev.pokerroutejc.featureTypes.domain.TypeDetailsData
 import com.priorDev.pokerroutejc.featureTypes.domain.TypeRepository
 import com.priorDev.pokerroutejc.featureTypes.domain.toDomain
 import com.priorDev.pokerroutejc.presentation.core.LoadingIndicator
 import com.priorDev.pokerroutejc.presentation.core.spinningWheelOrRefresh
-import io.ktor.client.call.body
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -28,33 +25,40 @@ class TypeRepositoryImp @Inject constructor(
                 ResourceFlow.Loading(loadingIndicator = spinningWheelOrRefresh(isRefresh))
             )
 
-            emit(getAllTypes())
+            emit(getAllTypes(isRefresh))
 
             emit(ResourceFlow.Loading(loadingIndicator = LoadingIndicator.None))
         }
     }
 
-    override suspend fun getAllTypes(): ResourceFlow<List<TypeData>> {
+    override suspend fun getAllTypes(isRefresh: Boolean): ResourceFlow<List<TypeData>> {
         // Single source of truth DATABASE
-        when (val networkResult = service.getAllTypes()) {
-            is NetworkResource.Fail -> {
-                return ResourceFlow.Error(networkErrorType = networkResult.error)
-            }
-
-            is NetworkResource.Success -> {
-                networkResult.data.types.let { typeList ->
-                    dao.insertTypes(typeList.map { it.toDB() })
-                }
+        val networkResult = service.getAllTypes()
+        if (networkResult is NetworkResource.Success) {
+            networkResult.data.types.let { typeList ->
+                dao.insertTypes(typeList.map { it.toDB() })
             }
         }
 
         val typesEntity = dao.getAllTypes()
         val typeList = typesEntity.map { it.toDomain() }
 
-        return if (typeList.isEmpty()) {
-            ResourceFlow.Error(networkErrorType = NetworkError.EmptyContent)
-        } else {
-            ResourceFlow.Success(typeList)
+        return when {
+            networkResult is NetworkResource.Fail && isRefresh -> {
+                ResourceFlow.Error(networkErrorType = networkResult.error)
+            }
+
+            typeList.isNotEmpty() -> {
+                ResourceFlow.Success(typeList)
+            }
+
+            networkResult is NetworkResource.Fail -> {
+                ResourceFlow.Error(networkErrorType = networkResult.error)
+            }
+
+            else -> {
+                ResourceFlow.Error(networkErrorType = NetworkError.EmptyContent)
+            }
         }
     }
 

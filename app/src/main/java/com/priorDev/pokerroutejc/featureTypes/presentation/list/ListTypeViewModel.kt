@@ -4,6 +4,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.priorDev.pokerroutejc.core.ResourceFlow
+import com.priorDev.pokerroutejc.data.network.NetworkError
 import com.priorDev.pokerroutejc.featureTypes.domain.TypeData
 import com.priorDev.pokerroutejc.featureTypes.domain.TypeRepository
 import com.priorDev.pokerroutejc.presentation.core.ScreenStates
@@ -45,7 +46,7 @@ class ListTypeViewModel @Inject constructor(
                         is ResourceFlow.Error -> {
                             _screenStates.update {
                                 it.copy(
-                                    networkError = result.networkErrorType
+                                    networkError = getErrorPage(result.networkErrorType)
                                 )
                             }
                         }
@@ -63,6 +64,36 @@ class ListTypeViewModel @Inject constructor(
                         }
                     }
                 }
+        }
+    }
+
+    private fun getErrorPage(error: NetworkError): NetworkError {
+        return when (error) {
+            is NetworkError.UnableToConnect -> {
+                error.copy(
+                    showRetryButton = true,
+                    retryAction = {
+                        _screenStates.update {
+                            it.copy(
+                                networkError = NetworkError.None
+                            )
+                        }
+                        getAllTypes(isRefresh = true)
+                    },
+                    showOfflineDataButton = true,
+                    showOfflineDataAction = {
+                        _screenStates.update {
+                            it.copy(
+                                networkError = NetworkError.None
+                            )
+                        }
+                    }
+                )
+            }
+
+            else -> {
+                error
+            }
         }
     }
 }

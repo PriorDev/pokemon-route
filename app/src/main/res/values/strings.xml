@@ -38,4 +38,6 @@
     <string name="server_error">Something is wrong with our services, if the error persists contact support</string>
     <string name="empty_content">We dont get anything</string>
     <string name="error_icon">Error icon</string>
+    <string name="error_retry">Retry</string>
+    <string name="use_offline_data">Use offline data</string>
 </resources>

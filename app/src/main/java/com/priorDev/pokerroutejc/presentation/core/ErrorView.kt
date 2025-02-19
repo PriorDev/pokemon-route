@@ -2,15 +2,21 @@ package com.priorDev.pokerroutejc.presentation.core
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import com.priorDev.pokerroutejc.R
 import com.priorDev.pokerroutejc.data.network.NetworkError
 import com.priorDev.pokerroutejc.presentation.reusable.PreviewTemplate
+import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 @Composable
 fun ErrorView(
@@ -76,6 +83,37 @@ fun ErrorView(
                     )
                 }
 
+                is NetworkError.UnableToConnect -> {
+                    Row(
+                        horizontalArrangement = Arrangement.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        if (networkError.showRetryButton) {
+                            OutlinedButton(
+                                colors = ButtonDefaults.buttonColors(),
+                                onClick = {
+                                    networkError.retryAction?.invoke()
+                                }
+                            ) {
+                                Text(text = networkError.retryButtonText.asString())
+                            }
+                        }
+
+                        Spacer(Modifier.width(16.dp))
+
+                        if (networkError.showOfflineDataButton) {
+                            OutlinedButton(
+                                colors = ButtonDefaults.filledTonalButtonColors(),
+                                onClick = {
+                                    networkError.showOfflineDataAction?.invoke()
+                                }
+                            ) {
+                                Text(text = networkError.showOfflineDataButtonText.asString())
+                            }
+                        }
+                    }
+                }
+
                 else -> {
                     // Don't display anything
                 }
@@ -90,7 +128,10 @@ class NetworkErrorProvider : PreviewParameterProvider<NetworkError> {
             NetworkError.ClientError("Client error"),
             NetworkError.ServerError("Server down"),
             NetworkError.UnknownError,
-            NetworkError.UnableToConnect,
+            NetworkError.UnableToConnect(
+                showRetryButton = true,
+                showOfflineDataButton = true
+            ),
             NetworkError.EmptyContent
         )
 }

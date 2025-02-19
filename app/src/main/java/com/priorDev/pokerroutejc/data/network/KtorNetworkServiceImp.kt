@@ -3,7 +3,6 @@ package com.priorDev.pokerroutejc.data.network
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.http.appendPathSegments
-import io.ktor.util.reflect.TypeInfo
 import javax.inject.Inject
 
 class KtorNetworkServiceImp @Inject constructor(

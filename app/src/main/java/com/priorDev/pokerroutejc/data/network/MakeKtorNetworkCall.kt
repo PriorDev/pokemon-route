@@ -1,7 +1,6 @@
 package com.priorDev.pokerroutejc.data.network
 
 import android.util.Log
-import com.priorDev.pokerroutejc.data.network.pkType.response.ContainerTypeResponse
 import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse
 import io.ktor.util.reflect.TypeInfo
@@ -46,7 +45,7 @@ class MakeKtorNetworkCall @Inject constructor(
                 }
             } catch (e: Exception) {
                 Log.e("MakeKtorNetworkCall", e.message.orEmpty())
-                NetworkResource.Fail(NetworkError.UnableToConnect)
+                NetworkResource.Fail(NetworkError.UnableToConnect())
             }
         }
     }

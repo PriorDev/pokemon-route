@@ -1,9 +1,14 @@
 package com.priorDev.pokerroutejc.data.network
 
 import assertk.assertThat
+import assertk.assertions.isEqualTo
+import assertk.assertions.isInstanceOf
 import assertk.assertions.isTrue
+import com.priorDev.pokerroutejc.data.network.pkType.response.TypeResponse
+import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.HttpStatusCode
+import io.ktor.util.reflect.typeInfo
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
@@ -36,18 +41,26 @@ class MakeKtorNetworkCallTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `Make a network call and get a 200 status code`() = runTest {
+    fun `Make a network call and get a 200 status code and validate the response`() = runTest {
+        val typeResponse = TypeResponse("bulbasaur", "url")
+
         val mockResponse: HttpResponse = mockk {
             coEvery { status } returns HttpStatusCode.OK
+            coEvery { body<TypeResponse>() } returns typeResponse
         }
 
-        val result = networkCaller.invoke {
+        val result = networkCaller.invoke<TypeResponse>(typeInfo<TypeResponse>()) {
             mockResponse
         }
 
         advanceUntilIdle()
 
-        assertThat(result is NetworkResource.Success).isTrue()
+        assertThat(result).isInstanceOf(NetworkResource.Success::class)
+        val successResult = result as NetworkResource.Success
+
+        assertThat(successResult.data).isInstanceOf(TypeResponse::class)
+        assertThat(successResult.data.name).isEqualTo(typeResponse.name)
+        assertThat(successResult.data.url).isEqualTo(typeResponse.url)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -57,7 +70,7 @@ class MakeKtorNetworkCallTest {
             coEvery { status } returns HttpStatusCode.BadRequest
         }
 
-        val result = networkCaller.invoke {
+        val result = networkCaller.invoke<Unit>(typeInfo<Unit>()) {
             mockResponse
         }
 
@@ -76,7 +89,7 @@ class MakeKtorNetworkCallTest {
             coEvery { status } returns HttpStatusCode.InternalServerError
         }
 
-        val result = networkCaller.invoke {
+        val result = networkCaller.invoke<Unit>(typeInfo<Unit>()) {
             mockResponse
         }
 
@@ -95,7 +108,7 @@ class MakeKtorNetworkCallTest {
             coEvery { status } returns HttpStatusCode(1000, "Unknown Error")
         }
 
-        val result = networkCaller.invoke {
+        val result = networkCaller.invoke<Unit>(typeInfo<Unit>()) {
             mockResponse
         }
 

@@ -9,7 +9,7 @@ interface TypeRepository {
 
     suspend fun getTypeFlow(typeId: Int): Flow<ResourceFlow<TypeDetailsData>>
 
-    suspend fun getAllTypes(): ResourceFlow<List<TypeData>>
+    suspend fun getAllTypes(isRefresh: Boolean = false): ResourceFlow<List<TypeData>>
 
     suspend fun getType(typeId: Int): ResourceFlow<TypeDetailsData>
 }

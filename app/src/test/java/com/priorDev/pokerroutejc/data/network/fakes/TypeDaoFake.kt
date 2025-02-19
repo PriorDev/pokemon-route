@@ -4,7 +4,7 @@ import com.priorDev.pokerroutejc.data.database.DamageRelationsEntity
 import com.priorDev.pokerroutejc.data.database.TypeDao
 import com.priorDev.pokerroutejc.data.database.TypeEntity
 
-class TypeDaoFake: TypeDao {
+class TypeDaoFake : TypeDao {
     val typeEntities = mutableListOf<TypeEntity>()
 
     override suspend fun getAllTypes(): List<TypeEntity> {
