@@ -88,11 +88,6 @@ dependencies {
     implementation(libs.lifecycle.runtime.compose)
     //Life data
     implementation(libs.runtime.livedata)
-    //SerializedName
-    implementation(libs.gson)
-    // Retrofit
-    implementation(libs.retrofit)
-    implementation(libs.converter.gson)
     //Dager-hilt
     implementation(libs.dagger.hitl)
     kapt(libs.dagger.hilt.compiler)

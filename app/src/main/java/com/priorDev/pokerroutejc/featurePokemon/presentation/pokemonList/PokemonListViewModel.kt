@@ -6,7 +6,7 @@ import androidx.paging.Pager
 import androidx.paging.cachedIn
 import androidx.paging.map
 import com.priorDev.pokerroutejc.core.CommonStates
-import com.priorDev.pokerroutejc.featurePokemon.data.database.PokemonNameEntity
+import com.priorDev.pokerroutejc.data.database.PokemonNameEntity
 import com.priorDev.pokerroutejc.featurePokemon.domain.toDomain
 import com.priorDev.pokerroutejc.utils.IGlobalEventChannel
 import com.priorDev.pokerroutejc.utils.Routes

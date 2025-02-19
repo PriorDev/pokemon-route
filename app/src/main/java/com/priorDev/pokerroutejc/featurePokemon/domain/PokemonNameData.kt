@@ -3,7 +3,7 @@ package com.priorDev.pokerroutejc.featurePokemon.domain
 import com.priorDev.SearchPokemonNameQuery
 import com.priorDev.pokerroutejc.core.getIdFromPokeUrl
 import com.priorDev.pokerroutejc.data.network.EndPoints.IMAGE_PATH
-import com.priorDev.pokerroutejc.featurePokemon.data.database.PokemonNameEntity
+import com.priorDev.pokerroutejc.data.database.PokemonNameEntity
 import com.priorDev.pokerroutejc.featurePokemon.data.network.response.PokemonNameResponse
 
 data class PokemonNameData(

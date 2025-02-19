@@ -1,6 +1,5 @@
 package com.priorDev.pokerroutejc.featurePokemon.data.network.response
 
-import com.google.gson.annotations.SerializedName
 import com.priorDev.pokerroutejc.data.network.pkType.response.TypeResponse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

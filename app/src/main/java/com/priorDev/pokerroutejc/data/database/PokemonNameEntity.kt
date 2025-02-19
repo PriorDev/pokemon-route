@@ -1,4 +1,4 @@
-package com.priorDev.pokerroutejc.featurePokemon.data.database
+package com.priorDev.pokerroutejc.data.database
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

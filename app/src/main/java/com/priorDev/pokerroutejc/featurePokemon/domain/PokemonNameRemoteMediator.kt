@@ -6,9 +6,9 @@ import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import com.priorDev.pokerroutejc.data.network.NetworkResource
 import com.priorDev.pokerroutejc.featurePokemon.data.IPokemonNetworkService
-import com.priorDev.pokerroutejc.featurePokemon.data.database.PokemonDao
-import com.priorDev.pokerroutejc.featurePokemon.data.database.PokemonNameEntity
-import com.priorDev.pokerroutejc.featurePokemon.data.database.toDB
+import com.priorDev.pokerroutejc.data.database.PokemonDao
+import com.priorDev.pokerroutejc.data.database.PokemonNameEntity
+import com.priorDev.pokerroutejc.data.database.toDB
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.time.Duration
