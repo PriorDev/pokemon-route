@@ -1,14 +1,25 @@
-query GetPokedexEntries($version_group_id: Int) {
+query GetPokedexEntries(
+    $version_group_id: Int,
+    $language: String
+) {
     pokemon_v2_pokedex(
         where: {pokemon_v2_pokedexversiongroups: {version_group_id: {_eq: $version_group_id}}}
     ) {
-        name
+        pokemon_v2_pokedexdescriptions(
+            where: {pokemon_v2_language: {name: {_eq: $language}}}
+        ) {
+            description
+        }
         pokemon_v2_pokemondexnumbers(
             order_by: {pokedex_number: asc}
         ) {
             pokedex_number
             pokemon_v2_pokemonspecy {
-                name
+                pokemon_v2_pokemonspeciesnames(
+                    where: {pokemon_v2_language: {name: {_eq:  $language}}}
+                ) {
+                    name
+                }
                 id
                 pokemon_v2_pokemons(
                     where: {is_default: {_eq: true}}

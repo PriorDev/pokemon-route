@@ -15,7 +15,6 @@ class PokedexRepoImp(
 ): PokedexRepo {
     override suspend fun getVersionGroups(): Resource<List<VersionGroupsData>> {
         val language = dataStore.get(DataStoreKeys.LANGUAGE).first() ?: ApiLanguages.ENGLISH.key
-
         val response = pokedexApolloService.getVersionGroups(language)
         return response
     }
@@ -23,6 +22,11 @@ class PokedexRepoImp(
     override suspend fun getPokedexEntries(
         versionGroupId: Int
     ) : Resource<PokedexData> {
-        return pokedexApolloService.getPokedexEntries(versionGroupId)
+        val language = dataStore.get(DataStoreKeys.LANGUAGE).first() ?: ApiLanguages.ENGLISH.key
+
+        return pokedexApolloService.getPokedexEntries(
+            versionGroupId = versionGroupId,
+            language = language
+        )
     }
 }

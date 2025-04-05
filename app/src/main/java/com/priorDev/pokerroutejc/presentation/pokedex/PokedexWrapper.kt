@@ -1,4 +1,4 @@
-package com.priorDev.pokerroutejc.presentation.versionGroups
+package com.priorDev.pokerroutejc.presentation.pokedex
 
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -7,14 +7,15 @@ import androidx.navigation.compose.composable
 import com.priorDev.pokerroutejc.ui.Routes
 import org.koin.androidx.compose.getViewModel
 
-fun NavGraphBuilder.versionGroupWrapper() {
-    composable<Routes.VersionGroups> {
-        val viewModel = getViewModel<VersionGroupViewModel>()
+
+fun NavGraphBuilder.pokedexWrapper() {
+    composable<Routes.Pokedex> {
+        val viewModel = getViewModel<PokedexViewModel>()
         val states by viewModel.states.collectAsStateWithLifecycle()
 
-        VersionGroupScreen(
+        PokedexScreen(
             states = states,
-            versionGroupList = viewModel.versionGroupList,
+            entries = viewModel.entries,
             onEvent = viewModel::onEvent
         )
     }

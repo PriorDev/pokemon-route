@@ -10,6 +10,7 @@ interface PokedexApolloService {
     ): Resource<List<VersionGroupsData>>
 
     suspend fun getPokedexEntries(
-        versionGroupId: Int
+        versionGroupId: Int,
+        language: String
     ) : Resource<PokedexData>
 }

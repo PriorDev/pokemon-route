@@ -6,6 +6,7 @@ import com.priorDev.pokerroutejc.data.PokedexRepo
 import com.priorDev.pokerroutejc.domain.pokedex.models.VersionGroupsData
 import com.priorDev.pokerroutejc.presentation.core.LoadingIndicator
 import com.priorDev.pokerroutejc.presentation.core.retryFullScreen
+import com.priorDev.pokerroutejc.utils.GlobalEventChannel
 import com.priorDev.pokerroutejc.utils.Resource
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -13,7 +14,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class VersionGroupViewModel(
-    private val pokedexRepo: PokedexRepo
+    private val pokedexRepo: PokedexRepo,
+    private val eventChannel: GlobalEventChannel
 ): ViewModel() {
     private val _states = MutableStateFlow(VersionGroupStates())
     val states = _states.asStateFlow()
@@ -22,12 +24,18 @@ class VersionGroupViewModel(
     val versionGroupList: Map<String, List<VersionGroupsData>> = _versionGroupList
 
     init {
-        viewModelScope.launch {
-            getVersionGroups()
+        getVersionGroups()
+    }
+
+    fun onEvent(versionGroupEvent: VersionGroupEvent) {
+        when (versionGroupEvent) {
+            is VersionGroupEvent.OnNavigate -> {
+                eventChannel.navigate(versionGroupEvent.route, versionGroupEvent.navOptions)
+            }
         }
     }
 
-    private suspend fun getVersionGroups() {
+    private fun getVersionGroups() {
         viewModelScope.launch {
             _states.update { it.copy(loading = LoadingIndicator.SolidSpinningWheel) }
             when (val resource = pokedexRepo.getVersionGroups()) {

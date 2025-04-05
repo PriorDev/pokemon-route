@@ -40,10 +40,14 @@ class PokedexApolloServicesImp(
     }
 
     override suspend fun getPokedexEntries(
-        versionGroupId: Int
+        versionGroupId: Int,
+        language: String
     ) : Resource<PokedexData> {
         val response = apolloCaller.invoke(
-            GetPokedexEntriesQuery(Optional.present(versionGroupId))
+            GetPokedexEntriesQuery(
+                Optional.present(versionGroupId),
+                Optional.present(language),
+            )
         )
 
         return when (response) {

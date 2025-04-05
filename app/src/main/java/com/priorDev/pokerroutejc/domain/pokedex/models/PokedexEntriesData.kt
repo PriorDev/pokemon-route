@@ -5,20 +5,6 @@ import com.priorDev.pokerroutejc.data.network.utils.EndPoints
 import com.priorDev.pokerroutejc.domain.types.models.TypeData
 import com.priorDev.pokerroutejc.utils.orZero
 
-data class PokedexData(
-    val pokedexName: String = "",
-    val status: PokedexStatus = PokedexStatus.INCOMPLETE,
-    val entries: List<PokedexEntriesData> = emptyList()
-)
-
-fun GetPokedexEntriesQuery.Pokemon_v2_pokedex.toPokedexData(): PokedexData {
-    return PokedexData(
-        pokedexName = name,
-        entries = pokemon_v2_pokemondexnumbers.map { it.toEntryData() },
-        status = PokedexStatus.INCOMPLETE
-    )
-}
-
 data class PokedexEntriesData(
     val entryNumber: Int,
     val status: PokedexEntryStatus = PokedexEntryStatus.NOT_CAUGHT,
@@ -31,7 +17,10 @@ data class PokedexEntriesData(
 fun GetPokedexEntriesQuery.Pokemon_v2_pokemondexnumber.toEntryData(): PokedexEntriesData {
     return PokedexEntriesData(
         entryNumber = pokedex_number,
-        pokemonName = pokemon_v2_pokemonspecy?.name.orEmpty(),
+        pokemonName = pokemon_v2_pokemonspecy
+            ?.pokemon_v2_pokemonspeciesnames
+            ?.firstOrNull()
+            ?.name.orEmpty(),
         pokemonId = pokemon_v2_pokemonspecy?.id.orZero(),
         pokemonImage = EndPoints.OFFICIAL_ART_WORK.format(pokemon_v2_pokemonspecy?.id.orZero()),
         types = pokemon_v2_pokemonspecy

@@ -34,7 +34,7 @@ fun MainComposable() {
             route = Routes.PokedexNav,
             icon = R.drawable.outline_pokedex_icon,
             title = stringResource(R.string.pokedex),
-            strRoute = Routes.PokemonNav.serializer().descriptor.toRoute()
+            strRoute = Routes.PokedexNav.serializer().descriptor.toRoute()
         )
     )
 
