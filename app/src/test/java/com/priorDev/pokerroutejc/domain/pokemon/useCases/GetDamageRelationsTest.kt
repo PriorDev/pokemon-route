@@ -33,7 +33,7 @@ class GetDamageRelationsTest {
     }
 
     @Test
-    fun `Get error if the first type fails`() = runTest {
+    fun `GetDamageRelations, First type is not valid, Resource.Error`() = runTest {
         val result = GetDamageRelations(typeRepo)
             .invoke(
                 listOf1(
@@ -46,7 +46,7 @@ class GetDamageRelationsTest {
     }
 
     @Test
-    fun `Get error if the second type fails`() = runTest {
+    fun `GetDamageRelations, Second type is not valid, Resource.Error`() = runTest {
         val result = GetDamageRelations(typeRepo)
             .invoke(
                 listOf1(
@@ -60,7 +60,9 @@ class GetDamageRelationsTest {
 
     @ParameterizedTest
     @MethodSource("provideTestCases")
-    fun `Test get damage relations`(types: List<TypeData>, expectedResult: List<DamageValue>) = runTest {
+    fun `GetDamageRelations, 2 valid types, Resource.Success with correct damage values`(
+        types: List<TypeData>, expectedResult: List<DamageValue>
+    ) = runTest {
         val result = GetDamageRelations(typeRepo).invoke(types)
 
         assertThat(result).isInstanceOf(Resource.Success::class.java)
