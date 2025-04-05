@@ -6,15 +6,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.priorDev.pokerroutejc.core.ResourceFlow
+import com.priorDev.pokerroutejc.core.getDamageTitle
 import com.priorDev.pokerroutejc.data.PokemonRepo
 import com.priorDev.pokerroutejc.data.SettingsRepo
 import com.priorDev.pokerroutejc.domain.pokemon.models.AbilityDetailsData
 import com.priorDev.pokerroutejc.domain.pokemon.models.MoveDetailsData
 import com.priorDev.pokerroutejc.domain.pokemon.useCases.PokemonUseCases
+import com.priorDev.pokerroutejc.domain.types.models.DamageValue
 import com.priorDev.pokerroutejc.presentation.core.LoadingIndicator
 import com.priorDev.pokerroutejc.presentation.core.retryFullScreen
 import com.priorDev.pokerroutejc.presentation.pokemonDetails.moves.MoveFilterModel
 import com.priorDev.pokerroutejc.presentation.pokemonDetails.moves.PokemonMovesState
+import com.priorDev.pokerroutejc.presentation.pokemonDetails.typeRelation.DamageRelationStates
 import com.priorDev.pokerroutejc.presentation.utils.flowSubscriber
 import com.priorDev.pokerroutejc.ui.Routes
 import com.priorDev.pokerroutejc.utils.ApiLanguages
@@ -41,6 +44,9 @@ class PokemonDetailsViewModel(
 
     private val _moves = mutableStateMapOf<String, List<MoveDetailsData>>()
     val moves: Map<String, List<MoveDetailsData>> = _moves
+
+    private val _damageRelationStates = MutableStateFlow(DamageRelationStates())
+    val damageRelationStates = _damageRelationStates.asStateFlow()
 
     val selectedLanguage = settingsRepo
         .getAppLanguage()
@@ -151,20 +157,44 @@ class PokemonDetailsViewModel(
         }
     }
 
-    private suspend fun getDamageRelation() {
-        val resource = useCases.getWeaknessesAndStrengths(
-            states.value.pokemon.types
-        )
+    // -------------| Refactored
 
-        when (resource) {
-            is ResourceFlow.Error -> TODO()
-            is ResourceFlow.Loading -> TODO()
-            is ResourceFlow.Success -> {
-                resource.data?.let { damageRelation ->
-                    _states.update { currentState ->
-                        currentState.copy(damageRelations = damageRelation)
+    private fun getDamageRelation() {
+        viewModelScope.launch {
+            _damageRelationStates.update {
+                it.copy(loading = LoadingIndicator.SolidSpinningWheel)
+            }
+
+            when (val resource = useCases.getDamageRelations(states.value.pokemon.types)) {
+                is Resource.Error -> {
+                    _damageRelationStates.update {
+                        it.copy(
+                            errorState = resource.networkErrorType.retryFullScreen(
+                                onAction = {
+                                    getDamageRelation()
+                                    _damageRelationStates.update { it.copy(errorState = null) }
+                                }
+                            )
+                        )
                     }
                 }
+
+                is Resource.Success -> {
+                    val damageRelation = resource.data
+                        ?.groupBy { it.damageValue }
+                        ?.entries
+                        ?.sortedByDescending { it.key }
+                        ?.associate { it.key.getDamageTitle() to it.value }
+                        .orEmpty()
+
+                    _damageRelationStates.update {
+                        it.copy(damageRelations = damageRelation)
+                    }
+                }
+            }
+
+            _damageRelationStates.update {
+                it.copy(loading = LoadingIndicator.None)
             }
         }
     }

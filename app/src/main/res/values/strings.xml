@@ -55,4 +55,10 @@
     <string name="evolution_chain">%s evolution chain</string>
     <string name="evolves_in">Evolves in</string>
     <string name="filter">Filter</string>
+    <string name="super_weaknesses">Super Weaknesses (x%1$s)</string>
+    <string name="weak">Weak (x%1$s)</string>
+    <string name="resist">Resist (x%1$s)</string>
+    <string name="super_resist">Super resist (x%1$s)</string>
+    <string name="immune">Immune (x%1$s)</string>
+    <string name="relation">Relation (x%1$s)</string>
 </resources>

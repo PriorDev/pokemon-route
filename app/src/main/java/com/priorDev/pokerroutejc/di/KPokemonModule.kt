@@ -13,7 +13,7 @@ import com.priorDev.pokerroutejc.data.network.pokemon.PokemonNetService
 import com.priorDev.pokerroutejc.data.network.pokemon.PokemonNetServiceImp
 import com.priorDev.pokerroutejc.domain.pokemon.PokemonNameRemoteMediator
 import com.priorDev.pokerroutejc.domain.pokemon.PokemonNameRemoteMediator.Companion.PAGE_SIZE
-import com.priorDev.pokerroutejc.domain.pokemon.useCases.GetWeaknessesAndStrengths
+import com.priorDev.pokerroutejc.domain.pokemon.useCases.GetDamageRelations
 import com.priorDev.pokerroutejc.domain.pokemon.useCases.PokemonUseCases
 import com.priorDev.pokerroutejc.presentation.pokemonDetails.PokemonDetailsViewModel
 import com.priorDev.pokerroutejc.presentation.pokemonList.PokemonListViewModel
@@ -26,15 +26,15 @@ val kPokemonModule = module {
         get<MyDataBase>().pokemonDao
     }
 
-    single {
-        GetWeaknessesAndStrengths(
+    factory {
+        GetDamageRelations(
             typeRepo = get()
         )
     }
 
-    single<PokemonUseCases> {
+    factory<PokemonUseCases> {
         PokemonUseCases(
-            getWeaknessesAndStrengths = get()
+            getDamageRelations = get()
         )
     }
 

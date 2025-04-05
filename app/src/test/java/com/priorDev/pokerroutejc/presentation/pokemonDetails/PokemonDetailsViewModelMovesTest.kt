@@ -25,7 +25,7 @@ import com.priorDev.pokerroutejc.domain.moveScaryFace
 import com.priorDev.pokerroutejc.domain.moveScratch
 import com.priorDev.pokerroutejc.domain.moveTackle
 import com.priorDev.pokerroutejc.domain.moveWaterGun
-import com.priorDev.pokerroutejc.domain.pokemon.useCases.GetWeaknessesAndStrengths
+import com.priorDev.pokerroutejc.domain.pokemon.useCases.GetDamageRelations
 import com.priorDev.pokerroutejc.domain.pokemon.useCases.PokemonUseCases
 import com.priorDev.pokerroutejc.domain.types.models.TypeData
 import com.priorDev.pokerroutejc.presentation.core.DisplayError
@@ -67,7 +67,7 @@ class PokemonDetailsViewModelMovesTest {
     @BeforeEach
     fun setUp() {
         savedStateHandle = savedStateHandleRule.savedStateHandleMock
-        useCases = PokemonUseCases(GetWeaknessesAndStrengths(TypeRepoFake()))
+        useCases = PokemonUseCases(GetDamageRelations(TypeRepoFake()))
         globalEvent = GlobalEventChannelFake()
         pokemonRepo = pokemonRepoFake
         settingsRepo = settingsRepoFake

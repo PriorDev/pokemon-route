@@ -1,5 +1,8 @@
 package com.priorDev.pokerroutejc.core
 
+import com.priorDev.pokerroutejc.R
+import com.priorDev.pokerroutejc.presentation.core.UiMessages
+
 fun Int.getTypeColor() =
     EnumColorTypes.entries
         .firstOrNull { it.typeId == this }?.color
@@ -15,4 +18,35 @@ fun String.getLongIdFromPokeUrl(): Long {
 
 fun String?.orDefault(value: String): String {
     return this ?: value
+}
+
+fun Float.getDamageTitle(): UiMessages {
+    val stringId = when (this) {
+        4f -> {
+            R.string.super_weaknesses
+        }
+
+        2f -> {
+            R.string.weak
+        }
+
+        0.5f -> {
+            R.string.resist
+        }
+
+        0.25f -> {
+            R.string.super_resist
+        }
+
+
+        0f -> {
+            R.string.immune
+        }
+
+        else -> {
+            R.string.relation
+        }
+    }
+
+    return UiMessages.StringResource(stringId, this)
 }

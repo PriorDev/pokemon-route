@@ -12,6 +12,8 @@ object EndPoints {
 
     const val ITEM_IMAGE_PATH = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/%s.png"
 
+    const val TYPE_IMAGE_PATH = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/types/generation-viii/sword-shield/%s.png"
+
     // Graph QL
     const val QL_BASE_URL = "https://beta.pokeapi.co/graphql/v1beta"
 }

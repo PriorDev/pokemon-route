@@ -11,6 +11,7 @@ import com.priorDev.pokerroutejc.domain.types.models.TypeDetailsData
 import com.priorDev.pokerroutejc.domain.types.models.toDomain
 import com.priorDev.pokerroutejc.presentation.core.LoadingIndicator
 import com.priorDev.pokerroutejc.presentation.core.spinningWheelOrRefresh
+import com.priorDev.pokerroutejc.utils.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -85,14 +86,14 @@ class TypeRepoImp(
         }
     }
 
-    override suspend fun getType(typeId: Int): ResourceFlow<TypeDetailsData> {
+    override suspend fun getType(typeId: Int): Resource<TypeDetailsData> {
         return when (val networkResource = service.getType(typeId)) {
             is NetworkResource.Fail -> {
-                ResourceFlow.Error(networkErrorType = NetworkError.EmptyContent)
+                Resource.Error(networkErrorType = NetworkError.EmptyContent)
             }
 
             is NetworkResource.Success -> {
-                ResourceFlow.Success(networkResource.data.toDomain())
+                Resource.Success(networkResource.data.toDomain())
             }
         }
     }

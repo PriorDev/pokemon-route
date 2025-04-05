@@ -35,6 +35,7 @@ import com.priorDev.pokerroutejc.ui.theme.HalfDamageColor
 import com.priorDev.pokerroutejc.ui.theme.NoDamageColor
 import com.priorDev.pokerroutejc.ui.theme.Offensive
 import com.priorDev.pokerroutejc.R
+import com.priorDev.pokerroutejc.domain.types.models.DamageRelation
 
 @Composable
 fun DetailsTypeView(
@@ -200,7 +201,8 @@ private fun DetailsTypePreview() {
             noDamageFrom = typesList,
             x1_4DamageFrom = typesList,
             x4DamageTo = typesList
-        )
+        ),
+        damageRelations = DamageRelation()
     )
     DetailsTypeView(
         states = states,

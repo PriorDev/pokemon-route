@@ -25,6 +25,7 @@ import com.priorDev.pokerroutejc.presentation.pokemonDetails.moves.PageIndicator
 import com.priorDev.pokerroutejc.presentation.pokemonDetails.moves.PokemonMovesState
 import com.priorDev.pokerroutejc.presentation.pokemonDetails.pkInfo.PokemonInfo
 import com.priorDev.pokerroutejc.presentation.pokemonDetails.sprites.SpritesView
+import com.priorDev.pokerroutejc.presentation.pokemonDetails.typeRelation.DamageRelationStates
 import com.priorDev.pokerroutejc.presentation.pokemonDetails.typeRelation.DamageRelationView
 import com.priorDev.pokerroutejc.presentation.utils.PageItem
 import com.priorDev.pokerroutejc.presentation.utils.PkDetailsPages
@@ -34,6 +35,7 @@ import com.priorDev.pokerroutejc.utils.ApiLanguages
 @Composable
 fun PokemonDetailsScreen(
     pkMovesState: PokemonMovesState,
+    damageRelationStates: DamageRelationStates,
     states: PokemonDetailsStates,
     movesList: Map<String, List<MoveDetailsData>>,
     onEvents: (PokemonDetailsEvents) -> Unit,
@@ -116,7 +118,7 @@ fun PokemonDetailsScreen(
                 }
                 PkDetailsPages.DAMAGE_RELATION -> {
                     DamageRelationView(
-                        states = states,
+                        states = damageRelationStates,
                         modifier = Modifier.padding(cardPadding)
                     )
                 }

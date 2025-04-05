@@ -11,7 +11,7 @@ import com.priorDev.pokerroutejc.data.PokemonRepoFake
 import com.priorDev.pokerroutejc.data.SettingsRepo
 import com.priorDev.pokerroutejc.data.SettingsRepoFake
 import com.priorDev.pokerroutejc.data.TypeRepoFake
-import com.priorDev.pokerroutejc.domain.pokemon.useCases.GetWeaknessesAndStrengths
+import com.priorDev.pokerroutejc.domain.pokemon.useCases.GetDamageRelations
 import com.priorDev.pokerroutejc.domain.pokemon.useCases.PokemonUseCases
 import com.priorDev.pokerroutejc.domain.pokemonData
 import com.priorDev.pokerroutejc.ui.Routes
@@ -46,7 +46,7 @@ class PokemonDetailsViewModelInfoTest {
     @BeforeEach
     fun setUp() {
         savedStateHandle = savedStateHandleRule.savedStateHandleMock
-        useCases = PokemonUseCases(GetWeaknessesAndStrengths(TypeRepoFake()))
+        useCases = PokemonUseCases(GetDamageRelations(TypeRepoFake()))
         globalEvent = GlobalEventChannelFake()
         pokemonRepo = pokemonRepoFake
         settingsRepo = settingsRepoFake

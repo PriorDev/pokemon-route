@@ -1,5 +1,5 @@
 package com.priorDev.pokerroutejc.domain.pokemon.useCases
 
 data class PokemonUseCases(
-    val getWeaknessesAndStrengths: GetWeaknessesAndStrengths
+    val getDamageRelations: GetDamageRelations
 )

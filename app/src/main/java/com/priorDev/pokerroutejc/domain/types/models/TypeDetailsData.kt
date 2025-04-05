@@ -7,10 +7,12 @@ import com.priorDev.pokerroutejc.data.network.pkType.response.TypeDetailsRespons
 data class TypeDetailsData(
     val id: Int = 0,
     val name: String = "",
-    val damageRelationsData: DamageRelationsData = DamageRelationsData()
+    val damageRelationsData: DamageRelationsData = DamageRelationsData(),
+    val damageRelations: DamageRelation = DamageRelation()
 )
 
 @Suppress("ConstructorParameterNaming")
+@Deprecated(message = "Use DamageRelations instead", replaceWith = ReplaceWith("DamageRelation"))
 data class DamageRelationsData(
     val doubleDamageFrom: List<TypeData> = emptyList(),
     val doubleDamageTo: List<TypeData> = emptyList(),
@@ -30,7 +32,8 @@ fun TypeDetailsResponse.toDomain(): TypeDetailsData {
     return TypeDetailsData(
         id = id,
         name = name,
-        damageRelationsData = damageRelationsResponse.toDomain()
+        damageRelationsData = damageRelationsResponse.toDomain(),
+        damageRelations = damageRelationsResponse.toDamageRelation()
     )
 }
 
@@ -82,6 +85,7 @@ fun List<DamageRelationsEntity>.toDomain(): TypeDetailsData {
     return TypeDetailsData(
         id = this.first().ownTypeId,
         name = this.first().ownType,
-        damageRelationsData = damageRelationsData
+        damageRelationsData = damageRelationsData,
+        damageRelations = DamageRelation() // empty by default for now
     )
 }
