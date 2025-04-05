@@ -24,19 +24,18 @@ import org.junit.jupiter.api.extension.ExtendWith
 class ListTypeViewModelTest {
     private lateinit var listTypeViewModel: ListTypeViewModel
     private lateinit var globalEventChannel: GlobalEventChannel
+    private lateinit var repoFake: TypeRepoFake
 
     @BeforeEach
     fun setUp() {
         globalEventChannel = GlobalEventChannelFake()
+        repoFake = TypeRepoFake()
     }
 
     @Test
     fun `Test getAllTypesFlow, repo return Loading, update state`() = runTest {
-        val repoFake = TypeRepoFake()
         repoFake.getAllTypeFlow = flow {
-            emit(
-                ResourceFlow.Loading(loadingIndicator = LoadingIndicator.SolidSpinningWheel)
-            )
+            emit(ResourceFlow.Loading(loadingIndicator = LoadingIndicator.SolidSpinningWheel))
         }
 
         listTypeViewModel = ListTypeViewModel(
@@ -53,12 +52,13 @@ class ListTypeViewModelTest {
             val emission1 = awaitItem()
             assertThat(emission1.loadingIndicator)
                 .isInstanceOf(LoadingIndicator.SolidSpinningWheel::class)
+
+            expectNoEvents()
         }
     }
 
     @Test
     fun `Test getAllTypesFlow, repo return UnableToConnect, error display as dialog`() = runTest {
-        val repoFake = TypeRepoFake()
         repoFake.getAllTypeFlow = flow {
             emit(
                 ResourceFlow.Error(networkErrorType = NetworkError.UnableToConnect)
@@ -78,8 +78,8 @@ class ListTypeViewModelTest {
 
             val emission1 = awaitItem()
             assertThat(emission1.error).isNotNull()
-
             assertThat(emission1.error!!.displayAs).isInstanceOf(DisplayError.Dialog::class.java)
+            expectNoEvents()
         }
     }
 }
