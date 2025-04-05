@@ -1,4 +1,4 @@
-package com.priorDev.pokerroutejc.data.network.fakes
+package com.priorDev.pokerroutejc.data.network
 
 import com.priorDev.pokerroutejc.data.network.utils.NetworkError
 import com.priorDev.pokerroutejc.data.network.utils.NetworkResource

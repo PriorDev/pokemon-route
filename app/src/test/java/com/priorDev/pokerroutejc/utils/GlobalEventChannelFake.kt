@@ -1,17 +1,12 @@
-package com.priorDev.pokerroutejc.domain
+package com.priorDev.pokerroutejc.utils
 
 import androidx.navigation.NavOptionsBuilder
 import com.priorDev.pokerroutejc.ui.Routes
-import com.priorDev.pokerroutejc.utils.GlobalEventChannel
-import com.priorDev.pokerroutejc.utils.OneTimeEvent
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.asFlow
 
 class GlobalEventChannelFake : GlobalEventChannel {
     override val eventChannel: Flow<OneTimeEvent>
-        get() = listOf(
-            OneTimeEvent.OnNavigateUp
-        ).asFlow()
+        get() = TODO("Not yet implemented")
 
     override fun sendEvent(event: OneTimeEvent) {
         TODO("Not yet implemented")

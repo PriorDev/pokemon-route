@@ -1,6 +1,5 @@
 package com.priorDev.pokerroutejc.presentation.pokemonDetails
 
-
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -32,7 +31,7 @@ class PokemonDetailsViewModel(
     private val repository: PokemonRepo,
     private val useCases: PokemonUseCases,
     private val globalEvent: GlobalEventChannel,
-    private val settingsRepo: SettingsRepo
+    private val settingsRepo: SettingsRepo,
 ) : ViewModel() {
     private val _states = MutableStateFlow(PokemonDetailsStates())
     val states = _states.asStateFlow()
@@ -96,34 +95,26 @@ class PokemonDetailsViewModel(
 
     fun onEvent(event: PokemonDetailsEvents) {
         when (event) {
-            PokemonDetailsEvents.OnDismiss -> { }
-            is PokemonDetailsEvents.OnGenerationSelect -> { }
-
-            is PokemonDetailsEvents.ToggleMoveFilterCheck -> toggleFilterMoveCheck(event.filter)
-
-            is PokemonDetailsEvents.OnAbilityClick -> onAbilityClick(event.ability)
-
-            PokemonDetailsEvents.OnAbilityDismiss -> onAbilityDismiss()
-
-            is PokemonDetailsEvents.OnSearchTextChange -> onSearchTextChanged(event.text)
-
             is PokemonDetailsEvents.Navigate -> {
                 globalEvent.navigate(event.route, event.navOptions)
             }
 
             is PokemonDetailsEvents.ToggleLearnMethodExpand -> toggleLearnMethodExpand(event)
 
-            is PokemonDetailsEvents.SelectMove -> {
-                _pkMovesStates.update { it.copy(selectedMove = event.move) }
-            }
+            is PokemonDetailsEvents.ToggleMoveFilterCheck -> toggleFilterMoveCheck(event.filter)
 
             is PokemonDetailsEvents.SelectLanguage -> setSelectedLanguages(event)
-        }
-    }
 
-    private fun setSelectedLanguages(event: PokemonDetailsEvents.SelectLanguage) {
-        viewModelScope.launch {
-            settingsRepo.updateLanguage(event.language)
+            is PokemonDetailsEvents.SelectMove -> selectMove(event)
+
+            // untested
+            is PokemonDetailsEvents.OnGenerationSelect -> { }
+
+            is PokemonDetailsEvents.OnAbilityClick -> onAbilityClick(event.ability)
+
+            PokemonDetailsEvents.OnAbilityDismiss -> onAbilityDismiss()
+
+            is PokemonDetailsEvents.OnSearchTextChange -> onSearchTextChanged(event.text)
         }
     }
 
@@ -178,6 +169,12 @@ class PokemonDetailsViewModel(
         }
     }
 
+    private fun setSelectedLanguages(event: PokemonDetailsEvents.SelectLanguage) {
+        viewModelScope.launch {
+            settingsRepo.updateLanguage(event.language)
+        }
+    }
+
     private fun getPokemonMoves() {
         viewModelScope.launch {
             val pokemonId = states.value.pokemon.id ?: return@launch
@@ -205,55 +202,57 @@ class PokemonDetailsViewModel(
                         )
                     }
                 }
+
                 is Resource.Success -> {
-                    _moves.clear()
-                    _moves.putAll(response.data.orEmpty())
-
-                    val types = response.data
-                        ?.asSequence()
-                        ?.flatMap { it.value }
-                        ?.mapNotNull { it.type }
-                        ?.distinct()
-                        ?.sortedBy { it.name }
-                        ?.map {
-                            MoveFilterModel(
-                                checked = false,
-                                type = it
-                            )
-                        }
-                        .orEmpty()
-                        .toList()
-
-                    _pkMovesStates.update {
-                        it.copy(moveCriteria = types)
+                    _moves.apply {
+                        clear()
+                        putAll(response.data.orEmpty())
                     }
                 }
             }
 
+            val types = moves
+                .asSequence()
+                .flatMap { it.value }
+                .mapNotNull { it.type }
+                .distinct()
+                .sortedBy { it.name }
+                .map {
+                    MoveFilterModel(
+                        checked = false,
+                        type = it
+                    )
+                }
+                .toList()
+                .toList()
+
             _pkMovesStates.update {
-                it.copy(loading = LoadingIndicator.None)
+                it.copy(
+                    moveCriteria = types,
+                    loading = LoadingIndicator.None
+                )
             }
         }
     }
 
     private fun toggleFilterMoveCheck(filter: MoveFilterModel) {
-        val updateFilter = _pkMovesStates.value.moveCriteria.map {
-            if (it.type.id == filter.type.id) {
-                it.copy(checked = !it.checked)
+        val updateFilters = _pkMovesStates.value.moveCriteria.map { moveCriteria ->
+            if (moveCriteria.type.id == filter.type.id) {
+                moveCriteria.copy(checked = moveCriteria.checked.not())
             } else {
-                it
+                moveCriteria
             }
         }
 
         _pkMovesStates.update {
-            it.copy(moveCriteria = updateFilter)
+            it.copy(moveCriteria = updateFilters)
         }
 
-        if (updateFilter.any { it.checked }) {
+        if (updateFilters.any { it.checked }) {
             _moves
                 .flatMap { it.value }
                 .forEach { moveDetails ->
-                    updateFilter
+                    updateFilters
                         .firstOrNull { it.type.id == moveDetails.type?.id }
                         ?.let { filter ->
                             moveDetails.visible = filter.checked
@@ -276,5 +275,9 @@ class PokemonDetailsViewModel(
             .orEmpty()
 
         _moves.replace(event.learnMethod, updateList)
+    }
+
+    private fun selectMove(event: PokemonDetailsEvents.SelectMove) {
+        _pkMovesStates.update { it.copy(selectedMove = event.move) }
     }
 }

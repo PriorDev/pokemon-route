@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.priorDev.pokerroutejc.R
 import com.priorDev.pokerroutejc.core.ResourceFlow
-import com.priorDev.pokerroutejc.data.network.utils.NetworkError
 import com.priorDev.pokerroutejc.data.TypeRepo
+import com.priorDev.pokerroutejc.data.network.utils.NetworkError
 import com.priorDev.pokerroutejc.domain.types.models.TypeData
 import com.priorDev.pokerroutejc.presentation.core.DisplayError
 import com.priorDev.pokerroutejc.presentation.core.ErrorState
@@ -14,7 +14,6 @@ import com.priorDev.pokerroutejc.presentation.core.ScreenStates
 import com.priorDev.pokerroutejc.presentation.core.UiMessages
 import com.priorDev.pokerroutejc.presentation.utils.flowSubscriber
 import com.priorDev.pokerroutejc.utils.GlobalEventChannel
-
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update

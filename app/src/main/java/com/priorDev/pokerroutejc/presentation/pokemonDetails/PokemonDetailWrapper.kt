@@ -12,13 +12,12 @@ fun NavGraphBuilder.pokemonDetailWrapper() {
         val pkMovesState = viewModel.pkMovesStates.collectAsStateWithLifecycle()
         val states = viewModel.states.collectAsStateWithLifecycle()
         val selectedLanguage = viewModel.selectedLanguage.collectAsStateWithLifecycle()
-        val moveList = viewModel.moves
 
         PokemonDetailsScreen(
             pkMovesState = pkMovesState.value,
             states = states.value,
             selectedLanguage = selectedLanguage.value,
-            movesList = moveList,
+            movesList = viewModel.moves,
             onEvents = viewModel::onEvent,
         )
     }

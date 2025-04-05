@@ -1,17 +1,18 @@
-package com.priorDev.pokerroutejc.featureTypes.presentation.list
+package com.priorDev.pokerroutejc.presentation.pokemonList
 
 import app.cash.turbine.test
 import assertk.assertThat
 import assertk.assertions.isInstanceOf
+import assertk.assertions.isNotNull
 import com.priorDev.pokerroutejc.core.ResourceFlow
 import com.priorDev.pokerroutejc.data.TypeRepoFake
 import com.priorDev.pokerroutejc.data.network.utils.NetworkError
-import com.priorDev.pokerroutejc.domain.GlobalEventChannelFake
 import com.priorDev.pokerroutejc.presentation.typeList.ListTypeViewModel
 import com.priorDev.pokerroutejc.presentation.typeList.ListTypesEvent
 import com.priorDev.pokerroutejc.presentation.core.DisplayError
 import com.priorDev.pokerroutejc.presentation.core.LoadingIndicator
 import com.priorDev.pokerroutejc.utils.GlobalEventChannel
+import com.priorDev.pokerroutejc.utils.GlobalEventChannelFake
 import com.priorDev.pokerroutejc.utils.MainCoroutineExtension
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
@@ -76,8 +77,9 @@ class ListTypeViewModelTest {
             awaitItem()
 
             val emission1 = awaitItem()
-            assertThat(emission1.error.displayAs)
-                .isInstanceOf(DisplayError.Dialog::class.java)
+            assertThat(emission1.error).isNotNull()
+
+            assertThat(emission1.error!!.displayAs).isInstanceOf(DisplayError.Dialog::class.java)
         }
     }
 }

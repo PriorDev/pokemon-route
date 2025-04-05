@@ -92,6 +92,14 @@ fun PokemonMovesView(
                                     Text(language.key)
                                 },
                                 selected = language == selectedLanguage,
+                                leadingIcon = {
+                                    if (language == selectedLanguage) {
+                                        Icon(
+                                            imageVector = Icons.Outlined.Check,
+                                            contentDescription = null
+                                        )
+                                    }
+                                }
                             )
                         }
                     }

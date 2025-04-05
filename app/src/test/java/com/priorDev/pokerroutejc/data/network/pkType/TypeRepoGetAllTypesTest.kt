@@ -11,7 +11,7 @@ import com.priorDev.pokerroutejc.data.database.toDB
 import com.priorDev.pokerroutejc.data.network.utils.NetworkError
 import com.priorDev.pokerroutejc.data.network.utils.NetworkResource
 import com.priorDev.pokerroutejc.data.network.fakes.TypeDaoFake
-import com.priorDev.pokerroutejc.data.network.fakes.TypeNetServiceFake
+import com.priorDev.pokerroutejc.data.network.TypeNetServiceFake
 import com.priorDev.pokerroutejc.data.network.pkType.response.ContainerTypeResponse
 import com.priorDev.pokerroutejc.data.network.pkType.response.TypeResponse
 import com.priorDev.pokerroutejc.data.TypeRepo

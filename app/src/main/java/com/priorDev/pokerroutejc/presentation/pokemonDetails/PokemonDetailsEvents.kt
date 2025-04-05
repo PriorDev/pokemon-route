@@ -22,8 +22,6 @@ sealed class PokemonDetailsEvents {
 
     data class OnSearchTextChange(val text: String) : PokemonDetailsEvents()
 
-    data object OnDismiss : PokemonDetailsEvents()
-
     data object OnAbilityDismiss : PokemonDetailsEvents()
 
     data class Navigate(
