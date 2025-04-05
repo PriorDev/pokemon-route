@@ -12,7 +12,6 @@ import com.priorDev.pokerroutejc.data.SettingsRepo
 import com.priorDev.pokerroutejc.domain.pokemon.models.AbilityDetailsData
 import com.priorDev.pokerroutejc.domain.pokemon.models.MoveDetailsData
 import com.priorDev.pokerroutejc.domain.pokemon.useCases.PokemonUseCases
-import com.priorDev.pokerroutejc.domain.types.models.DamageValue
 import com.priorDev.pokerroutejc.presentation.core.LoadingIndicator
 import com.priorDev.pokerroutejc.presentation.core.retryFullScreen
 import com.priorDev.pokerroutejc.presentation.pokemonDetails.moves.MoveFilterModel

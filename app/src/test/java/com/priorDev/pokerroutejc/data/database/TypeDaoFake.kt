@@ -1,8 +1,4 @@
-package com.priorDev.pokerroutejc.data.network.fakes
-
-import com.priorDev.pokerroutejc.data.database.DamageRelationsEntity
-import com.priorDev.pokerroutejc.data.database.TypeDao
-import com.priorDev.pokerroutejc.data.database.TypeEntity
+package com.priorDev.pokerroutejc.data.database
 
 class TypeDaoFake : TypeDao {
     val typeEntities = mutableListOf<TypeEntity>()

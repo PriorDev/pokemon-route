@@ -1,5 +1,6 @@
 package com.priorDev.pokerroutejc.data.network.utils
 
+@SuppressWarnings("MaxLineLength")
 object EndPoints {
     const val BASE_URL = "https://pokeapi.co/api/v2/"
     const val TYPES = BASE_URL.plus("type")

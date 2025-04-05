@@ -38,7 +38,6 @@ fun Float.getDamageTitle(): UiMessages {
             R.string.super_resist
         }
 
-
         0f -> {
             R.string.immune
         }

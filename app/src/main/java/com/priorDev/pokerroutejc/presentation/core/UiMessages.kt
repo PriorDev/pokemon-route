@@ -11,6 +11,7 @@ sealed class UiMessages {
         vararg val args: Any
     ) : UiMessages()
 
+    @Suppress("SpreadOperator")
     @Composable
     fun asString(): String {
         return when (this) {
