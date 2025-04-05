@@ -2,7 +2,7 @@ package com.priorDev.pokerroutejc.domain.pokemon.models
 
 import com.priorDev.SearchPokemonNameQuery
 import com.priorDev.pokerroutejc.core.getIdFromPokeUrl
-import com.priorDev.pokerroutejc.data.network.utils.EndPoints.IMAGE_PATH
+import com.priorDev.pokerroutejc.data.network.utils.EndPoints.OFFICIAL_ART_WORK
 import com.priorDev.pokerroutejc.data.database.PokemonNameEntity
 import com.priorDev.pokerroutejc.data.network.pokemon.responses.PokemonNameResponse
 
@@ -16,14 +16,14 @@ fun PokemonNameEntity.toDomain() =
     PokemonNameData(
         id = id,
         name = name.uppercase(),
-        imgUrl = IMAGE_PATH.format(id)
+        imgUrl = OFFICIAL_ART_WORK.format(id)
     )
 
 fun PokemonNameResponse.toDomain() =
     PokemonNameData(
         id = url.getIdFromPokeUrl(),
         name = name.uppercase(),
-        imgUrl = IMAGE_PATH.format(url.getIdFromPokeUrl())
+        imgUrl = OFFICIAL_ART_WORK.format(url.getIdFromPokeUrl())
     )
 
 @Suppress("MaxLineLength")
@@ -38,5 +38,5 @@ fun SearchPokemonNameQuery.Pokemon_v2_pokemon.toDomain() =
     PokemonNameData(
         id = id,
         name = name,
-        imgUrl = IMAGE_PATH.format(id)
+        imgUrl = OFFICIAL_ART_WORK.format(id)
     )

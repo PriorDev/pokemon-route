@@ -8,8 +8,7 @@ object EndPoints {
     const val MOVES = BASE_URL.plus("move")
     const val ABILITY = BASE_URL.plus("ability")
 
-    const val IMAGE_PATH = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites" +
-        "/pokemon/other/official-artwork/%s.png"
+    const val OFFICIAL_ART_WORK = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/%s.png"
 
     const val ITEM_IMAGE_PATH = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/%s.png"
 

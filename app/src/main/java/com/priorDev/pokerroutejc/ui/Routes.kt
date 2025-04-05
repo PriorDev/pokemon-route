@@ -13,6 +13,9 @@ sealed class Routes {
     data object PokemonNav : Routes()
 
     @Serializable
+    data object PokedexNav : Routes()
+
+    @Serializable
     data object TypesList : Routes()
 
     @Serializable
@@ -32,4 +35,10 @@ sealed class Routes {
 
     @Serializable
     data class PkDetails(val pokemonName: String) : Routes()
+
+    @Serializable
+    data object VersionGroups : Routes()
+
+    @Serializable
+    data class Pokedex(val versionGroupId: Int) : Routes()
 }

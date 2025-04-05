@@ -29,6 +29,12 @@ fun MainComposable() {
             icon = R.drawable.icon_pokeball,
             title = stringResource(R.string.pokemons),
             strRoute = Routes.PokemonNav.serializer().descriptor.toRoute()
+        ),
+        NavBottomItems(
+            route = Routes.PokedexNav,
+            icon = R.drawable.outline_pokedex_icon,
+            title = stringResource(R.string.pokedex),
+            strRoute = Routes.PokemonNav.serializer().descriptor.toRoute()
         )
     )
 
@@ -53,6 +59,8 @@ fun MainComposable() {
             pokemonNavigation()
 
             typesNavigation()
+
+            pokedexNavigation()
         }
     }
 }

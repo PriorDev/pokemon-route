@@ -1,0 +1,17 @@
+query GetVersionGroups($language: String) {
+    pokemon_v2_versiongroup(
+        order_by: {id: desc}
+    ) {
+        id
+        pokemon_v2_versions {
+            pokemon_v2_versionnames(
+                where: {pokemon_v2_language: {name: {_eq: $language}}}
+            ) {
+                name
+            }
+        }
+        pokemon_v2_generation {
+            name
+        }
+    }
+}

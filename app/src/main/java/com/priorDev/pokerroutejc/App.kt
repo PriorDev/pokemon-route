@@ -1,6 +1,7 @@
 package com.priorDev.pokerroutejc
 
 import android.app.Application
+import com.priorDev.pokerroutejc.di.PokedexModule
 import com.priorDev.pokerroutejc.di.kAppModule
 import com.priorDev.pokerroutejc.di.kPokemonModule
 import com.priorDev.pokerroutejc.di.kTypeModule
@@ -15,7 +16,8 @@ class App : Application() {
             modules(
                 kAppModule,
                 kTypeModule,
-                kPokemonModule
+                kPokemonModule,
+                PokedexModule
             )
         }
     }

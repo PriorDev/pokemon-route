@@ -39,7 +39,7 @@ fun EvolutionChainView(
                     items(evolutionList) { evolution ->
                         PokemonEvolution(
                             name = evolution.name,
-                            imageUrl = EndPoints.IMAGE_PATH.format(evolution.specieId),
+                            imageUrl = EndPoints.OFFICIAL_ART_WORK.format(evolution.specieId),
                             triggerList = evolution.evolutionTriggerResponse
                         )
                     }

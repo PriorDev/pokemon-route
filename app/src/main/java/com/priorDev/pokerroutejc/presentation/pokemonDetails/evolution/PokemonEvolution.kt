@@ -160,7 +160,7 @@ fun PokemonEvolution(
 
                                 AsyncImage(
                                     model = ImageRequest.Builder(LocalContext.current)
-                                        .data(EndPoints.IMAGE_PATH.format(tradeSpeciesId))
+                                        .data(EndPoints.OFFICIAL_ART_WORK.format(tradeSpeciesId))
                                         .crossfade(true)
                                         .build(),
                                     contentDescription = tradeSpeciesId.toString(),
