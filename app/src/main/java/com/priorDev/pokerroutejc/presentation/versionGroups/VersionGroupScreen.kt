@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
@@ -72,6 +73,8 @@ fun VersionGroupScreen(
                                     .padding(4.dp)
                             )
 
+                            Spacer(modifier = Modifier.width(16.dp))
+
                             Box(
                                 modifier = Modifier
                                     .clip(
@@ -86,6 +89,7 @@ fun VersionGroupScreen(
                                 Text(
                                     text = groupVersion.name,
                                     style = MaterialTheme.typography.headlineSmall,
+                                    color = MaterialTheme.colorScheme.onSurface,
                                     textAlign = TextAlign.Center,
                                     modifier = Modifier
                                         .padding(4.dp)

@@ -7,6 +7,7 @@ import assertk.assertions.isTrue
 import com.priorDev.pokerroutejc.data.network.pkType.response.TypeResponse
 import com.priorDev.pokerroutejc.data.network.utils.NetworkError
 import com.priorDev.pokerroutejc.data.network.utils.NetworkResource
+import com.priorDev.pokerroutejc.utils.MainCoroutineExtension
 import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.HttpStatusCode
@@ -23,16 +24,15 @@ import kotlinx.coroutines.test.setMain
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 
+@ExtendWith(MainCoroutineExtension::class)
 class NetworkCallerImpTest {
     private lateinit var networkCaller: NetworkCaller
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @BeforeEach
     fun setUp() {
-        val testDispatcher = StandardTestDispatcher()
-        Dispatchers.setMain(testDispatcher)
-        networkCaller = NetworkCallerImp(testDispatcher)
+        networkCaller = NetworkCallerImp()
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -41,21 +41,15 @@ class NetworkCallerImpTest {
         Dispatchers.resetMain()
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `Make a network call and get a 200 status code and validate the response`() = runTest {
         val typeResponse = TypeResponse("bulbasaur", "url")
 
-        val mockResponse: HttpResponse = mockk {
-            coEvery { status } returns HttpStatusCode.OK
-            coEvery { body<TypeResponse>() } returns typeResponse
-        }
+        val mockResponse = createMockResponse(HttpStatusCode.OK, typeResponse)
 
         val result = networkCaller.invoke<TypeResponse>(typeInfo<TypeResponse>()) {
             mockResponse
         }
-
-        advanceUntilIdle()
 
         assertThat(result).isInstanceOf(NetworkResource.Success::class)
         val successResult = result as NetworkResource.Success
@@ -65,18 +59,13 @@ class NetworkCallerImpTest {
         assertThat(successResult.data.url).isEqualTo(typeResponse.url)
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `Make a network call and get a 400 status code`() = runTest {
-        val mockResponse: HttpResponse = mockk {
-            coEvery { status } returns HttpStatusCode.BadRequest
-        }
+        val mockResponse = createMockResponse<Unit>(HttpStatusCode.BadRequest)
 
         val result = networkCaller.invoke<Unit>(typeInfo<Unit>()) {
             mockResponse
         }
-
-        advanceUntilIdle()
 
         assertThat(result is NetworkResource.Fail).isTrue()
         val failResult = result as NetworkResource.Fail
@@ -84,18 +73,13 @@ class NetworkCallerImpTest {
         assertThat(failResult.error is NetworkError.ClientError).isTrue()
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `Make a network call and get a 500 status code`() = runTest {
         val mockResponse: HttpResponse = mockk {
             coEvery { status } returns HttpStatusCode.InternalServerError
         }
 
-        val result = networkCaller.invoke<Unit>(typeInfo<Unit>()) {
-            mockResponse
-        }
-
-        advanceUntilIdle()
+        val result = networkCaller.invoke<Unit>(typeInfo<Unit>()) { mockResponse }
 
         assertThat(result is NetworkResource.Fail).isTrue()
         val failResult = result as NetworkResource.Fail
@@ -106,9 +90,9 @@ class NetworkCallerImpTest {
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `Make a network call and get a 1000 status code`() = runTest {
-        val mockResponse: HttpResponse = mockk {
-            coEvery { status } returns HttpStatusCode(1000, "Unknown Error")
-        }
+        val mockResponse = createMockResponse<Unit>(
+            HttpStatusCode(1000, "Unknown Error")
+        )
 
         val result = networkCaller.invoke<Unit>(typeInfo<Unit>()) {
             mockResponse
@@ -120,5 +104,14 @@ class NetworkCallerImpTest {
         val failResult = result as NetworkResource.Fail
 
         assertThat(failResult.error is NetworkError.UnknownError).isTrue()
+    }
+
+    private inline fun <reified T> createMockResponse(status: HttpStatusCode, body: T? = null): HttpResponse {
+        return mockk {
+            coEvery { this@mockk.status } returns status
+            if (body != null) {
+                coEvery { this@mockk.body<T>() } returns body
+            }
+        }
     }
 }

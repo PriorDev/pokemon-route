@@ -64,7 +64,7 @@ val kAppModule = module {
     }
 
     single<NetworkCaller> {
-        NetworkCallerImp(get())
+        NetworkCallerImp()
     }
 
     single<NetworkService> {

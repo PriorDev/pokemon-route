@@ -7,17 +7,16 @@ import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse
 import io.ktor.util.reflect.TypeInfo
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 @Suppress("TooGenericExceptionCaught")
-class NetworkCallerImp(
-    private val dispatcher: CoroutineDispatcher
-) : NetworkCaller {
+class NetworkCallerImp : NetworkCaller {
     override suspend operator fun <T> invoke(
         typeInfo: TypeInfo,
         call: suspend () -> HttpResponse
     ): NetworkResource<T> {
-        return withContext(dispatcher) {
+        return withContext(Dispatchers.IO) {
             try {
                 val response = call.invoke()
 
