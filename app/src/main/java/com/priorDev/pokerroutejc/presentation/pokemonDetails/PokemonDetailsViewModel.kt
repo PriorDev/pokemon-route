@@ -68,7 +68,9 @@ class PokemonDetailsViewModel(
                 getDamageRelation()
             }
 
-            observeLanguageChanges()
+            launch {
+                observeLanguageChanges()
+            }
 
             launch {
                 getEvolutions()
