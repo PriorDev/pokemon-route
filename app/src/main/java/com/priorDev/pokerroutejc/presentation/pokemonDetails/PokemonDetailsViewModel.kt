@@ -1,5 +1,6 @@
 package com.priorDev.pokerroutejc.presentation.pokemonDetails
 
+
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -21,10 +22,8 @@ import com.priorDev.pokerroutejc.utils.ApiLanguages
 import com.priorDev.pokerroutejc.utils.GlobalEventChannel
 import com.priorDev.pokerroutejc.utils.Resource
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -53,12 +52,8 @@ class PokemonDetailsViewModel(
             val navArg = savedStateHandle.toRoute<Routes.PkDetails>()
             repository.getPokemon(navArg.pokemonName).collect { resource ->
                 when (resource) {
-                    is ResourceFlow.Error -> {
-
-                    }
-                    is ResourceFlow.Loading -> {
-
-                    }
+                    is ResourceFlow.Error -> { }
+                    is ResourceFlow.Loading -> { }
                     is ResourceFlow.Success -> {
                         _states.value = states.value.copy(pokemon = resource.data!!)
                     }
@@ -87,12 +82,10 @@ class PokemonDetailsViewModel(
         val pokemonId = states.value.pokemon.id ?: return
 
         when (val response = repository.getEvolutionChain(pokemonId)) {
-            is ResourceFlow.Error -> {
+            is ResourceFlow.Error -> { }
 
-            }
-            is ResourceFlow.Loading -> {
+            is ResourceFlow.Loading -> { }
 
-            }
             is ResourceFlow.Success -> {
                 _states.update {
                     it.copy(evolutions = response.data.orEmpty())
@@ -103,16 +96,17 @@ class PokemonDetailsViewModel(
 
     fun onEvent(event: PokemonDetailsEvents) {
         when (event) {
-            PokemonDetailsEvents.OnDismiss -> {
+            PokemonDetailsEvents.OnDismiss -> { }
+            is PokemonDetailsEvents.OnGenerationSelect -> { }
 
-            }
-            is PokemonDetailsEvents.OnGenerationSelect -> {
-
-            }
             is PokemonDetailsEvents.ToggleMoveFilterCheck -> toggleFilterMoveCheck(event.filter)
+
             is PokemonDetailsEvents.OnAbilityClick -> onAbilityClick(event.ability)
+
             PokemonDetailsEvents.OnAbilityDismiss -> onAbilityDismiss()
+
             is PokemonDetailsEvents.OnSearchTextChange -> onSearchTextChanged(event.text)
+
             is PokemonDetailsEvents.Navigate -> {
                 globalEvent.navigate(event.route, event.navOptions)
             }
@@ -135,7 +129,6 @@ class PokemonDetailsViewModel(
 
     private fun onSearchTextChanged(text: String) {
         _states.value = states.value.copy(textSearch = text)
-
     }
 
     private fun onAbilityDismiss() {
@@ -178,7 +171,7 @@ class PokemonDetailsViewModel(
             is ResourceFlow.Success -> {
                 resource.data?.let { damageRelation ->
                     _states.update { currentState ->
-                        currentState.copy(damageRelations =  damageRelation)
+                        currentState.copy(damageRelations = damageRelation)
                     }
                 }
             }

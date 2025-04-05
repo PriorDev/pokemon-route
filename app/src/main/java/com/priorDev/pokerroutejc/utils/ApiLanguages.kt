@@ -2,7 +2,7 @@ package com.priorDev.pokerroutejc.utils
 
 enum class ApiLanguages(val key: String) {
     SPANISH("es"),
-    ENGLISH("en");
+    ENGLISH("en")
 }
 
 fun String?.toEnumLanguage(): ApiLanguages {

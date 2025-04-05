@@ -7,7 +7,7 @@ import com.priorDev.pokerroutejc.utils.OneTimeEvent
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 
-class GlobalEventChannelFake: GlobalEventChannel {
+class GlobalEventChannelFake : GlobalEventChannel {
     override val eventChannel: Flow<OneTimeEvent>
         get() = listOf(
             OneTimeEvent.OnNavigateUp

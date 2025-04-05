@@ -2,13 +2,8 @@ package com.priorDev.pokerroutejc.presentation.pokemonDetails
 
 import com.priorDev.pokerroutejc.data.network.pokemon.responses.EvolutionResponse
 import com.priorDev.pokerroutejc.domain.pokemon.models.AbilityDetailsData
-import com.priorDev.pokerroutejc.domain.pokemon.models.MoveDetailsData
 import com.priorDev.pokerroutejc.domain.pokemon.models.PokemonData
 import com.priorDev.pokerroutejc.domain.types.models.DamageRelationsData
-import com.priorDev.pokerroutejc.presentation.core.DisplayError
-import com.priorDev.pokerroutejc.presentation.core.ErrorState
-import com.priorDev.pokerroutejc.presentation.core.LoadingIndicator
-import com.priorDev.pokerroutejc.presentation.pokemonDetails.moves.MoveFilterModel
 
 data class PokemonDetailsStates(
     val isLoading: Boolean = true,

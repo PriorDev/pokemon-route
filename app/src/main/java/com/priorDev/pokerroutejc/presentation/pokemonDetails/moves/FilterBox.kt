@@ -39,7 +39,7 @@ fun FilterBox(
                 modifier = Modifier
                     .padding(bottom = 90.dp)
                     .align(Alignment.TopEnd)
-                    .clickable {  },
+                    .clickable { },
                 elevation = CardDefaults.elevatedCardElevation(disabledElevation = 6.dp)
             ) {
                 LazyColumn(

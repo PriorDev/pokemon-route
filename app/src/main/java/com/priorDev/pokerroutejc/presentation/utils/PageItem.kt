@@ -1,6 +1,5 @@
 package com.priorDev.pokerroutejc.presentation.utils
 
-import androidx.compose.runtime.Composable
 import com.priorDev.pokerroutejc.presentation.core.UiMessages
 
 data class PageItem(

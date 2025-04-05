@@ -1,4 +1,4 @@
-package com.priorDev.pokerroutejc.data.data_store
+package com.priorDev.pokerroutejc.data.dataStore
 
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -11,10 +11,10 @@ import kotlinx.coroutines.flow.map
 private const val DATA_STORE_NAME = "pk_data_store"
 val Context.pkDataStore by preferencesDataStore(DATA_STORE_NAME)
 
-class DataStoreManager(
+class DataStoreManagerImp(
     private val dataStore: DataStore<Preferences>
-) {
-    suspend fun <T> put(
+) : DataStoreManager {
+    override suspend fun <T> put(
         key: Preferences.Key<T>,
         value: T
     ) {
@@ -23,13 +23,13 @@ class DataStoreManager(
         }
     }
 
-    suspend fun <T> remove(key: Preferences.Key<T>) {
+    override suspend fun <T> remove(key: Preferences.Key<T>) {
         dataStore.edit {
             it.remove(key = key)
         }
     }
 
-    fun <T> get(key: Preferences.Key<T>): Flow<T?> {
+    override fun <T> get(key: Preferences.Key<T>): Flow<T?> {
         return dataStore.data.map { it[key] }
     }
 }

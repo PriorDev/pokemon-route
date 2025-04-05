@@ -65,7 +65,7 @@ fun MoveBottomSheet(
                         textAlign = TextAlign.Center
                     )
 
-                    if(move.machineNumber.isNotEmpty()) {
+                    if (move.machineNumber.isNotEmpty()) {
                         Text(
                             text = stringResource(id = R.string.machine, move.machineNumber),
                             modifier = Modifier.padding(horizontal = 4.dp),
@@ -73,7 +73,7 @@ fun MoveBottomSheet(
                         )
                     }
 
-                    if(move.level > 0) {
+                    if (move.level > 0) {
                         Text(
                             text = stringResource(id = R.string.learned_at, move.level),
                             modifier = Modifier.padding(start = 4.dp),

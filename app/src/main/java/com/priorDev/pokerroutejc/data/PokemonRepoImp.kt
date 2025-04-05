@@ -48,7 +48,6 @@ class PokemonRepoImp(
         )
     }
 
-
     override suspend fun getAbility(ability: String): Flow<ResourceFlow<AbilityDetailsData>> = flow {
         emit(ResourceFlow.Loading())
 

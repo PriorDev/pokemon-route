@@ -69,7 +69,7 @@ fun ItemMove(
                     textAlign = TextAlign.Center
                 )
 
-                if(move.machineNumber.isNotEmpty()) {
+                if (move.machineNumber.isNotEmpty()) {
                     Text(
                         text = stringResource(id = R.string.machine, move.machineNumber),
                         modifier = Modifier.padding(horizontal = 4.dp),
@@ -77,7 +77,7 @@ fun ItemMove(
                     )
                 }
 
-                if(move.level > 0) {
+                if (move.level > 0) {
                     Text(
                         text = stringResource(id = R.string.learned_at, move.level),
                         modifier = Modifier.padding(start = 4.dp),
@@ -86,60 +86,6 @@ fun ItemMove(
                 }
             }
         }
-
-//            Text(text = move.generationName.uppercase())
-//            Divider()
-//            Row(
-//                horizontalArrangement = Arrangement.SpaceEvenly,
-//                verticalAlignment = Alignment.CenterVertically,
-//                modifier = Modifier.fillMaxWidth()
-//            ) {
-//                Text(text = stringResource(id = R.string.power) + " ${move.power}")
-//
-//                Text(text = stringResource(id = R.string.accuracy) + " ${move.accuracy}")
-//            }
-//            Row(
-//                horizontalArrangement = Arrangement.SpaceEvenly,
-//                verticalAlignment = Alignment.CenterVertically,
-//                modifier = Modifier.fillMaxWidth()
-//            ) {
-//                Text(text = stringResource(id = R.string.pp) + " ${move.pp}")
-//                Text(text = stringResource(id = R.string.priority) + " ${move.priority}")
-//            }
-//
-//            Divider()
-//
-//            SelectionContainer {
-//                Text(text = move.effect, modifier = Modifier.fillMaxWidth(.98f))
-//            }
-
-//            LazyRow(
-//                horizontalArrangement = Arrangement.spacedBy(16.dp),
-//                modifier = Modifier
-//                    .padding(8.dp)
-//            ) {
-//                val versions = move.versionGroupDetails.distinctBy { it.moveLearnMethodId }
-//                items(versions) { version ->
-//                    Card(elevation = 4.dp) {
-//                        Column(
-//                            Modifier
-//                                .fillMaxWidth()
-//                                .padding(4.dp)
-//                        ) {
-//                            Text(
-//                                text = stringResource(id = R.string.learned_at)
-//                                    .plus(version.levelLearnedAt)
-//                                    .uppercase()
-//                            )
-//                            Text(
-//                                text = stringResource(id = R.string.method)
-//                                    .plus(version.moveLearnMethodName)
-//                                    .uppercase()
-//                            )
-//                        }
-//                    }
-//                }
-//            }
     }
 }
 
@@ -161,7 +107,6 @@ private fun ItemMovePreview() {
         machineNumber = "",
         level = 3
     )
-    
     PreviewTemplate {
         ItemMove(move = move, onClick = {})
     }

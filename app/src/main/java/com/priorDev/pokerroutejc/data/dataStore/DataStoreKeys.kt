@@ -1,4 +1,4 @@
-package com.priorDev.pokerroutejc.data.data_store
+package com.priorDev.pokerroutejc.data.dataStore
 
 import androidx.datastore.preferences.core.stringPreferencesKey
 

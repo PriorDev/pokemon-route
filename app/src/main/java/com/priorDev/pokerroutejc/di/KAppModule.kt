@@ -6,8 +6,9 @@ import androidx.room.Room
 import com.apollographql.apollo3.ApolloClient
 import com.priorDev.pokerroutejc.data.SettingsRepo
 import com.priorDev.pokerroutejc.data.SettingsRepoImp
-import com.priorDev.pokerroutejc.data.data_store.DataStoreManager
-import com.priorDev.pokerroutejc.data.data_store.pkDataStore
+import com.priorDev.pokerroutejc.data.dataStore.DataStoreManager
+import com.priorDev.pokerroutejc.data.dataStore.DataStoreManagerImp
+import com.priorDev.pokerroutejc.data.dataStore.pkDataStore
 import com.priorDev.pokerroutejc.data.database.MyDataBase
 import com.priorDev.pokerroutejc.data.network.ApolloCaller
 import com.priorDev.pokerroutejc.data.network.ApolloCallerImp
@@ -94,10 +95,8 @@ val kAppModule = module {
         context.pkDataStore
     }
 
-    single {
-       DataStoreManager(
-           dataStore = get()
-       )
+    single<DataStoreManager> {
+        DataStoreManagerImp(dataStore = get())
     }
 
     single<SettingsRepo> {
