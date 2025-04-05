@@ -89,7 +89,8 @@ val kPokemonModule = module {
             repository = get(),
             savedStateHandle = get(),
             useCases = get(),
-            globalEvent = get()
+            globalEvent = get(),
+            settingsRepo = get()
         )
     }
 

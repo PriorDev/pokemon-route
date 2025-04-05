@@ -1,4 +1,4 @@
-package com.priorDev.pokerroutejc
+package com.priorDev.pokerroutejc.utils
 
 import com.priorDev.pokerroutejc.data.network.utils.NetworkError
 

@@ -5,29 +5,35 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.priorDev.pokerroutejc.Resource
 import com.priorDev.pokerroutejc.core.ResourceFlow
+import com.priorDev.pokerroutejc.data.PokemonRepo
+import com.priorDev.pokerroutejc.data.SettingsRepo
 import com.priorDev.pokerroutejc.domain.pokemon.models.AbilityDetailsData
 import com.priorDev.pokerroutejc.domain.pokemon.models.MoveDetailsData
-import com.priorDev.pokerroutejc.data.PokemonRepo
 import com.priorDev.pokerroutejc.domain.pokemon.useCases.PokemonUseCases
 import com.priorDev.pokerroutejc.presentation.core.LoadingIndicator
 import com.priorDev.pokerroutejc.presentation.core.retryFullScreen
 import com.priorDev.pokerroutejc.presentation.pokemonDetails.moves.MoveFilterModel
 import com.priorDev.pokerroutejc.presentation.pokemonDetails.moves.PokemonMovesState
+import com.priorDev.pokerroutejc.presentation.utils.flowSubscriber
 import com.priorDev.pokerroutejc.ui.Routes
+import com.priorDev.pokerroutejc.utils.ApiLanguages
 import com.priorDev.pokerroutejc.utils.GlobalEventChannel
-
+import com.priorDev.pokerroutejc.utils.Resource
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class PokemonDetailsViewModel(
-    private val repository: PokemonRepo,
     savedStateHandle: SavedStateHandle,
+    private val repository: PokemonRepo,
     private val useCases: PokemonUseCases,
-    private val globalEvent: GlobalEventChannel
+    private val globalEvent: GlobalEventChannel,
+    private val settingsRepo: SettingsRepo
 ) : ViewModel() {
     private val _states = MutableStateFlow(PokemonDetailsStates())
     val states = _states.asStateFlow()
@@ -37,6 +43,10 @@ class PokemonDetailsViewModel(
 
     private val _moves = mutableStateMapOf<String, List<MoveDetailsData>>()
     val moves: Map<String, List<MoveDetailsData>> = _moves
+
+    val selectedLanguage = settingsRepo
+        .getAppLanguage()
+        .flowSubscriber(ApiLanguages.ENGLISH)
 
     init {
         viewModelScope.launch {
@@ -59,9 +69,7 @@ class PokemonDetailsViewModel(
                 getDamageRelation()
             }
 
-            launch {
-                getPokemonMoves()
-            }
+            observeLanguageChanges()
 
             launch {
                 getEvolutions()
@@ -69,8 +77,16 @@ class PokemonDetailsViewModel(
         }
     }
 
+    private suspend fun observeLanguageChanges() {
+        selectedLanguage.collectLatest {
+            getPokemonMoves()
+        }
+    }
+
     private suspend fun getEvolutions() {
-        when (val response = repository.getEvolutionChain(states.value.pokemon.id)) {
+        val pokemonId = states.value.pokemon.id ?: return
+
+        when (val response = repository.getEvolutionChain(pokemonId)) {
             is ResourceFlow.Error -> {
 
             }
@@ -106,6 +122,14 @@ class PokemonDetailsViewModel(
             is PokemonDetailsEvents.SelectMove -> {
                 _pkMovesStates.update { it.copy(selectedMove = event.move) }
             }
+
+            is PokemonDetailsEvents.SelectLanguage -> setSelectedLanguages(event)
+        }
+    }
+
+    private fun setSelectedLanguages(event: PokemonDetailsEvents.SelectLanguage) {
+        viewModelScope.launch {
+            settingsRepo.updateLanguage(event.language)
         }
     }
 
@@ -163,14 +187,16 @@ class PokemonDetailsViewModel(
 
     private fun getPokemonMoves() {
         viewModelScope.launch {
+            val pokemonId = states.value.pokemon.id ?: return@launch
+
             _pkMovesStates.update {
                 it.copy(loading = LoadingIndicator.SolidSpinningWheel)
             }
 
             val response = repository.getPkMoves(
-                pokemonId = states.value.pokemon.id,
+                pokemonId = pokemonId,
                 generationName = "generation-ix",
-                language = "en"
+                language = selectedLanguage.value.key
             )
 
             when (response) {
@@ -187,6 +213,7 @@ class PokemonDetailsViewModel(
                     }
                 }
                 is Resource.Success -> {
+                    _moves.clear()
                     _moves.putAll(response.data.orEmpty())
 
                     val types = response.data

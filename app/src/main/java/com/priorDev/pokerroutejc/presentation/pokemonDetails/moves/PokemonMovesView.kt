@@ -2,19 +2,24 @@ package com.priorDev.pokerroutejc.presentation.pokemonDetails.moves
 
 import MoveBottomSheet
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.FilterAlt
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,11 +33,13 @@ import com.priorDev.pokerroutejc.R
 import com.priorDev.pokerroutejc.domain.pokemon.models.MoveDetailsData
 import com.priorDev.pokerroutejc.presentation.core.ScreenTemplate
 import com.priorDev.pokerroutejc.presentation.pokemonDetails.PokemonDetailsEvents
+import com.priorDev.pokerroutejc.utils.ApiLanguages
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun PokemonMovesView(
     pkMovesState: PokemonMovesState,
+    selectedLanguage: ApiLanguages,
     movesList: Map<String, List<MoveDetailsData>>,
     onEvents: (PokemonDetailsEvents) -> Unit,
 ) {
@@ -72,6 +79,24 @@ fun PokemonMovesView(
 
         Box {
             LazyColumn {
+                item {
+                    LazyRow(
+                        modifier = Modifier.padding(horizontal = 32.dp),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        items(ApiLanguages.entries) { language ->
+                            FilterChip(
+                                onClick = {
+                                    onEvents(PokemonDetailsEvents.SelectLanguage(language))
+                                },
+                                label = {
+                                    Text(language.key)
+                                },
+                                selected = language == selectedLanguage,
+                            )
+                        }
+                    }
+                }
                 movesList
                     .entries
                     .reversed()

@@ -124,4 +124,6 @@ dependencies {
     implementation(libs.koin.androidx.navigation)
     implementation(libs.koin.androidx.compose)
     testImplementation(libs.koin.test.junit4)
+    // Data store
+    implementation(libs.datastore.preferences)
 }

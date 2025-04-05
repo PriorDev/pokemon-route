@@ -4,6 +4,7 @@ activityComposeVersion = "1.9.2"
 apolloRuntimeVersion = "3.7.3"
 coilComposeVersion = "2.6.0"
 coreKtxVersion = "1.13.1"
+datastorePreferencesVersion = "1.1.2"
 espressoCoreVersion = "3.6.1"
 gsonVersion = "2.10.1"
 junitVersion = "1.2.1"
@@ -25,6 +26,7 @@ jupiter = '5.9.3'
 
 [libraries]
 apollo-runtime = { module = "com.apollographql.apollo3:apollo-runtime", version.ref = "apolloRuntimeVersion" }
+datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferencesVersion" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koinAndroidVersion" }
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koinAndroidVersion" }
 koin-androidx-navigation = { module = "io.insert-koin:koin-androidx-navigation", version.ref = "koinAndroidVersion" }

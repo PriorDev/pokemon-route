@@ -41,7 +41,14 @@ query getPkMoves(
                     pokemon_v2_moveeffecteffecttexts{
                         effect
                     }
-                },
+                }
+                pokemon_v2_moveflavortexts(
+                    where: {pokemon_v2_language: {name: {_eq: "es"}}
+                        _and: {pokemon_v2_versiongroup:{pokemon_v2_generation: {name: {_eq: "generation-ix"}}}}
+                    }
+                ) {
+                    flavor_text
+                }
                 pokemon_v2_machines(
                     where: {pokemon_v2_versiongroup:{pokemon_v2_generation: {name: {_eq: $generation_name}}}}
                 ) {

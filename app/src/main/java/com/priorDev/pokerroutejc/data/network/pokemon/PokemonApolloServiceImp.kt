@@ -4,7 +4,7 @@ import com.apollographql.apollo3.api.Optional
 import com.priorDev.GetEvolutionChainIdQuery
 import com.priorDev.GetPkMovesQuery
 import com.priorDev.SearchPokemonNameQuery
-import com.priorDev.pokerroutejc.Resource
+import com.priorDev.pokerroutejc.utils.Resource
 import com.priorDev.pokerroutejc.core.ResourceFlow
 import com.priorDev.pokerroutejc.data.network.ApolloCaller
 import com.priorDev.pokerroutejc.data.network.pokemon.responses.EvolutionResponse

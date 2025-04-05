@@ -9,7 +9,7 @@ import com.priorDev.pokerroutejc.domain.types.models.toDomain
 import com.priorDev.pokerroutejc.utils.capitalized
 
 data class PokemonData(
-    val id: Int = 0,
+    val id: Int? = null,
     val name: String = "",
     val sprites: SpritesData = SpritesData(),
     val abilities: List<AbilityData> = emptyList(),

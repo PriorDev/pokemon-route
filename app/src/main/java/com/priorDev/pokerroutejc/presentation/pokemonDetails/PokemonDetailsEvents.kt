@@ -4,6 +4,7 @@ import androidx.navigation.NavOptionsBuilder
 import com.priorDev.pokerroutejc.domain.pokemon.models.MoveDetailsData
 import com.priorDev.pokerroutejc.presentation.pokemonDetails.moves.MoveFilterModel
 import com.priorDev.pokerroutejc.ui.Routes
+import com.priorDev.pokerroutejc.utils.ApiLanguages
 
 sealed class PokemonDetailsEvents {
     data class OnGenerationSelect(val generation: String) : PokemonDetailsEvents()
@@ -29,4 +30,6 @@ sealed class PokemonDetailsEvents {
         val route: Routes,
         val navOptions: NavOptionsBuilder.() -> Unit = {}
     ) : PokemonDetailsEvents()
+
+    data class SelectLanguage(val language: ApiLanguages) : PokemonDetailsEvents()
 }

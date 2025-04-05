@@ -28,6 +28,7 @@ import com.priorDev.pokerroutejc.presentation.pokemonDetails.sprites.SpritesView
 import com.priorDev.pokerroutejc.presentation.pokemonDetails.typeRelation.DamageRelationView
 import com.priorDev.pokerroutejc.presentation.utils.PageItem
 import com.priorDev.pokerroutejc.presentation.utils.PkDetailsPages
+import com.priorDev.pokerroutejc.utils.ApiLanguages
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -36,6 +37,7 @@ fun PokemonDetailsScreen(
     states: PokemonDetailsStates,
     movesList: Map<String, List<MoveDetailsData>>,
     onEvents: (PokemonDetailsEvents) -> Unit,
+    selectedLanguage: ApiLanguages,
 ) {
     val cardPadding = PaddingValues(horizontal = 32.dp, vertical = 16.dp)
 
@@ -123,6 +125,7 @@ fun PokemonDetailsScreen(
                         pkMovesState = pkMovesState,
                         movesList = movesList,
                         onEvents = onEvents,
+                        selectedLanguage = selectedLanguage
                     )
                 }
                 PkDetailsPages.SPRITES -> {

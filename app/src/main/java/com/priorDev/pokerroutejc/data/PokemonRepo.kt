@@ -1,10 +1,9 @@
 package com.priorDev.pokerroutejc.data
 
-import com.priorDev.pokerroutejc.Resource
+import com.priorDev.pokerroutejc.utils.Resource
 import com.priorDev.pokerroutejc.core.ResourceFlow
 import com.priorDev.pokerroutejc.data.network.pokemon.responses.EvolutionResponse
 import com.priorDev.pokerroutejc.domain.pokemon.models.AbilityDetailsData
-import com.priorDev.pokerroutejc.domain.pokemon.models.MoveData
 import com.priorDev.pokerroutejc.domain.pokemon.models.MoveDetailsData
 import com.priorDev.pokerroutejc.domain.pokemon.models.PokemonData
 import kotlinx.coroutines.flow.Flow

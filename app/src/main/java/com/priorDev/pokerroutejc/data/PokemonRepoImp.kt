@@ -1,6 +1,5 @@
 package com.priorDev.pokerroutejc.data
 
-import com.priorDev.pokerroutejc.Resource
 import com.priorDev.pokerroutejc.core.ResourceFlow
 import com.priorDev.pokerroutejc.data.network.pokemon.PokemonApolloService
 import com.priorDev.pokerroutejc.data.network.pokemon.PokemonNetService
@@ -11,16 +10,18 @@ import com.priorDev.pokerroutejc.domain.pokemon.models.AbilityDetailsData
 import com.priorDev.pokerroutejc.domain.pokemon.models.MoveDetailsData
 import com.priorDev.pokerroutejc.domain.pokemon.models.PokemonData
 import com.priorDev.pokerroutejc.domain.pokemon.models.toDomain
+import com.priorDev.pokerroutejc.utils.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class PokemonRepoImp(
     private val service: PokemonNetService,
-    private val graphQLClient: PokemonApolloService
+    private val graphQLClient: PokemonApolloService,
 ) : PokemonRepo {
     override suspend fun getPokemon(pokemonName: String): Flow<ResourceFlow<PokemonData>> {
         return flow {
             emit(ResourceFlow.Loading())
+
             when (val response = service.getPokemon(pokemonName)) {
                 is NetworkResource.Fail -> {
                     emit(ResourceFlow.Error(networkErrorType = NetworkError.UnknownError))
