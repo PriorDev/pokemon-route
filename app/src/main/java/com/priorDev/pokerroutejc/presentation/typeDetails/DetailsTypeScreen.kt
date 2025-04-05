@@ -42,7 +42,7 @@ fun DetailsTypeView(
     details: TypeDetailsData,
     onEvents: (DetailsTypeEvents) -> Unit
 ) {
-    val colorType = details.name.getTypeColor()
+    val colorType = details.id.getTypeColor()
 
     Scaffold(
         topBar = {
@@ -190,6 +190,7 @@ private fun DetailsTypePreview() {
 
     val states = CommonStates(isLoading = false)
     val details = TypeDetailsData(
+        id = 2,
         name = "Fire",
         damageRelationsData = DamageRelationsData(
             doubleDamageFrom = typesList,

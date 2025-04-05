@@ -19,28 +19,30 @@ import com.priorDev.pokerroutejc.ui.theme.PsychicColor
 import com.priorDev.pokerroutejc.ui.theme.RockColor
 import com.priorDev.pokerroutejc.ui.theme.ShadowColor
 import com.priorDev.pokerroutejc.ui.theme.SteelColor
+import com.priorDev.pokerroutejc.ui.theme.StellarColor
 import com.priorDev.pokerroutejc.ui.theme.UnknownColor
 import com.priorDev.pokerroutejc.ui.theme.WaterColor
 
-enum class EnumColorTypes(val color: Color, val type: String = "") {
-    Normal(NormalColor, "normal"),
-    Fire(FireColor, "fire"),
-    Fighting(FightingColor, "fighting"),
-    Water(WaterColor, "water"),
-    Flying(FlyingColor, "flying"),
-    Grass(GrassColor, "grass"),
-    Poison(PoisonColor, "poison"),
-    Electric(ElectricColor, "electric"),
-    Ground(GroundColor, "ground"),
-    Psychic(PsychicColor, "psychic"),
-    Rock(RockColor, "rock"),
-    Ice(IceColor, "ice"),
-    Bug(BugColor, "bug"),
-    Dragon(DragonColor, "dragon"),
-    Ghost(GhostColor, "ghost"),
-    Dark(DarkColor, "dark"),
-    Steel(SteelColor, "steel"),
-    Fairy(FairyColor, "fairy"),
-    Unknown(UnknownColor, "unknown"),
-    Shadow(ShadowColor, "shadow")
+enum class EnumColorTypes(val color: Color, val typeId: Int) {
+    Normal(NormalColor, 1),
+    Fighting(FightingColor, 2),
+    Flying(FlyingColor, 3),
+    Poison(PoisonColor, 4),
+    Ground(GroundColor, 5),
+    Rock(RockColor, 6),
+    Bug(BugColor, 7),
+    Ghost(GhostColor, 8),
+    Steel(SteelColor, 9),
+    Fire(FireColor, 10),
+    Water(WaterColor, 11),
+    Grass(GrassColor, 12),
+    Electric(ElectricColor, 13),
+    Psychic(PsychicColor, 14),
+    Ice(IceColor, 15),
+    Dragon(DragonColor, 16),
+    Dark(DarkColor, 17),
+    Fairy(FairyColor, 18),
+    Stellar(StellarColor, 19),
+    Unknown(UnknownColor, 10001),
+    Shadow(ShadowColor, 10002)
 }

@@ -26,7 +26,7 @@ fun TypeEntity.toDomain() =
 
 fun TypeData.getColor(): Color {
     return EnumColorTypes.entries
-        .firstOrNull { it.type == this.name }
+        .firstOrNull { it.typeId == this.id }
         ?.color
         ?: EnumColorTypes.Normal.color
 }

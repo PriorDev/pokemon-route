@@ -92,6 +92,7 @@ val GhostColor = Color(0xFFECEFF1)
 val DarkColor = Color(0xFFCFD8DC)
 val SteelColor = Color(0xFFB0BEC5)
 val FairyColor = Color(0xFFFF80AB)
+val StellarColor = Color(0xFFfdfdfd)
 val UnknownColor = Color(0xFFfafafa)
 val ShadowColor = Color(0xFFB0BEC5)
 
