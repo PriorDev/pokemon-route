@@ -14,7 +14,6 @@ fun NavGraphBuilder.versionGroupWrapper() {
 
         VersionGroupScreen(
             states = states,
-            versionGroupList = viewModel.versionGroupList,
             onEvent = viewModel::onEvent
         )
     }

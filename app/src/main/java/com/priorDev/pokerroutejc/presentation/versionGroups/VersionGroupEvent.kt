@@ -8,4 +8,6 @@ sealed class VersionGroupEvent {
         val route: Routes,
         val navOptions: NavOptionsBuilder.() -> Unit = {}
     ) : VersionGroupEvent()
+
+    data object OnToggleOrder : VersionGroupEvent()
 }
