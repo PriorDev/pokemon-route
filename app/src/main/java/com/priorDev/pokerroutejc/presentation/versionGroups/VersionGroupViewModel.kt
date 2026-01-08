@@ -48,7 +48,7 @@ class VersionGroupViewModel(
 
             currentState.copy(
                 sortOrder = newOrder,
-                versionGroupList = processData(_rawVersionGroupList, newOrder)
+                versionGroupList = sortVersionGroup(_rawVersionGroupList, newOrder)
             )
         }
     }
@@ -79,7 +79,7 @@ class VersionGroupViewModel(
 
                     _states.update {
                         it.copy(
-                            versionGroupList = processData(versions, it.sortOrder)
+                            versionGroupList = sortVersionGroup(versions, it.sortOrder)
                         )
                     }
                 }
@@ -89,7 +89,7 @@ class VersionGroupViewModel(
         }
     }
 
-    private fun processData(
+    private fun sortVersionGroup(
         data: List<VersionGroupsData>,
         sortOrder: SortOrder
     ): Map<String, List<VersionGroupsData>> {

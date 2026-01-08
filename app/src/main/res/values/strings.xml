@@ -62,4 +62,5 @@
     <string name="immune">Immune (x%1$s)</string>
     <string name="relation">Relation (x%1$s)</string>
     <string name="pokedex">Pokedex</string>
+    <string name="sort">Sort</string>
 </resources>

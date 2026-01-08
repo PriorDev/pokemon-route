@@ -49,7 +49,7 @@ fun VersionGroupScreen(
                     IconButton(onClick = { onEvent(VersionGroupEvent.OnToggleOrder) }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.Sort,
-                            contentDescription = "Sort"
+                            contentDescription = UiMessages.StringResource(R.string.sort).asString()
                         )
                     }
                 }
@@ -130,6 +130,17 @@ private fun VersionGroupScreenPreview() {
                 ),
                 "GEN II" to listOf(
                     VersionGroupsData(3, "Gold/Silver", "GEN II"),
+                    VersionGroupsData(4, "Crystal", "GEN II")
+                ),
+                "GEN III" to listOf(
+                    VersionGroupsData(5, "Ruby/Sapphire", "GEN III"),
+                    VersionGroupsData(6, "Emerald", "GEN III"),
+                    VersionGroupsData(7, "FireRed/LeafGreen", "GEN III")
+                ),
+                "GEN IV" to listOf(
+                    VersionGroupsData(8, "Diamond/Pearl", "GEN IV"),
+                    VersionGroupsData(9, "Platinum", "GEN IV"),
+                    VersionGroupsData(10, "HeartGold/SoulSilver", "GEN IV")
                 )
             ),
             sortOrder = SortOrder.Ascending
