@@ -21,8 +21,6 @@ class VersionGroupViewModel(
     private val _states = MutableStateFlow(VersionGroupStates())
     val states = _states.asStateFlow()
 
-    private val _rawVersionGroupList = mutableListOf<VersionGroupsData>()
-
     init {
         getVersionGroups()
     }
@@ -46,9 +44,11 @@ class VersionGroupViewModel(
                 SortOrder.Ascending
             }
 
+            val currentList = currentState.versionGroupList.values.flatten()
+
             currentState.copy(
                 sortOrder = newOrder,
-                versionGroupList = sortVersionGroup(_rawVersionGroupList, newOrder)
+                versionGroupList = sortVersionGroup(currentList, newOrder)
             )
         }
     }
@@ -74,8 +74,6 @@ class VersionGroupViewModel(
 
                 is Resource.Success -> {
                     val versions = resource.data.orEmpty()
-                    _rawVersionGroupList.clear()
-                    _rawVersionGroupList.addAll(versions)
 
                     _states.update {
                         it.copy(
