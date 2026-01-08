@@ -30,6 +30,7 @@ class VersionGroupViewModel(
             is VersionGroupEvent.OnNavigate -> {
                 eventChannel.navigate(versionGroupEvent.route, versionGroupEvent.navOptions)
             }
+
             VersionGroupEvent.OnToggleOrder -> {
                 toggleSortOrder()
             }
@@ -91,10 +92,39 @@ class VersionGroupViewModel(
         data: List<VersionGroupsData>,
         sortOrder: SortOrder
     ): Map<String, List<VersionGroupsData>> {
-        val sortedData = when (sortOrder) {
-            SortOrder.Ascending -> data.sortedBy { it.id }
-            SortOrder.Descending -> data.sortedByDescending { it.id }
+        val sortedList = data.sortedWith(
+            compareBy<VersionGroupsData> {
+                val generationValue = romanToDecimal(it.generationName)
+                if (sortOrder == SortOrder.Ascending) generationValue else -generationValue
+            }.thenByDescending { it.id }
+        )
+
+        return sortedList.groupBy { it.generationName }
+    }
+
+    private fun romanToDecimal(roman: String): Int {
+        var result = 0
+        var prevValue = 0
+
+        for (i in roman.length - 1 downTo 0) {
+            val value = when (roman[i]) {
+                'I' -> 1
+                'V' -> 5
+                'X' -> 10
+                'L' -> 50
+                'C' -> 100
+                'D' -> 500
+                'M' -> 1000
+                else -> 0
+            }
+
+            if (value < prevValue) {
+                result -= value
+            } else {
+                result += value
+            }
+            prevValue = value
         }
-        return sortedData.groupBy { it.generationName }
+        return result
     }
 }
