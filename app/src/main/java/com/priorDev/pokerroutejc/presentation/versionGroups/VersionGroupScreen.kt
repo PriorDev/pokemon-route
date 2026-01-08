@@ -11,8 +11,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Sort
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,18 +24,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.priorDev.pokerroutejc.R
 import com.priorDev.pokerroutejc.domain.pokedex.models.VersionGroupsData
 import com.priorDev.pokerroutejc.presentation.core.MyTopBar
 import com.priorDev.pokerroutejc.presentation.core.ScreenTemplate
+import com.priorDev.pokerroutejc.presentation.core.SortOrder
 import com.priorDev.pokerroutejc.presentation.core.UiMessages
 import com.priorDev.pokerroutejc.ui.Routes
 
 @Composable
 fun VersionGroupScreen(
     states: VersionGroupStates,
-    versionGroupList: Map<String, List<VersionGroupsData>>,
     onEvent: (VersionGroupEvent) -> Unit
 ) {
     ScreenTemplate(
@@ -39,13 +44,21 @@ fun VersionGroupScreen(
         loadingIndicator = states.loading,
         topBar = {
             MyTopBar(
-                title = UiMessages.StringResource(R.string.pokedex)
+                title = UiMessages.StringResource(R.string.pokedex),
+                actions = {
+                    IconButton(onClick = { onEvent(VersionGroupEvent.OnToggleOrder) }) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.Sort,
+                            contentDescription = UiMessages.StringResource(R.string.sort).asString()
+                        )
+                    }
+                }
             )
         }
     ) {
         LazyColumn {
-            items(versionGroupList.keys.toList()) { generation ->
-                versionGroupList[generation]?.forEach { groupVersion ->
+            items(states.versionGroupList.keys.toList()) { generation ->
+                states.versionGroupList[generation]?.forEach { groupVersion ->
                     Card(
                         colors = CardDefaults.cardColors(
                             containerColor = MaterialTheme.colorScheme.secondaryContainer
@@ -103,4 +116,35 @@ fun VersionGroupScreen(
             }
         }
     }
+}
+
+@Preview
+@Composable
+private fun VersionGroupScreenPreview() {
+    VersionGroupScreen(
+        states = VersionGroupStates(
+            versionGroupList = mapOf(
+                "GEN I" to listOf(
+                    VersionGroupsData(1, "Red/Blue", "GEN I"),
+                    VersionGroupsData(2, "Yellow", "GEN I")
+                ),
+                "GEN II" to listOf(
+                    VersionGroupsData(3, "Gold/Silver", "GEN II"),
+                    VersionGroupsData(4, "Crystal", "GEN II")
+                ),
+                "GEN III" to listOf(
+                    VersionGroupsData(5, "Ruby/Sapphire", "GEN III"),
+                    VersionGroupsData(6, "Emerald", "GEN III"),
+                    VersionGroupsData(7, "FireRed/LeafGreen", "GEN III")
+                ),
+                "GEN IV" to listOf(
+                    VersionGroupsData(8, "Diamond/Pearl", "GEN IV"),
+                    VersionGroupsData(9, "Platinum", "GEN IV"),
+                    VersionGroupsData(10, "HeartGold/SoulSilver", "GEN IV")
+                )
+            ),
+            sortOrder = SortOrder.Ascending
+        ),
+        onEvent = {}
+    )
 }

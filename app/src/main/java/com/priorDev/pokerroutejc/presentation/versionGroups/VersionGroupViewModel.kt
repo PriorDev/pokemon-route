@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.priorDev.pokerroutejc.data.PokedexRepo
 import com.priorDev.pokerroutejc.domain.pokedex.models.VersionGroupsData
 import com.priorDev.pokerroutejc.presentation.core.LoadingIndicator
+import com.priorDev.pokerroutejc.presentation.core.SortOrder
 import com.priorDev.pokerroutejc.presentation.core.retryFullScreen
 import com.priorDev.pokerroutejc.utils.GlobalEventChannel
 import com.priorDev.pokerroutejc.utils.Resource
@@ -16,12 +17,11 @@ import kotlinx.coroutines.launch
 class VersionGroupViewModel(
     private val pokedexRepo: PokedexRepo,
     private val eventChannel: GlobalEventChannel
-): ViewModel() {
+) : ViewModel() {
     private val _states = MutableStateFlow(VersionGroupStates())
     val states = _states.asStateFlow()
 
-    private val _versionGroupList = mutableMapOf<String, List<VersionGroupsData>>()
-    val versionGroupList: Map<String, List<VersionGroupsData>> = _versionGroupList
+    private val _rawVersionGroupList = mutableListOf<VersionGroupsData>()
 
     init {
         getVersionGroups()
@@ -32,6 +32,24 @@ class VersionGroupViewModel(
             is VersionGroupEvent.OnNavigate -> {
                 eventChannel.navigate(versionGroupEvent.route, versionGroupEvent.navOptions)
             }
+            VersionGroupEvent.OnToggleOrder -> {
+                toggleSortOrder()
+            }
+        }
+    }
+
+    private fun toggleSortOrder() {
+        _states.update { currentState ->
+            val newOrder = if (currentState.sortOrder == SortOrder.Ascending) {
+                SortOrder.Descending
+            } else {
+                SortOrder.Ascending
+            }
+
+            currentState.copy(
+                sortOrder = newOrder,
+                versionGroupList = sortVersionGroup(_rawVersionGroupList, newOrder)
+            )
         }
     }
 
@@ -55,18 +73,30 @@ class VersionGroupViewModel(
                 }
 
                 is Resource.Success -> {
-                    val versions = resource.data
-                        ?.groupBy { it.generationName }
-                        .orEmpty()
+                    val versions = resource.data.orEmpty()
+                    _rawVersionGroupList.clear()
+                    _rawVersionGroupList.addAll(versions)
 
-                    _versionGroupList.apply {
-                        clear()
-                        putAll(versions)
+                    _states.update {
+                        it.copy(
+                            versionGroupList = sortVersionGroup(versions, it.sortOrder)
+                        )
                     }
                 }
             }
 
             _states.update { it.copy(loading = LoadingIndicator.None) }
         }
+    }
+
+    private fun sortVersionGroup(
+        data: List<VersionGroupsData>,
+        sortOrder: SortOrder
+    ): Map<String, List<VersionGroupsData>> {
+        val sortedData = when (sortOrder) {
+            SortOrder.Ascending -> data.sortedBy { it.id }
+            SortOrder.Descending -> data.sortedByDescending { it.id }
+        }
+        return sortedData.groupBy { it.generationName }
     }
 }
