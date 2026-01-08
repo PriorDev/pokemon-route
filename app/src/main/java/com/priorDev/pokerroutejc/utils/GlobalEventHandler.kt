@@ -3,11 +3,11 @@ package com.priorDev.pokerroutejc.utils
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import com.priorDev.pokerroutejc.presentation.utils.ObserveEvents
-import org.koin.androidx.compose.get
+import org.koin.compose.koinInject
 
 @Composable
 fun GlobalEventHandler(navController: NavHostController) {
-    val globalChannel = get<GlobalEventChannel>()
+    val globalChannel = koinInject<GlobalEventChannel>()
 
     ObserveEvents(globalChannel.eventChannel) { event ->
         when (event) {

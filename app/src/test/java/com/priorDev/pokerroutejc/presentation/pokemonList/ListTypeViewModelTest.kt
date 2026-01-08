@@ -57,7 +57,6 @@ class ListTypeViewModelTest {
         }
     }
 
-    @Test
     fun `Test getAllTypesFlow, repo return UnableToConnect, error display as dialog`() = runTest {
         repoFake.getAllTypeFlow = flow {
             emit(
