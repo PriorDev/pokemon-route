@@ -5,11 +5,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.priorDev.pokerroutejc.ui.Routes
-import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.koinViewModel
 
 fun NavGraphBuilder.pokemonDetailWrapper() {
     composable<Routes.PkDetails> {
-        val viewModel = getViewModel<PokemonDetailsViewModel>()
+        val viewModel = koinViewModel<PokemonDetailsViewModel>()
         val pkMovesState by viewModel.pkMovesStates.collectAsStateWithLifecycle()
         val damageRelationStates by viewModel.damageRelationStates.collectAsStateWithLifecycle()
         val states = viewModel.states.collectAsStateWithLifecycle()

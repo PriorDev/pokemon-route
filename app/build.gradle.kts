@@ -1,12 +1,12 @@
 plugins {
     id("com.android.application")
     kotlin("android")
-    id("kotlin-kapt")
-    id("io.gitlab.arturbosch.detekt") version "1.23.1"
+    alias(libs.plugins.ksp)
+    id("io.gitlab.arturbosch.detekt") version "1.23.7"
     alias(libs.plugins.kotlin.serialization)
-    id("com.apollographql.apollo3").version("3.7.3")
+    id("com.apollographql.apollo3").version("3.8.5")
     alias(libs.plugins.compose.compiler)
-    id("de.mannodermaus.android-junit5") version "1.9.3.0"
+    id("de.mannodermaus.android-junit5") version "1.11.0.0"
 }
 
 apollo {
@@ -17,14 +17,14 @@ apollo {
 
 android {
     namespace = "com.priorDev.pokerroutejc"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.priorDev.pokerroutejc"
         minSdk = 29
-        targetSdk = 33
-        versionCode = 4
-        versionName = "1.2"
+        targetSdk = 35
+        versionCode = 5
+        versionName = "1.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -39,18 +39,15 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
         freeCompilerArgs += "-Xcontext-receivers"
     }
     buildFeatures {
         compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.14"
     }
     packaging {
         resources {
@@ -60,7 +57,7 @@ android {
 }
 
 detekt {
-    toolVersion = "1.23.1" // Use the version that matches the plugin
+    toolVersion = "1.23.7" // Use the version that matches the plugin
     buildUponDefaultConfig = true // Start with default config
     config.setFrom(files("../detekt.yml"))
 }
@@ -88,7 +85,7 @@ dependencies {
     //Room
     implementation(libs.room.ktx)
     implementation(libs.room.paging)
-    kapt(libs.room.compiler)
+    ksp(libs.room.compiler)
     //System ui Controll
     implementation(libs.accompanist.systemuicontroller)
     //Cargar imagenes desde internet

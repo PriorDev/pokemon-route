@@ -13,3 +13,7 @@
 .externalNativeBuild
 .cxx
 local.properties
+/android-sdk/
+/app/build/
+/.gradle/
+cmdline-tools.zip

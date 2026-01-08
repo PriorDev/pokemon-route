@@ -33,7 +33,7 @@ class GetDamageRelationsTest {
     }
 
     @Test
-    fun `GetDamageRelations, First type is not valid, Resource.Error`() = runTest {
+    fun `GetDamageRelations, First type is not valid, Resource Error`() = runTest {
         val result = GetDamageRelations(typeRepo)
             .invoke(
                 listOf1(
@@ -46,7 +46,7 @@ class GetDamageRelationsTest {
     }
 
     @Test
-    fun `GetDamageRelations, Second type is not valid, Resource.Error`() = runTest {
+    fun `GetDamageRelations, Second type is not valid, Resource Error`() = runTest {
         val result = GetDamageRelations(typeRepo)
             .invoke(
                 listOf1(
@@ -60,7 +60,7 @@ class GetDamageRelationsTest {
 
     @ParameterizedTest
     @MethodSource("provideTestCases")
-    fun `GetDamageRelations, 2 valid types, Resource.Success with correct damage values`(
+    fun `GetDamageRelations, 2 valid types, Resource Success with correct damage values`(
         types: List<TypeData>, expectedResult: List<DamageValue>
     ) = runTest {
         val result = GetDamageRelations(typeRepo).invoke(types)
