@@ -94,9 +94,7 @@ class PokemonDetailsViewModel(
                     result.data?.let { data ->
                         _states.update {
                             it.copy(
-                                pokemon = data.pokemon,
-                                evolutions = data.evolutions,
-                                damageRelations = data.damageRelations
+                                pokemon = data.pokemon
                             )
                         }
 
