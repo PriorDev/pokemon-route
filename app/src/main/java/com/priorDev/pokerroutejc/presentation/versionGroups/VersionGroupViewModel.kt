@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.priorDev.pokerroutejc.data.PokedexRepo
 import com.priorDev.pokerroutejc.domain.pokedex.models.VersionGroupsData
+import com.priorDev.pokerroutejc.domain.utils.romanToDecimal
 import com.priorDev.pokerroutejc.presentation.core.LoadingIndicator
 import com.priorDev.pokerroutejc.presentation.core.SortOrder
 import com.priorDev.pokerroutejc.presentation.core.retryFullScreen
@@ -21,8 +22,6 @@ class VersionGroupViewModel(
     private val _states = MutableStateFlow(VersionGroupStates())
     val states = _states.asStateFlow()
 
-    private val _rawVersionGroupList = mutableListOf<VersionGroupsData>()
-
     init {
         getVersionGroups()
     }
@@ -32,6 +31,7 @@ class VersionGroupViewModel(
             is VersionGroupEvent.OnNavigate -> {
                 eventChannel.navigate(versionGroupEvent.route, versionGroupEvent.navOptions)
             }
+
             VersionGroupEvent.OnToggleOrder -> {
                 toggleSortOrder()
             }
@@ -46,9 +46,11 @@ class VersionGroupViewModel(
                 SortOrder.Ascending
             }
 
+            val currentList = currentState.versionGroupList.values.flatten()
+
             currentState.copy(
                 sortOrder = newOrder,
-                versionGroupList = sortVersionGroup(_rawVersionGroupList, newOrder)
+                versionGroupList = sortVersionGroup(currentList, newOrder)
             )
         }
     }
@@ -74,8 +76,6 @@ class VersionGroupViewModel(
 
                 is Resource.Success -> {
                     val versions = resource.data.orEmpty()
-                    _rawVersionGroupList.clear()
-                    _rawVersionGroupList.addAll(versions)
 
                     _states.update {
                         it.copy(
@@ -93,10 +93,13 @@ class VersionGroupViewModel(
         data: List<VersionGroupsData>,
         sortOrder: SortOrder
     ): Map<String, List<VersionGroupsData>> {
-        val sortedData = when (sortOrder) {
-            SortOrder.Ascending -> data.sortedBy { it.id }
-            SortOrder.Descending -> data.sortedByDescending { it.id }
-        }
-        return sortedData.groupBy { it.generationName }
+        val sortedList = data.sortedWith(
+            compareBy<VersionGroupsData> {
+                val generationValue = it.generationName.romanToDecimal()
+                if (sortOrder == SortOrder.Ascending) generationValue else -generationValue
+            }.thenByDescending { it.id }
+        )
+
+        return sortedList.groupBy { it.generationName }
     }
 }

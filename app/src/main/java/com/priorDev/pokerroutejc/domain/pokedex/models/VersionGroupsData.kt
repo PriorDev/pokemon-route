@@ -17,7 +17,7 @@ fun GetVersionGroupsQuery.Pokemon_v2_versiongroup.toVersionGroupsData(): Version
             .first() // filter by language
             .name,
         generationName = pokemon_v2_generation?.name
-            ?.replace("generation-", "")
+            ?.substringAfterLast("-")
             ?.uppercase()
             .orEmpty()
     )

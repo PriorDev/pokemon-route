@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -23,8 +24,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.priorDev.pokerroutejc.R
 import com.priorDev.pokerroutejc.domain.pokedex.models.VersionGroupsData
@@ -33,6 +36,7 @@ import com.priorDev.pokerroutejc.presentation.core.ScreenTemplate
 import com.priorDev.pokerroutejc.presentation.core.SortOrder
 import com.priorDev.pokerroutejc.presentation.core.UiMessages
 import com.priorDev.pokerroutejc.ui.Routes
+import com.priorDev.pokerroutejc.ui.theme.PokemonRRouteJCTheme
 
 @Composable
 fun VersionGroupScreen(
@@ -57,6 +61,10 @@ fun VersionGroupScreen(
         }
     ) {
         LazyColumn {
+            item {
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+
             items(states.versionGroupList.keys.toList()) { generation ->
                 states.versionGroupList[generation]?.forEach { groupVersion ->
                     Card(
@@ -118,33 +126,35 @@ fun VersionGroupScreen(
     }
 }
 
-@Preview
+@PreviewLightDark
 @Composable
 private fun VersionGroupScreenPreview() {
-    VersionGroupScreen(
-        states = VersionGroupStates(
-            versionGroupList = mapOf(
-                "GEN I" to listOf(
-                    VersionGroupsData(1, "Red/Blue", "GEN I"),
-                    VersionGroupsData(2, "Yellow", "GEN I")
+    PokemonRRouteJCTheme {
+        VersionGroupScreen(
+            states = VersionGroupStates(
+                versionGroupList = mapOf(
+                    "GEN I" to listOf(
+                        VersionGroupsData(1, "Red/Blue", "GEN I"),
+                        VersionGroupsData(2, "Yellow", "GEN I")
+                    ),
+                    "GEN II" to listOf(
+                        VersionGroupsData(3, "Gold/Silver", "GEN II"),
+                        VersionGroupsData(4, "Crystal", "GEN II")
+                    ),
+                    "GEN III" to listOf(
+                        VersionGroupsData(5, "Ruby/Sapphire", "GEN III"),
+                        VersionGroupsData(6, "Emerald", "GEN III"),
+                        VersionGroupsData(7, "FireRed/LeafGreen", "GEN III")
+                    ),
+                    "GEN IV" to listOf(
+                        VersionGroupsData(8, "Diamond/Pearl", "GEN IV"),
+                        VersionGroupsData(9, "Platinum", "GEN IV"),
+                        VersionGroupsData(10, "HeartGold/SoulSilver", "GEN IV")
+                    )
                 ),
-                "GEN II" to listOf(
-                    VersionGroupsData(3, "Gold/Silver", "GEN II"),
-                    VersionGroupsData(4, "Crystal", "GEN II")
-                ),
-                "GEN III" to listOf(
-                    VersionGroupsData(5, "Ruby/Sapphire", "GEN III"),
-                    VersionGroupsData(6, "Emerald", "GEN III"),
-                    VersionGroupsData(7, "FireRed/LeafGreen", "GEN III")
-                ),
-                "GEN IV" to listOf(
-                    VersionGroupsData(8, "Diamond/Pearl", "GEN IV"),
-                    VersionGroupsData(9, "Platinum", "GEN IV"),
-                    VersionGroupsData(10, "HeartGold/SoulSilver", "GEN IV")
-                )
+                sortOrder = SortOrder.Ascending
             ),
-            sortOrder = SortOrder.Ascending
-        ),
-        onEvent = {}
-    )
+            onEvent = {}
+        )
+    }
 }
