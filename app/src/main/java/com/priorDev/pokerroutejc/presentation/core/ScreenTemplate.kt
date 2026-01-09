@@ -35,7 +35,7 @@ fun ScreenTemplate(
             loadingIndicator = loadingIndicator,
             errorState = errorState,
             content = content,
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier.padding(top = innerPadding.calculateTopPadding())
         )
     }
 }
