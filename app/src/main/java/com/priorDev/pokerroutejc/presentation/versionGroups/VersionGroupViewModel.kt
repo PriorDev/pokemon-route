@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.priorDev.pokerroutejc.data.PokedexRepo
 import com.priorDev.pokerroutejc.domain.pokedex.models.VersionGroupsData
+import com.priorDev.pokerroutejc.domain.utils.romanToDecimal
 import com.priorDev.pokerroutejc.presentation.core.LoadingIndicator
 import com.priorDev.pokerroutejc.presentation.core.SortOrder
 import com.priorDev.pokerroutejc.presentation.core.retryFullScreen
@@ -94,37 +95,11 @@ class VersionGroupViewModel(
     ): Map<String, List<VersionGroupsData>> {
         val sortedList = data.sortedWith(
             compareBy<VersionGroupsData> {
-                val generationValue = romanToDecimal(it.generationName)
+                val generationValue = it.generationName.romanToDecimal()
                 if (sortOrder == SortOrder.Ascending) generationValue else -generationValue
             }.thenByDescending { it.id }
         )
 
         return sortedList.groupBy { it.generationName }
-    }
-
-    private fun romanToDecimal(roman: String): Int {
-        var result = 0
-        var prevValue = 0
-
-        for (i in roman.length - 1 downTo 0) {
-            val value = when (roman[i]) {
-                'I' -> 1
-                'V' -> 5
-                'X' -> 10
-                'L' -> 50
-                'C' -> 100
-                'D' -> 500
-                'M' -> 1000
-                else -> 0
-            }
-
-            if (value < prevValue) {
-                result -= value
-            } else {
-                result += value
-            }
-            prevValue = value
-        }
-        return result
     }
 }
