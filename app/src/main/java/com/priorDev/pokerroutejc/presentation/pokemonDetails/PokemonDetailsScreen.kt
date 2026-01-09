@@ -8,35 +8,42 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.priorDev.pokerroutejc.R
 import com.priorDev.pokerroutejc.domain.pokemon.models.MoveDetailsData
+import com.priorDev.pokerroutejc.presentation.core.ScreenTemplate
 import com.priorDev.pokerroutejc.presentation.core.UiMessages
 import com.priorDev.pokerroutejc.presentation.pokemonDetails.evolution.EvolutionChainView
-import com.priorDev.pokerroutejc.presentation.pokemonDetails.moves.PokemonMovesView
+import com.priorDev.pokerroutejc.presentation.pokemonDetails.evolution.EvolutionState
 import com.priorDev.pokerroutejc.presentation.pokemonDetails.moves.PageIndicator
 import com.priorDev.pokerroutejc.presentation.pokemonDetails.moves.PokemonMovesState
+import com.priorDev.pokerroutejc.presentation.pokemonDetails.moves.PokemonMovesView
 import com.priorDev.pokerroutejc.presentation.pokemonDetails.pkInfo.PokemonInfo
+import com.priorDev.pokerroutejc.presentation.pokemonDetails.sprites.SpritesState
 import com.priorDev.pokerroutejc.presentation.pokemonDetails.sprites.SpritesView
 import com.priorDev.pokerroutejc.presentation.pokemonDetails.typeRelation.DamageRelationStates
 import com.priorDev.pokerroutejc.presentation.pokemonDetails.typeRelation.DamageRelationView
+import com.priorDev.pokerroutejc.presentation.reusable.DisposableMessage
 import com.priorDev.pokerroutejc.presentation.utils.PageItem
 import com.priorDev.pokerroutejc.presentation.utils.PkDetailsPages
+import com.priorDev.pokerroutejc.ui.theme.PokemonRRouteJCTheme
 import com.priorDev.pokerroutejc.utils.ApiLanguages
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PokemonDetailsScreen(
+    states: PokemonDetailsStates,
     pkMovesState: PokemonMovesState,
     damageRelationStates: DamageRelationStates,
-    states: PokemonDetailsStates,
+    evolutionState: EvolutionState,
+    spritesState: SpritesState,
     movesList: Map<String, List<MoveDetailsData>>,
     onEvents: (PokemonDetailsEvents) -> Unit,
     selectedLanguage: ApiLanguages,
@@ -76,7 +83,9 @@ fun PokemonDetailsScreen(
         initialPage = 1
     )
 
-    Scaffold(
+    ScreenTemplate(
+        loadingIndicator = states.loading,
+        errorState = null,
         topBar = {
             TopAppBar(
                 title = {
@@ -97,15 +106,20 @@ fun PokemonDetailsScreen(
                 }
             )
         }
-    ) { innerPadding ->
+    ) {
+        DisposableMessage(
+            message = states.uiMessages,
+            onDismiss = { onEvents(PokemonDetailsEvents.OnDismiss) }
+        )
+
         HorizontalPager(
             state = pagerState,
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier
         ) { pageIndex ->
             when (pages[pageIndex].page) {
                 PkDetailsPages.EVOLUTION_CHAIN -> {
                     EvolutionChainView(
-                        states = states
+                        states = evolutionState
                     )
                 }
                 PkDetailsPages.POKEMON_INFO -> {
@@ -131,9 +145,26 @@ fun PokemonDetailsScreen(
                     )
                 }
                 PkDetailsPages.SPRITES -> {
-                    SpritesView(states = states)
+                    SpritesView(states = spritesState)
                 }
             }
         }
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun PokemonDetailsScreenPreview() {
+    PokemonRRouteJCTheme {
+        PokemonDetailsScreen(
+            states = PokemonDetailsStates(),
+            pkMovesState = PokemonMovesState(),
+            damageRelationStates = DamageRelationStates(),
+            evolutionState = EvolutionState(),
+            spritesState = SpritesState(),
+            movesList = emptyMap(),
+            onEvents = {},
+            selectedLanguage = ApiLanguages.ENGLISH
+        )
     }
 }

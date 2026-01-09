@@ -23,7 +23,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -31,34 +30,31 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.priorDev.pokerroutejc.domain.pokemon.models.PokemonNameData
 import com.priorDev.pokerroutejc.ui.theme.PokemonRRouteJCTheme
 import com.priorDev.pokerroutejc.ui.Routes
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PkSearchView(
-    pokemonNames: List<PokemonNameData>,
+fun PkSearchScreen(
+    states: PkSearchState,
     onEvent: (PkSearchEvent) -> Unit,
 ) {
     val focusRequester = remember { FocusRequester() }
     val keyboardController = LocalSoftwareKeyboardController.current
-    val isExpanded by remember(pokemonNames.isEmpty()) {
-        mutableStateOf(pokemonNames.isNotEmpty())
+    val isExpanded by remember(states.pokemonNames.isEmpty()) {
+        mutableStateOf(states.pokemonNames.isNotEmpty())
     }
-
-    var searchText by remember { mutableStateOf("") }
 
     SearchBar(
         modifier = Modifier
             .fillMaxWidth()
             .focusable(false)
             .then(
-                if (pokemonNames.isEmpty()) {
+                if (states.pokemonNames.isEmpty()) {
                     Modifier
                         .padding(horizontal = 16.dp)
                 } else {
@@ -70,10 +66,9 @@ fun PkSearchView(
                 modifier = Modifier
                     .focusRequester(focusRequester)
                     .focusable(),
-                query = searchText,
+                query = states.searchText,
                 onQueryChange = {
-                    searchText = it
-                    onEvent(PkSearchEvent.OnSearch(searchText))
+                    onEvent(PkSearchEvent.OnSearch(it))
                 },
                 onSearch = {
                     keyboardController?.hide()
@@ -108,7 +103,7 @@ fun PkSearchView(
             verticalArrangement = Arrangement.spacedBy(8.dp),
             modifier = Modifier.padding(horizontal = 16.dp),
         ) {
-            items(pokemonNames) { pokemon ->
+            items(states.pokemonNames) { pokemon ->
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
@@ -140,11 +135,11 @@ fun PkSearchView(
 }
 
 @Composable
-@Preview
-private fun PkSearchViewPreview() {
+@PreviewLightDark
+private fun PkSearchScreenPreview() {
     PokemonRRouteJCTheme {
-        PkSearchView(
-            pokemonNames = emptyList(),
+        PkSearchScreen(
+            states = PkSearchState(),
             onEvent = {}
         )
     }

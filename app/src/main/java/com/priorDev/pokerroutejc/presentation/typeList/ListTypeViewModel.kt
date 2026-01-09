@@ -1,6 +1,5 @@
 package com.priorDev.pokerroutejc.presentation.typeList
 
-import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.priorDev.pokerroutejc.R
@@ -10,7 +9,6 @@ import com.priorDev.pokerroutejc.data.network.utils.NetworkError
 import com.priorDev.pokerroutejc.domain.types.models.TypeData
 import com.priorDev.pokerroutejc.presentation.core.DisplayError
 import com.priorDev.pokerroutejc.presentation.core.ErrorState
-import com.priorDev.pokerroutejc.presentation.core.ScreenStates
 import com.priorDev.pokerroutejc.presentation.core.UiMessages
 import com.priorDev.pokerroutejc.presentation.utils.flowSubscriber
 import com.priorDev.pokerroutejc.utils.GlobalEventChannel
@@ -23,15 +21,12 @@ class ListTypeViewModel(
     private val repository: TypeRepo,
     private val globalEvent: GlobalEventChannel
 ) : ViewModel() {
-    private val _typesList = mutableStateListOf<TypeData>()
-    val typesList: List<TypeData> = _typesList
-
-    private val _screenStates = MutableStateFlow(ScreenStates())
-    val screenStates = _screenStates
+    private val _states = MutableStateFlow(ListTypeStates())
+    val states = _states
         .onStart {
             getAllTypes()
         }
-        .flowSubscriber(initialValue = ScreenStates())
+        .flowSubscriber(initialValue = ListTypeStates())
 
     fun onEvent(event: ListTypesEvent) {
         when (event) {
@@ -51,7 +46,7 @@ class ListTypeViewModel(
                 .collect { result ->
                     when (result) {
                         is ResourceFlow.Error -> {
-                            _screenStates.update {
+                            _states.update {
                                 it.copy(
                                     error = getAllTypesError(result.networkErrorType)
                                 )
@@ -59,7 +54,7 @@ class ListTypeViewModel(
                         }
 
                         is ResourceFlow.Loading -> {
-                            _screenStates.update {
+                            _states.update {
                                 it.copy(
                                     loadingIndicator = result.loadingIndicator
                                 )
@@ -67,8 +62,12 @@ class ListTypeViewModel(
                         }
 
                         is ResourceFlow.Success -> {
-                            result.data?.let {
-                                _typesList.addAll(it)
+                            result.data?.let { data ->
+                                _states.update { currentState ->
+                                    currentState.copy(
+                                        typeList = data
+                                    )
+                                }
                             }
                         }
                     }
@@ -84,7 +83,7 @@ class ListTypeViewModel(
                     networkError = error,
                     actionButtonText = UiMessages.StringResource(R.string.retry),
                     onAction = {
-                        _screenStates.update {
+                        _states.update {
                             it.copy(error = ErrorState())
                         }
                         getAllTypes(isRefresh = true)
@@ -93,7 +92,7 @@ class ListTypeViewModel(
                     dismissButtonText = UiMessages.StringResource(R.string.dismiss),
                     isDismissButtonVisible = true,
                     onDismiss = {
-                        _screenStates.update {
+                        _states.update {
                             it.copy(error = ErrorState())
                         }
                     }

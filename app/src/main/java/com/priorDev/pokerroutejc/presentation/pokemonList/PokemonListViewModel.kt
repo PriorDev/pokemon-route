@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.cachedIn
 import androidx.paging.map
-import com.priorDev.pokerroutejc.core.CommonStates
 import com.priorDev.pokerroutejc.data.database.PokemonNameEntity
 import com.priorDev.pokerroutejc.domain.pokemon.models.toDomain
 import com.priorDev.pokerroutejc.utils.GlobalEventChannel
@@ -20,17 +19,13 @@ class PokemonListViewModel(
     pager: Pager<Int, PokemonNameEntity>,
     private val globalEventChannel: GlobalEventChannel
 ) : ViewModel() {
-    private val _commonStates = MutableStateFlow(CommonStates())
-    val commonStates = _commonStates.asStateFlow()
-
-    private val _isRefreshing = MutableStateFlow(false)
-    val isRefreshing = _isRefreshing.asStateFlow()
+    private val _states = MutableStateFlow(PokemonListState())
+    val states = _states.asStateFlow()
 
     val pokemonList = pager
         .flow
         .map { pagingData ->
-            _commonStates.update { it.copy(isLoading = false) }
-            _isRefreshing.update { false }
+            _states.update { it.copy(isLoading = false, isRefreshing = false) }
             pagingData.map { pokemon ->
                 pokemon.toDomain()
             }
@@ -54,10 +49,10 @@ class PokemonListViewModel(
     }
 
     private fun onRefresh() {
-        _isRefreshing.update { true }
+        _states.update { it.copy(isRefreshing = true) }
     }
 
     fun onDismiss() {
-        _commonStates.value = commonStates.value.copy(uiMessages = null)
+        _states.update { it.copy(uiMessages = null) }
     }
 }

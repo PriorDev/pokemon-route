@@ -10,16 +10,20 @@ import org.koin.androidx.compose.koinViewModel
 fun NavGraphBuilder.pokemonDetailWrapper() {
     composable<Routes.PkDetails> {
         val viewModel = koinViewModel<PokemonDetailsViewModel>()
+        val states by viewModel.states.collectAsStateWithLifecycle()
         val pkMovesState by viewModel.pkMovesStates.collectAsStateWithLifecycle()
         val damageRelationStates by viewModel.damageRelationStates.collectAsStateWithLifecycle()
-        val states = viewModel.states.collectAsStateWithLifecycle()
-        val selectedLanguage = viewModel.selectedLanguage.collectAsStateWithLifecycle()
+        val evolutionState by viewModel.evolutionState.collectAsStateWithLifecycle()
+        val spritesState by viewModel.spritesState.collectAsStateWithLifecycle()
+        val selectedLanguage by viewModel.selectedLanguage.collectAsStateWithLifecycle()
 
         PokemonDetailsScreen(
+            states = states,
             pkMovesState = pkMovesState,
             damageRelationStates = damageRelationStates,
-            states = states.value,
-            selectedLanguage = selectedLanguage.value,
+            evolutionState = evolutionState,
+            spritesState = spritesState,
+            selectedLanguage = selectedLanguage,
             movesList = viewModel.moves,
             onEvents = viewModel::onEvent,
         )

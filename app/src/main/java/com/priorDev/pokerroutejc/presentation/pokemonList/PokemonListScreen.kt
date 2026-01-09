@@ -16,7 +16,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.Pager
@@ -26,28 +26,31 @@ import androidx.paging.PagingState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.priorDev.pokerroutejc.R
-import com.priorDev.pokerroutejc.core.CommonStates
 import com.priorDev.pokerroutejc.domain.pokemon.models.PokemonNameData
+import com.priorDev.pokerroutejc.presentation.core.LoadingIndicator
+import com.priorDev.pokerroutejc.presentation.core.ScreenTemplate
 import com.priorDev.pokerroutejc.presentation.pokemonList.components.ItemPokemonName
 import com.priorDev.pokerroutejc.presentation.reusable.DisposableMessage
 import com.priorDev.pokerroutejc.presentation.reusable.PreviewTemplate
-import com.priorDev.pokerroutejc.presentation.reusable.PullToRefreshBox
 import com.priorDev.pokerroutejc.presentation.reusable.SearchBarButton
 import com.priorDev.pokerroutejc.ui.Routes
 
 @Composable
-fun PokemonListView(
-    commonStates: CommonStates,
+fun PokemonListScreen(
+    states: PokemonListState,
     pokemonList: LazyPagingItems<PokemonNameData>,
     onEvent: (PokemonListEvent) -> Unit,
-    isRefreshing: Boolean
 ) {
     val gridState = rememberLazyGridState()
 
-    DisposableMessage(commonStates.uiMessages, onDismiss = { onEvent(PokemonListEvent.OnDismiss) })
+    DisposableMessage(states.uiMessages, onDismiss = { onEvent(PokemonListEvent.OnDismiss) })
 
-    PullToRefreshBox(
-        isRefreshing = isRefreshing,
+    val loadingIndicator = if (states.isRefreshing) LoadingIndicator.Refreshing else LoadingIndicator.None
+
+    // ScreenTemplate can handle refresh if we pass onRefresh and loadingIndicator
+    ScreenTemplate(
+        loadingIndicator = loadingIndicator,
+        errorState = null, // PokemonListState doesn't seem to have ErrorState type yet, maybe handle internally
         onRefresh = {
             onEvent(PokemonListEvent.OnRefresh)
             pokemonList.refresh()
@@ -64,7 +67,7 @@ fun PokemonListView(
                 onClick = { onEvent.invoke(PokemonListEvent.OnSearch) }
             )
 
-            if (commonStates.isLoading || pokemonList.loadState.append is LoadState.Loading) {
+            if (states.isLoading || pokemonList.loadState.append is LoadState.Loading) {
                 LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
             } else {
                 Spacer(modifier = Modifier.height(4.dp))
@@ -101,7 +104,7 @@ fun PokemonListView(
     }
 }
 
-@Preview(showSystemUi = true, showBackground = true)
+@PreviewLightDark
 @Composable
 private fun PokemonSearchViewPreview() {
     PreviewTemplate {
@@ -111,11 +114,10 @@ private fun PokemonSearchViewPreview() {
 
         val lazyPagingItems = pager.flow.collectAsLazyPagingItems()
 
-        PokemonListView(
-            commonStates = CommonStates(isLoading = true, searchText = "Buscando ando"),
+        PokemonListScreen(
+            states = PokemonListState(isLoading = true),
             pokemonList = lazyPagingItems,
-            onEvent = { },
-            isRefreshing = false
+            onEvent = { }
         )
     }
 }
