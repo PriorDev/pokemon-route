@@ -113,8 +113,7 @@ fun PokemonDetailsScreen(
         )
 
         HorizontalPager(
-            state = pagerState,
-            modifier = Modifier
+            state = pagerState
         ) { pageIndex ->
             when (pages[pageIndex].page) {
                 PkDetailsPages.EVOLUTION_CHAIN -> {
