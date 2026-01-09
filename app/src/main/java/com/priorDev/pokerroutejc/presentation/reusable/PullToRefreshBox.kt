@@ -1,19 +1,14 @@
 package com.priorDev.pokerroutejc.presentation.reusable
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.pullrefresh.PullRefreshIndicator
-import androidx.compose.material.pullrefresh.pullRefresh
-import androidx.compose.material.pullrefresh.rememberPullRefreshState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 @Deprecated(
-    message = "DisposableMessage is deprecated",
+    message = "PullToRefreshBox is deprecated, use the M3 implementation directly or ScreenTemplate",
     replaceWith = ReplaceWith("ScreenTemplate")
 )
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PullToRefreshBox(
     modifier: Modifier = Modifier,
@@ -21,21 +16,11 @@ fun PullToRefreshBox(
     onRefresh: () -> Unit,
     content: @Composable () -> Unit
 ) {
-    val pullRefreshState = rememberPullRefreshState(
-        refreshing = isRefreshing,
-        onRefresh = onRefresh
-    )
-
-    Box(
+    androidx.compose.material3.pulltorefresh.PullToRefreshBox(
+        isRefreshing = isRefreshing,
+        onRefresh = onRefresh,
         modifier = modifier
-            .pullRefresh(pullRefreshState)
     ) {
         content()
-
-        PullRefreshIndicator(
-            refreshing = isRefreshing,
-            state = pullRefreshState,
-            modifier = Modifier.align(Alignment.TopCenter)
-        )
     }
 }

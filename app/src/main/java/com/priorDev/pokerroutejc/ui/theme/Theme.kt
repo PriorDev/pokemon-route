@@ -108,8 +108,8 @@ fun PokemonRRouteJCTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
-        shapes = shapes,
-        typography = typography,
+        shapes = Shapes,
+        typography = Typography,
         content = content,
     )
 }
