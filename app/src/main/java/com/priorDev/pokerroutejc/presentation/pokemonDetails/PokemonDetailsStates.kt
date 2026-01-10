@@ -2,10 +2,12 @@ package com.priorDev.pokerroutejc.presentation.pokemonDetails
 
 import com.priorDev.pokerroutejc.domain.pokemon.models.AbilityDetailsData
 import com.priorDev.pokerroutejc.domain.pokemon.models.PokemonData
+import com.priorDev.pokerroutejc.presentation.core.LoadingIndicator
+import com.priorDev.pokerroutejc.presentation.core.UiMessages
 
 data class PokemonDetailsStates(
-    val isLoading: Boolean = true,
-    val message: String = "",
+    val loading: LoadingIndicator = LoadingIndicator.None,
+    val uiMessages: UiMessages? = null,
     val isFiltersExpanded: Boolean = false,
     val selectedTypeId: Int = 0,
     val selectedGeneration: String = "",

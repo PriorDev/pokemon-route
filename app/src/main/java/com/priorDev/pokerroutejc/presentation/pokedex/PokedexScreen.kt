@@ -111,19 +111,22 @@ private fun PokedexScreenPreview() {
                         entryNumber = 1,
                         pokemonId = 1,
                         pokemonName = "Bulbasaur",
-                        pokemonImage = ""
+                        pokemonImage = "",
+                        types = emptyList()
                     ),
                     PokedexEntriesData(
                         entryNumber = 2,
                         pokemonId = 2,
                         pokemonName = "Ivysaur",
-                        pokemonImage = ""
+                        pokemonImage = "",
+                        types = emptyList()
                     ),
                     PokedexEntriesData(
                         entryNumber = 3,
                         pokemonId = 3,
                         pokemonName = "Venusaur",
-                        pokemonImage = ""
+                        pokemonImage = "",
+                        types = emptyList()
                     )
                 )
             ),

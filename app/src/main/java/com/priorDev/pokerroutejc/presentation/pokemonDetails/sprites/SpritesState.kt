@@ -1,8 +1,8 @@
 package com.priorDev.pokerroutejc.presentation.pokemonDetails.sprites
 
-import com.priorDev.pokerroutejc.data.network.pokemon.responses.Sprites
+import com.priorDev.pokerroutejc.domain.pokemon.models.SpritesData
 
 data class SpritesState(
-    val sprites: Sprites = Sprites(),
+    val sprites: SpritesData = SpritesData(),
     val name: String = ""
 )
