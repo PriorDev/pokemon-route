@@ -71,10 +71,12 @@ class PokemonDetailsViewModel(
                         _states.update { it.copy(loading = resource.loadingIndicator) }
                     }
                     is ResourceFlow.Success -> {
-                        _states.update { it.copy(pokemon = resource.data!!) }
-                        // Sub-states updates
-                        _spritesState.update {
-                            it.copy(sprites = resource.data.sprites, name = resource.data.name)
+                        resource.data?.let { data ->
+                            _states.update { it.copy(pokemon = data) }
+                            // Sub-states updates
+                            _spritesState.update {
+                                it.copy(sprites = data.sprites, name = data.name)
+                            }
                         }
                     }
                 }

@@ -107,11 +107,6 @@ fun PokemonDetailsScreen(
             )
         }
     ) {
-        DisposableMessage(
-            message = states.uiMessages,
-            onDismiss = { onEvents(PokemonDetailsEvents.OnDismiss) }
-        )
-
         HorizontalPager(
             state = pagerState
         ) { pageIndex ->
