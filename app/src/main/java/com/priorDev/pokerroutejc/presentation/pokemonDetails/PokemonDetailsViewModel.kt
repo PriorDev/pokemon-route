@@ -5,6 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import androidx.paging.LoadState
 import com.priorDev.pokerroutejc.core.ResourceFlow
 import com.priorDev.pokerroutejc.core.getDamageTitle
 import com.priorDev.pokerroutejc.data.PokedexRepo
@@ -65,11 +66,10 @@ class PokemonDetailsViewModel(
         viewModelScope.launch {
             val navArg = savedStateHandle.toRoute<Routes.PkDetails>()
             repository.getPokemon(navArg.pokemonName).collect { resource ->
+                _states.update { it.copy(loading = LoadingIndicator.SolidSpinningWheel) }
                 when (resource) {
                     is ResourceFlow.Error -> { }
-                    is ResourceFlow.Loading -> {
-                        _states.update { it.copy(loading = resource.loadingIndicator) }
-                    }
+                    is ResourceFlow.Loading -> { }
                     is ResourceFlow.Success -> {
                         resource.data?.let { data ->
                             _states.update { it.copy(pokemon = data) }
@@ -80,6 +80,7 @@ class PokemonDetailsViewModel(
                         }
                     }
                 }
+                _states.update { it.copy(loading = LoadingIndicator.None) }
             }
 
             launch {
