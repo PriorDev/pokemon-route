@@ -1,12 +1,10 @@
 package com.priorDev.pokerroutejc.presentation.pokedex
 
-import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.priorDev.pokerroutejc.data.PokedexRepo
-import com.priorDev.pokerroutejc.domain.pokedex.models.PokedexEntriesData
 import com.priorDev.pokerroutejc.presentation.core.LoadingIndicator
 import com.priorDev.pokerroutejc.presentation.core.retryFullScreen
 import com.priorDev.pokerroutejc.ui.Routes
@@ -24,9 +22,6 @@ class PokedexViewModel(
 ): ViewModel() {
     private val _states = MutableStateFlow(PokedexStates())
     val states = _states.asStateFlow()
-
-    private val _entries = mutableStateListOf<PokedexEntriesData>()
-    val entries: List<PokedexEntriesData> = _entries
 
     init {
         val screenArgs = savedStateHandle.toRoute<Routes.Pokedex>()
@@ -62,13 +57,9 @@ class PokedexViewModel(
                         _states.update {
                             it.copy(
                                 pokedexStatus = response.status,
-                                pokedexName = response.pokedexName
+                                pokedexName = response.pokedexName,
+                                entries = response.entries
                             )
-                        }
-
-                        _entries.apply {
-                            clear()
-                            addAll(response.entries)
                         }
                     }
                 }

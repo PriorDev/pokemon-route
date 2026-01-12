@@ -16,12 +16,11 @@ import androidx.compose.ui.unit.dp
 import com.priorDev.pokerroutejc.data.network.pokemon.responses.EvolutionResponse
 import com.priorDev.pokerroutejc.data.network.pokemon.responses.EvolutionTriggerResponse
 import com.priorDev.pokerroutejc.data.network.utils.EndPoints
-import com.priorDev.pokerroutejc.presentation.pokemonDetails.PokemonDetailsStates
 import com.priorDev.pokerroutejc.presentation.reusable.PreviewTemplate
 
 @Composable
 fun EvolutionChainView(
-    states: PokemonDetailsStates,
+    states: EvolutionState,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -54,7 +53,7 @@ fun EvolutionChainView(
 private fun EvolutionChainPreview() {
     PreviewTemplate {
         EvolutionChainView(
-            states = PokemonDetailsStates(
+            states = EvolutionState(
                 evolutions = mapOf(
                     1 to listOf(
                         EvolutionResponse(

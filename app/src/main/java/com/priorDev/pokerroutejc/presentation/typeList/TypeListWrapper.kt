@@ -1,6 +1,7 @@
 package com.priorDev.pokerroutejc.presentation.typeList
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -13,12 +14,10 @@ fun NavGraphBuilder.typeListWrapper() {
             // Do nothing to avoid closing the app
         }
         val viewModel: ListTypeViewModel = koinViewModel()
-        val screenStates = viewModel.screenStates.collectAsStateWithLifecycle()
-        val typesList = viewModel.typesList
+        val states by viewModel.states.collectAsStateWithLifecycle()
 
         ListTypeScreen(
-            screenState = screenStates.value,
-            typeList = typesList,
+            states = states,
             onEvent = viewModel::onEvent
         )
     }

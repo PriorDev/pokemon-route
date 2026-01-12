@@ -1,29 +1,33 @@
 package com.priorDev.pokerroutejc.presentation.pokemonSearch
 
-import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.priorDev.pokerroutejc.core.ResourceFlow
 import com.priorDev.pokerroutejc.data.network.pokemon.PokemonApolloService
-import com.priorDev.pokerroutejc.domain.pokemon.models.PokemonNameData
 import com.priorDev.pokerroutejc.utils.GlobalEventChannel
 
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class PkSearchViewModel(
     private val pokemonApolloService: PokemonApolloService,
     private val globalEventChannel: GlobalEventChannel
 ) : ViewModel() {
-    private val _pokemonNames = mutableStateListOf<PokemonNameData>()
-    val pokemonNames: List<PokemonNameData> = _pokemonNames
+    private val _states = MutableStateFlow(PkSearchState())
+    val states = _states.asStateFlow()
 
     private var searchJob: Job? = null
 
     fun onEvent(event: PkSearchEvent) {
         when (event) {
-            is PkSearchEvent.OnSearch -> searchPokemonByName(event.query.lowercase())
+            is PkSearchEvent.OnSearch -> {
+                _states.update { it.copy(searchText = event.query) }
+                searchPokemonByName(event.query.lowercase())
+            }
 
             PkSearchEvent.OnNavigateUp -> globalEventChannel.navigateUp()
 
@@ -39,15 +43,14 @@ class PkSearchViewModel(
                 delay(500L)
 
                 if (name.isBlank()) {
-                    _pokemonNames.clear()
+                    _states.update { it.copy(pokemonNames = emptyList()) }
                 } else {
                     when (val result = pokemonApolloService.getPokemonByName(name)) {
                         is ResourceFlow.Error -> {
                             // Do nothing
                         }
                         is ResourceFlow.Success -> {
-                            _pokemonNames.clear()
-                            _pokemonNames.addAll(result.data.orEmpty())
+                            _states.update { it.copy(pokemonNames = result.data.orEmpty()) }
                         }
                         is ResourceFlow.Loading -> {
                             // Do nothing

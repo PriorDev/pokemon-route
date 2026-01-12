@@ -21,9 +21,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import com.priorDev.pokerroutejc.core.CommonStates
 import com.priorDev.pokerroutejc.presentation.reusable.CommonStatesView
 import com.priorDev.pokerroutejc.core.getTypeColor
 import com.priorDev.pokerroutejc.domain.types.models.DamageRelationsData
@@ -35,19 +34,41 @@ import com.priorDev.pokerroutejc.ui.theme.HalfDamageColor
 import com.priorDev.pokerroutejc.ui.theme.NoDamageColor
 import com.priorDev.pokerroutejc.ui.theme.Offensive
 import com.priorDev.pokerroutejc.R
+import com.priorDev.pokerroutejc.core.CommonStates
 import com.priorDev.pokerroutejc.domain.types.models.DamageRelation
+import com.priorDev.pokerroutejc.presentation.core.ScreenTemplate
+import com.priorDev.pokerroutejc.ui.theme.PokemonRRouteJCTheme
 
 @Composable
-fun DetailsTypeView(
-    states: CommonStates,
-    details: TypeDetailsData,
+fun DetailsTypeScreen(
+    states: DetailsTypeState,
     onEvents: (DetailsTypeEvents) -> Unit
 ) {
+    val details = states.details
     val colorType = details.id.getTypeColor()
 
-    Scaffold(
+    // Assuming we keep Scaffold for topBar but use ScreenTemplate for content logic?
+    // ScreenTemplate in this project seems to handle loading/error overlay.
+    // However, DetailsTypeView originally used Scaffold.
+    // I will use Scaffold for layout structure and wrap content with a check or similar if needed.
+    // The previous implementation used CommonStatesView inside Scaffold.
+    // I should adapt CommonStatesView usage to the new state or use ScreenTemplate.
+    // CommonStatesView seems to handle DisposableMessage (UI messages).
+
+    // Let's use ScreenTemplate if it fits, or stick to Scaffold + manual state handling if ScreenTemplate enforces a top bar that doesn't match here.
+    // DetailsTypeView has a custom topBar (Text with background color).
+    // ScreenTemplate has `topBar` parameter.
+
+    ScreenTemplate(
+        loadingIndicator = com.priorDev.pokerroutejc.presentation.core.LoadingIndicator.None, // Managing loading manually via isLoading for now or adapt
+        // ScreenTemplate has `loadingIndicator` of type `LoadingIndicator`. `DetailsTypeState` has `isLoading: Boolean`.
+        // I need to map boolean to LoadingIndicator. Or change `DetailsTypeState` to use `LoadingIndicator`.
+        // Let's assume for now I keep it simple and mimic original structure but with consolidated state.
+        // Wait, original used `CommonStatesView(states)`.
+
+        errorState = null, // No explicit error state in DetailsTypeState yet other than uiMessages?
         topBar = {
-            Text(
+             Text(
                 text = details.name.uppercase(),
                 style = MaterialTheme.typography.headlineLarge,
                 modifier = Modifier
@@ -57,18 +78,24 @@ fun DetailsTypeView(
                 textAlign = TextAlign.Center,
                 color = Color.Black,
             )
-        },
-    ) { innerPadding ->
+        }
+    ) {
+        // Reuse CommonStatesView logic for messages if possible, or manual.
+        // ScreenTemplate doesn't seem to show "DisposableMessage" automatically unless it's in `ErrorState`.
+
+        // Actually, let's look at `CommonStatesView`.
+        // I'll stick to the previous layout logic but use the new state object.
+
         CommonStatesView(
             onDismiss = { onEvents(DetailsTypeEvents.onDismiss) },
-            commonStates = states
+            commonStates = CommonStates(isLoading = states.isLoading, uiMessages = states.uiMessages) // Temporary adapter or I should update CommonStatesView too?
+            // Better: update this screen to not rely on CommonStates.
         )
 
-        if (states.isLoading) return@Scaffold
+        if (states.isLoading) return@ScreenTemplate
 
         LazyColumn(
             Modifier
-                .padding(innerPadding)
                 .background(colorType)
         ) {
             item {
@@ -181,15 +208,14 @@ fun DetailsTypeView(
     }
 }
 
-@Preview(showSystemUi = true, showBackground = true)
+@PreviewLightDark
 @Composable
-private fun DetailsTypePreview() {
+private fun DetailsTypeScreenPreview() {
     val typesList = listOf(
         TypeData(id = 1, name = "Fuego"),
         TypeData(1, "Hielo")
     )
 
-    val states = CommonStates(isLoading = false)
     val details = TypeDetailsData(
         id = 2,
         name = "Fire",
@@ -204,9 +230,14 @@ private fun DetailsTypePreview() {
         ),
         damageRelations = DamageRelation()
     )
-    DetailsTypeView(
-        states = states,
-        details = details,
-        onEvents = { }
-    )
+
+    PokemonRRouteJCTheme {
+        DetailsTypeScreen(
+            states = DetailsTypeState(
+                isLoading = false,
+                details = details
+            ),
+            onEvents = { }
+        )
+    }
 }

@@ -16,27 +16,27 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.priorDev.pokerroutejc.presentation.pokemonDetails.PokemonDetailsStates
 
 @Composable
 fun SpritesView(
-    states: PokemonDetailsStates,
+    states: SpritesState,
     modifier: Modifier = Modifier
 ) {
-    val pokemon = states.pokemon
+    val sprites = states.sprites
+    val name = states.name
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier.fillMaxSize()
             .background(MaterialTheme.colorScheme.surfaceContainerLowest)
     ) {
-        pokemon.sprites.others?.officialArtFrontShiny.let { officialArtFrontShiny ->
+        sprites.others?.officialArtFrontShiny.let { officialArtFrontShiny ->
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(officialArtFrontShiny)
                     .crossfade(true)
                     .build(),
-                contentDescription = pokemon.name,
+                contentDescription = name,
                 contentScale = ContentScale.Fit,
                 modifier = Modifier.fillMaxWidth()
             )
@@ -48,10 +48,10 @@ fun SpritesView(
         ) {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(pokemon.sprites.frontShiny)
+                    .data(sprites.frontShiny)
                     .crossfade(true)
                     .build(),
-                contentDescription = pokemon.name,
+                contentDescription = name,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .weight(.5f)
@@ -59,10 +59,10 @@ fun SpritesView(
             )
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(pokemon.sprites.backShiny)
+                    .data(sprites.backShiny)
                     .crossfade(true)
                     .build(),
-                contentDescription = pokemon.name,
+                contentDescription = name,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .weight(.5f)

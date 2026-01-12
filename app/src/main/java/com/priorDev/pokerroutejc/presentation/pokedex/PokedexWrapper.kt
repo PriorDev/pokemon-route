@@ -15,7 +15,6 @@ fun NavGraphBuilder.pokedexWrapper() {
 
         PokedexScreen(
             states = states,
-            entries = viewModel.entries,
             onEvent = viewModel::onEvent
         )
     }

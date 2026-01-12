@@ -5,17 +5,22 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import androidx.paging.LoadState
 import com.priorDev.pokerroutejc.core.ResourceFlow
 import com.priorDev.pokerroutejc.core.getDamageTitle
+import com.priorDev.pokerroutejc.data.PokedexRepo
 import com.priorDev.pokerroutejc.data.PokemonRepo
 import com.priorDev.pokerroutejc.data.SettingsRepo
+import com.priorDev.pokerroutejc.data.network.pokemon.PokemonApolloService
 import com.priorDev.pokerroutejc.domain.pokemon.models.AbilityDetailsData
 import com.priorDev.pokerroutejc.domain.pokemon.models.MoveDetailsData
 import com.priorDev.pokerroutejc.domain.pokemon.useCases.PokemonUseCases
 import com.priorDev.pokerroutejc.presentation.core.LoadingIndicator
 import com.priorDev.pokerroutejc.presentation.core.retryFullScreen
+import com.priorDev.pokerroutejc.presentation.pokemonDetails.evolution.EvolutionState
 import com.priorDev.pokerroutejc.presentation.pokemonDetails.moves.MoveFilterModel
 import com.priorDev.pokerroutejc.presentation.pokemonDetails.moves.PokemonMovesState
+import com.priorDev.pokerroutejc.presentation.pokemonDetails.sprites.SpritesState
 import com.priorDev.pokerroutejc.presentation.pokemonDetails.typeRelation.DamageRelationStates
 import com.priorDev.pokerroutejc.presentation.utils.flowSubscriber
 import com.priorDev.pokerroutejc.ui.Routes
@@ -41,11 +46,17 @@ class PokemonDetailsViewModel(
     private val _pkMovesStates = MutableStateFlow(PokemonMovesState())
     val pkMovesStates = _pkMovesStates.asStateFlow()
 
-    private val _moves = mutableStateMapOf<String, List<MoveDetailsData>>()
-    val moves: Map<String, List<MoveDetailsData>> = _moves
+    private val _evolutionState = MutableStateFlow(EvolutionState())
+    val evolutionState = _evolutionState.asStateFlow()
+
+    private val _spritesState = MutableStateFlow(SpritesState())
+    val spritesState = _spritesState.asStateFlow()
 
     private val _damageRelationStates = MutableStateFlow(DamageRelationStates())
     val damageRelationStates = _damageRelationStates.asStateFlow()
+
+    private val _moves = mutableStateMapOf<String, List<MoveDetailsData>>()
+    val moves: Map<String, List<MoveDetailsData>> = _moves
 
     val selectedLanguage = settingsRepo
         .getAppLanguage()
@@ -55,13 +66,21 @@ class PokemonDetailsViewModel(
         viewModelScope.launch {
             val navArg = savedStateHandle.toRoute<Routes.PkDetails>()
             repository.getPokemon(navArg.pokemonName).collect { resource ->
+                _states.update { it.copy(loading = LoadingIndicator.SolidSpinningWheel) }
                 when (resource) {
                     is ResourceFlow.Error -> { }
                     is ResourceFlow.Loading -> { }
                     is ResourceFlow.Success -> {
-                        _states.value = states.value.copy(pokemon = resource.data!!)
+                        resource.data?.let { data ->
+                            _states.update { it.copy(pokemon = data) }
+                            // Sub-states updates
+                            _spritesState.update {
+                                it.copy(sprites = data.sprites, name = data.name)
+                            }
+                        }
                     }
                 }
+                _states.update { it.copy(loading = LoadingIndicator.None) }
             }
 
             launch {
@@ -93,7 +112,7 @@ class PokemonDetailsViewModel(
             is ResourceFlow.Loading -> { }
 
             is ResourceFlow.Success -> {
-                _states.update {
+                _evolutionState.update {
                     it.copy(evolutions = response.data.orEmpty())
                 }
             }

@@ -4,24 +4,20 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.priorDev.pokerroutejc.core.CommonStates
 import com.priorDev.pokerroutejc.core.ResourceFlow
 import com.priorDev.pokerroutejc.ui.Routes
-import com.priorDev.pokerroutejc.domain.types.models.TypeDetailsData
 import com.priorDev.pokerroutejc.data.TypeRepo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class DetailsTypeViewModel(
     private val repository: TypeRepo,
     private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-    private val _states = MutableStateFlow(CommonStates())
+    private val _states = MutableStateFlow(DetailsTypeState())
     val states = _states.asStateFlow()
-
-    private val _details = MutableStateFlow(TypeDetailsData())
-    val details = _details.asStateFlow()
 
     init {
         viewModelScope.launch {
@@ -29,13 +25,13 @@ class DetailsTypeViewModel(
             repository.getTypeFlow(args.typeId)
                 .collect { result ->
                     when (result) {
-                        is ResourceFlow.Error -> _states.value = states.value.copy(uiMessages = result.uiMessages)
+                        is ResourceFlow.Error -> _states.update { it.copy(uiMessages = result.uiMessages) }
                         is ResourceFlow.Loading -> {
-                            _states.value = states.value.copy(isLoading = result.isLoading)
+                            _states.update { it.copy(isLoading = result.isLoading) }
                         }
                         is ResourceFlow.Success -> {
-                            result.data?.let {
-                                _details.value = it
+                            result.data?.let { data ->
+                                _states.update { it.copy(details = data) }
                             }
                         }
                     }
@@ -50,6 +46,6 @@ class DetailsTypeViewModel(
     }
 
     fun onDismiss() {
-        _states.value = states.value.copy(uiMessages = null)
+        _states.update { it.copy(uiMessages = null) }
     }
 }

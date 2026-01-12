@@ -18,20 +18,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import coil.compose.AsyncImage
 import com.priorDev.pokerroutejc.domain.pokedex.models.PokedexEntriesData
 import com.priorDev.pokerroutejc.presentation.core.MyTopBar
 import com.priorDev.pokerroutejc.presentation.core.ScreenTemplate
 import com.priorDev.pokerroutejc.presentation.core.UiMessages
 import com.priorDev.pokerroutejc.ui.Routes
+import com.priorDev.pokerroutejc.ui.theme.PokemonRRouteJCTheme
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PokedexScreen(
     states: PokedexStates,
-    entries: List<PokedexEntriesData>,
     onEvent: (PokedexEvent) -> Unit
 ) {
     var selectedEntry by remember {
@@ -60,7 +60,7 @@ fun PokedexScreen(
             verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            items(entries) { entry ->
+            items(states.entries) { entry ->
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
@@ -96,5 +96,41 @@ fun PokedexScreen(
                 }
             }
         }
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun PokedexScreenPreview() {
+    PokemonRRouteJCTheme {
+        PokedexScreen(
+            states = PokedexStates(
+                pokedexName = "Kanto",
+                entries = listOf(
+                    PokedexEntriesData(
+                        entryNumber = 1,
+                        pokemonId = 1,
+                        pokemonName = "Bulbasaur",
+                        pokemonImage = "",
+                        types = emptyList()
+                    ),
+                    PokedexEntriesData(
+                        entryNumber = 2,
+                        pokemonId = 2,
+                        pokemonName = "Ivysaur",
+                        pokemonImage = "",
+                        types = emptyList()
+                    ),
+                    PokedexEntriesData(
+                        entryNumber = 3,
+                        pokemonId = 3,
+                        pokemonName = "Venusaur",
+                        pokemonImage = "",
+                        types = emptyList()
+                    )
+                )
+            ),
+            onEvent = {}
+        )
     }
 }

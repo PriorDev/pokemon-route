@@ -10,10 +10,9 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.priorDev.pokerroutejc.domain.types.models.TypeData
-import com.priorDev.pokerroutejc.presentation.core.ScreenStates
 import com.priorDev.pokerroutejc.presentation.core.ScreenTemplate
 import com.priorDev.pokerroutejc.presentation.reusable.ItemType
 import com.priorDev.pokerroutejc.presentation.reusable.PreviewTemplate
@@ -21,13 +20,12 @@ import com.priorDev.pokerroutejc.ui.Routes
 
 @Composable
 fun ListTypeScreen(
-    screenState: ScreenStates,
-    typeList: List<TypeData>,
+    states: ListTypeStates,
     onEvent: (ListTypesEvent) -> Unit
 ) {
     ScreenTemplate(
-        loadingIndicator = screenState.loadingIndicator,
-        errorState = screenState.error,
+        loadingIndicator = states.loadingIndicator,
+        errorState = states.error,
         onRefresh = {
             onEvent(ListTypesEvent.Refresh)
         }
@@ -38,7 +36,7 @@ fun ListTypeScreen(
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             contentPadding = PaddingValues(horizontal = 12.dp, vertical = 24.dp)
         ) {
-            items(typeList) { type ->
+            items(states.typeList) { type ->
                 ItemType(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -58,8 +56,8 @@ fun ListTypeScreen(
     }
 }
 
+@PreviewLightDark
 @Composable
-@Preview(showBackground = true, showSystemUi = true)
 private fun ListTypeViewPreview() {
     val types = listOf(
         TypeData(1, "Rock"),
@@ -73,8 +71,7 @@ private fun ListTypeViewPreview() {
 
     PreviewTemplate {
         ListTypeScreen(
-            screenState = ScreenStates(),
-            typeList = types,
+            states = ListTypeStates(typeList = types),
             onEvent = {}
         )
     }
