@@ -1,0 +1,87 @@
+package com.priorDev.pokerroutejc.features.pokemon_list.presentation.components
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
+import com.priorDev.pokerroutejc.core.presentation.CalculateColors
+import com.priorDev.pokerroutejc.core.domain.pokemon.models.PokemonNameData
+
+@Composable
+fun ItemPokemonName(
+    pokemon: PokemonNameData,
+    modifier: Modifier = Modifier
+) {
+    val defaultDominatColor = MaterialTheme.colorScheme.surface
+    var dominantColor by remember {
+        mutableStateOf(defaultDominatColor)
+    }
+
+    Card(
+        modifier = modifier,
+        elevation = CardDefaults.cardElevation(8.dp),
+    ) {
+        Column(
+            Modifier
+                .fillMaxSize()
+                .background(
+                    Brush.verticalGradient(
+                        listOf(
+                            dominantColor,
+                            defaultDominatColor
+                        )
+                    )
+                ),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(pokemon.imgUrl)
+                    .crossfade(true)
+                    .build(),
+                contentDescription = pokemon.name,
+                contentScale = ContentScale.Fit,
+                modifier = Modifier.size(150.dp),
+                onSuccess = {
+                    CalculateColors()
+                        .calcDominantColor(
+                            it.result.drawable,
+                            onFinish = { color ->
+                                dominantColor = color
+                            }
+                        )
+                }
+
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = pokemon.name.uppercase(),
+                style = MaterialTheme.typography.titleMedium,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.padding(4.dp),
+                maxLines = 1,
+            )
+        }
+    }
+}

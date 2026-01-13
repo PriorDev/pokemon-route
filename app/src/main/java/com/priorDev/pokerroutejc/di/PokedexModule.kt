@@ -1,11 +1,11 @@
 package com.priorDev.pokerroutejc.di
 
-import com.priorDev.pokerroutejc.data.PokedexRepo
-import com.priorDev.pokerroutejc.data.PokedexRepoImp
-import com.priorDev.pokerroutejc.data.network.pokedex.PokedexApolloService
-import com.priorDev.pokerroutejc.data.network.pokedex.PokedexApolloServicesImp
-import com.priorDev.pokerroutejc.presentation.pokedex.PokedexViewModel
-import com.priorDev.pokerroutejc.presentation.versionGroups.VersionGroupViewModel
+import com.priorDev.pokerroutejc.core.data.PokedexRepo
+import com.priorDev.pokerroutejc.core.data.PokedexRepoImp
+import com.priorDev.pokerroutejc.core.data.network.pokedex.PokedexApolloService
+import com.priorDev.pokerroutejc.core.data.network.pokedex.PokedexApolloServicesImp
+import com.priorDev.pokerroutejc.features.pokedex.presentation.PokedexViewModel
+import com.priorDev.pokerroutejc.features.pokedex_selection.presentation.VersionGroupViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
