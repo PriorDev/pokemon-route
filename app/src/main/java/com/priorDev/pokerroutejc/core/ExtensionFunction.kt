@@ -4,9 +4,9 @@ import com.priorDev.pokerroutejc.R
 import com.priorDev.pokerroutejc.presentation.core.UiMessages
 
 fun Int.getTypeColor() =
-    EnumColorTypes.entries
+    EnumLightColorTypes.entries
         .firstOrNull { it.typeId == this }?.color
-        ?: EnumColorTypes.Normal.color
+        ?: EnumLightColorTypes.Normal.color
 
 fun String.getIdFromPokeUrl(): Int {
     return this.substring(0, this.length - 1).split("/").last().toInt()

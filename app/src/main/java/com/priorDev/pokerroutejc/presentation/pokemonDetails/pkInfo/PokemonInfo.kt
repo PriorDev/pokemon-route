@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -38,7 +36,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.priorDev.pokerroutejc.R
-import com.priorDev.pokerroutejc.core.EnumColorTypes
+import com.priorDev.pokerroutejc.core.EnumLightColorTypes
 import com.priorDev.pokerroutejc.domain.pokemon.models.AbilityData
 import com.priorDev.pokerroutejc.domain.pokemon.models.AbilityDetailsData
 import com.priorDev.pokerroutejc.domain.pokemon.models.PokemonData
@@ -60,8 +58,8 @@ fun PokemonInfo(
     val pokemon = states.pokemon
     val colorTypes = if (states.pokemon.types.isEmpty()) {
         listOf(
-            EnumColorTypes.Normal.color,
-            EnumColorTypes.Normal.color,
+            EnumLightColorTypes.Normal.color,
+            EnumLightColorTypes.Normal.color,
         )
     } else {
         listOf(

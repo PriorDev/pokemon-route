@@ -45,19 +45,29 @@ fun ScreenTemplate(
     loadingIndicator: LoadingIndicator,
     errorState: ErrorState?,
     onRefresh: () -> Unit,
-    content: @Composable () -> Unit,
+    topBar: @Composable () -> Unit = {},
+    floatingActionButton: @Composable () -> Unit = {},
+    content: @Composable () -> Unit
 ) {
-    PullToRefreshBox(
-        isRefreshing = loadingIndicator is LoadingIndicator.Refreshing,
-        onRefresh = onRefresh,
-        modifier = modifier
-    ) {
-        ScreenTemplate(
-            loadingIndicator = loadingIndicator,
-            errorState = errorState,
-            content = content,
-        )
+    Scaffold(
+        topBar = topBar,
+        floatingActionButton = floatingActionButton,
+        modifier = modifier,
+    ) { innerPadding ->
+        PullToRefreshBox(
+            isRefreshing = loadingIndicator is LoadingIndicator.Refreshing,
+            onRefresh = onRefresh,
+            modifier = modifier
+        ) {
+            ScreenTemplate(
+                loadingIndicator = loadingIndicator,
+                errorState = errorState,
+                content = content,
+                modifier = Modifier.padding(top = innerPadding.calculateTopPadding())
+            )
+        }
     }
+
 }
 
 @Composable
@@ -70,7 +80,7 @@ fun ScreenTemplate(
     Box(
         modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+            .background(MaterialTheme.colorScheme.surfaceContainerLow)
     ) {
         content()
 

@@ -7,7 +7,7 @@ import com.priorDev.pokerroutejc.data.network.pkType.TypeNetService
 import com.priorDev.pokerroutejc.data.network.pkType.TypeNetServiceImp
 import com.priorDev.pokerroutejc.presentation.typeDetails.DetailsTypeViewModel
 import com.priorDev.pokerroutejc.presentation.typeList.ListTypeViewModel
-import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val kTypeModule = module {

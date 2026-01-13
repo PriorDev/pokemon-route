@@ -1,0 +1,93 @@
+package com.priorDev.pokerroutejc.core
+
+import androidx.compose.ui.graphics.Color
+import com.priorDev.pokerroutejc.ui.theme.DarkBug
+import com.priorDev.pokerroutejc.ui.theme.DarkDark
+import com.priorDev.pokerroutejc.ui.theme.DarkDragon
+import com.priorDev.pokerroutejc.ui.theme.DarkElectric
+import com.priorDev.pokerroutejc.ui.theme.DarkFairy
+import com.priorDev.pokerroutejc.ui.theme.DarkFighting
+import com.priorDev.pokerroutejc.ui.theme.DarkFire
+import com.priorDev.pokerroutejc.ui.theme.DarkFlying
+import com.priorDev.pokerroutejc.ui.theme.DarkGhost
+import com.priorDev.pokerroutejc.ui.theme.DarkGrass
+import com.priorDev.pokerroutejc.ui.theme.DarkGround
+import com.priorDev.pokerroutejc.ui.theme.DarkIce
+import com.priorDev.pokerroutejc.ui.theme.DarkNormal
+import com.priorDev.pokerroutejc.ui.theme.DarkPoison
+import com.priorDev.pokerroutejc.ui.theme.DarkPsychic
+import com.priorDev.pokerroutejc.ui.theme.DarkRock
+import com.priorDev.pokerroutejc.ui.theme.DarkShadow
+import com.priorDev.pokerroutejc.ui.theme.DarkSteel
+import com.priorDev.pokerroutejc.ui.theme.DarkStellar
+import com.priorDev.pokerroutejc.ui.theme.DarkUnknownColor
+import com.priorDev.pokerroutejc.ui.theme.DarkWater
+import com.priorDev.pokerroutejc.ui.theme.LightBug
+import com.priorDev.pokerroutejc.ui.theme.LightDark
+import com.priorDev.pokerroutejc.ui.theme.LightDragon
+import com.priorDev.pokerroutejc.ui.theme.LightElectric
+import com.priorDev.pokerroutejc.ui.theme.LightFairy
+import com.priorDev.pokerroutejc.ui.theme.LightFighting
+import com.priorDev.pokerroutejc.ui.theme.LightFire
+import com.priorDev.pokerroutejc.ui.theme.LightFlying
+import com.priorDev.pokerroutejc.ui.theme.LightGhost
+import com.priorDev.pokerroutejc.ui.theme.LightGrass
+import com.priorDev.pokerroutejc.ui.theme.LightGround
+import com.priorDev.pokerroutejc.ui.theme.LightIce
+import com.priorDev.pokerroutejc.ui.theme.LightNormal
+import com.priorDev.pokerroutejc.ui.theme.LightPoison
+import com.priorDev.pokerroutejc.ui.theme.LightPsychic
+import com.priorDev.pokerroutejc.ui.theme.LightRock
+import com.priorDev.pokerroutejc.ui.theme.LightShadow
+import com.priorDev.pokerroutejc.ui.theme.LightSteel
+import com.priorDev.pokerroutejc.ui.theme.LightStellar
+import com.priorDev.pokerroutejc.ui.theme.LightWater
+import com.priorDev.pokerroutejc.ui.theme.UnknownColor
+
+enum class EnumLightColorTypes(val color: Color, val typeId: Int) {
+    Normal(LightNormal, 1),
+    Fighting(LightFighting, 2),
+    Flying(LightFlying, 3),
+    Poison(LightPoison, 4),
+    Ground(LightGround, 5),
+    Rock(LightRock, 6),
+    Bug(LightBug, 7),
+    Ghost(LightGhost, 8),
+    Steel(LightSteel, 9),
+    Fire(LightFire, 10),
+    Water(LightWater, 11),
+    Grass(LightGrass, 12),
+    Electric(LightElectric, 13),
+    Psychic(LightPsychic, 14),
+    Ice(LightIce, 15),
+    Dragon(LightDragon, 16),
+    Dark(LightDark, 17),
+    Fairy(LightFairy, 18),
+    Stellar(LightStellar, 19),
+    Unknown(UnknownColor, 10001),
+    Shadow(LightShadow, 10002)
+}
+
+enum class EnumDarkColorTypes(val color: Color, val typeId: Int) {
+    Normal(DarkNormal, 1),
+    Fighting(DarkFighting, 2),
+    Flying(DarkFlying, 3),
+    Poison(DarkPoison, 4),
+    Ground(DarkGround, 5),
+    Rock(DarkRock, 6),
+    Bug(DarkBug, 7),
+    Ghost(DarkGhost, 8),
+    Steel(DarkSteel, 9),
+    Fire(DarkFire, 10),
+    Water(DarkWater, 11),
+    Grass(DarkGrass, 12),
+    Electric(DarkElectric, 13),
+    Psychic(DarkPsychic, 14),
+    Ice(DarkIce, 15),
+    Dragon(DarkDragon, 16),
+    Dark(DarkDark, 17),
+    Fairy(DarkFairy, 18),
+    Stellar(DarkStellar, 19),
+    Unknown(DarkUnknownColor, 10001),
+    Shadow(DarkShadow, 10002)
+}

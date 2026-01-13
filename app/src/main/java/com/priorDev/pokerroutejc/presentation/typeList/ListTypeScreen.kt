@@ -10,10 +10,14 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import com.priorDev.pokerroutejc.R
 import com.priorDev.pokerroutejc.domain.types.models.TypeData
+import com.priorDev.pokerroutejc.presentation.core.MyTopBar
 import com.priorDev.pokerroutejc.presentation.core.ScreenTemplate
+import com.priorDev.pokerroutejc.presentation.core.UiMessages
 import com.priorDev.pokerroutejc.presentation.reusable.ItemType
 import com.priorDev.pokerroutejc.presentation.reusable.PreviewTemplate
 import com.priorDev.pokerroutejc.ui.Routes
@@ -28,10 +32,15 @@ fun ListTypeScreen(
         errorState = states.error,
         onRefresh = {
             onEvent(ListTypesEvent.Refresh)
+        },
+        topBar = {
+            MyTopBar(
+                title = UiMessages.StringResource(R.string.types)
+            )
         }
     ) {
         LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
+            columns = GridCells.Adaptive(150.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             contentPadding = PaddingValues(horizontal = 12.dp, vertical = 24.dp)
@@ -57,6 +66,9 @@ fun ListTypeScreen(
 }
 
 @PreviewLightDark
+@Preview(
+    device = "spec:parent=pixel_5,orientation=landscape"
+)
 @Composable
 private fun ListTypeViewPreview() {
     val types = listOf(
