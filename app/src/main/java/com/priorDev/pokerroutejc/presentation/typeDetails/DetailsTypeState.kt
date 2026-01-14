@@ -3,11 +3,9 @@ package com.priorDev.pokerroutejc.presentation.typeDetails
 import com.priorDev.pokerroutejc.domain.types.models.TypeDetailsData
 import com.priorDev.pokerroutejc.presentation.core.ErrorState
 import com.priorDev.pokerroutejc.presentation.core.LoadingIndicator
-import com.priorDev.pokerroutejc.presentation.core.UiMessages
 
 data class DetailsTypeState(
     val loadingIndicator: LoadingIndicator = LoadingIndicator.None,
-    val uiMessages: UiMessages? = null,
     val details: TypeDetailsData = TypeDetailsData(),
     val errorState: ErrorState? = null
 )

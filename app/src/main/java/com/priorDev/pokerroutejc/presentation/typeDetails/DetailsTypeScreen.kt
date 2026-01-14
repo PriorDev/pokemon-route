@@ -19,7 +19,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import com.priorDev.pokerroutejc.presentation.reusable.CommonStatesView
 import com.priorDev.pokerroutejc.core.getTypeColor
 import com.priorDev.pokerroutejc.domain.types.models.DamageRelationsData
 import com.priorDev.pokerroutejc.domain.types.models.TypeData
@@ -30,7 +29,6 @@ import com.priorDev.pokerroutejc.ui.theme.HalfDamageColor
 import com.priorDev.pokerroutejc.ui.theme.NoDamageColor
 import com.priorDev.pokerroutejc.ui.theme.Offensive
 import com.priorDev.pokerroutejc.R
-import com.priorDev.pokerroutejc.core.CommonStates
 import com.priorDev.pokerroutejc.domain.types.models.DamageRelation
 import com.priorDev.pokerroutejc.presentation.core.LoadingIndicator
 import com.priorDev.pokerroutejc.presentation.core.MyTopBar
@@ -56,15 +54,6 @@ fun DetailsTypeScreen(
             )
         }
     ) {
-        CommonStatesView(
-            onDismiss = { onEvents(DetailsTypeEvents.onDismiss) },
-            commonStates = CommonStates(
-                isLoading = states.loadingIndicator != LoadingIndicator.None,
-                uiMessages = states.uiMessages
-            )
-        )
-
-
         LazyColumn(
             Modifier
                 .background(colorType)

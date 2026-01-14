@@ -57,12 +57,5 @@ class DetailsTypeViewModel(
     }
 
     fun onEvent(event: DetailsTypeEvents) {
-        when (event) {
-            DetailsTypeEvents.onDismiss -> onDismiss()
-        }
-    }
-
-    fun onDismiss() {
-        _states.update { it.copy(uiMessages = null) }
     }
 }
