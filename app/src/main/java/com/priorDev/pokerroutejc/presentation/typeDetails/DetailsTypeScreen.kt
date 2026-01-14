@@ -11,16 +11,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.priorDev.pokerroutejc.presentation.reusable.CommonStatesView
@@ -51,8 +47,8 @@ fun DetailsTypeScreen(
     val colorType = details.id.getTypeColor()
 
     ScreenTemplate(
-        loadingIndicator = if (states.isLoading) LoadingIndicator.SolidSpinningWheel else LoadingIndicator.None,
-        errorState = null,
+        loadingIndicator = states.loadingIndicator,
+        errorState = states.errorState,
         topBar = {
             MyTopBar(
                 title = UiMessages.DynamicMessage(details.name.uppercase()),
@@ -62,7 +58,10 @@ fun DetailsTypeScreen(
     ) {
         CommonStatesView(
             onDismiss = { onEvents(DetailsTypeEvents.onDismiss) },
-            commonStates = CommonStates(isLoading = states.isLoading, uiMessages = states.uiMessages) // Temporary adapter or I should update CommonStatesView too?
+            commonStates = CommonStates(
+                isLoading = states.loadingIndicator != LoadingIndicator.None,
+                uiMessages = states.uiMessages
+            )
         )
 
 
@@ -206,7 +205,7 @@ private fun DetailsTypeScreenPreview() {
     PokemonRRouteJCTheme {
         DetailsTypeScreen(
             states = DetailsTypeState(
-                isLoading = false,
+                loadingIndicator = LoadingIndicator.None,
                 details = details
             ),
             onEvents = { }
