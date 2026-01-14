@@ -4,9 +4,11 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.priorDev.pokerroutejc.core.ResourceFlow
-import com.priorDev.pokerroutejc.ui.Routes
 import com.priorDev.pokerroutejc.data.TypeRepo
+import com.priorDev.pokerroutejc.presentation.core.LoadingIndicator
+import com.priorDev.pokerroutejc.presentation.core.retryFullScreen
+import com.priorDev.pokerroutejc.ui.Routes
+import com.priorDev.pokerroutejc.utils.Resource
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -20,32 +22,40 @@ class DetailsTypeViewModel(
     val states = _states.asStateFlow()
 
     init {
+        val args = savedStateHandle.toRoute<Routes.TypeDetails>()
+        getType(args.typeId)
+    }
+
+    private fun getType(typeId: Int) {
         viewModelScope.launch {
-            val args = savedStateHandle.toRoute<Routes.TypeDetails>()
-            repository.getTypeFlow(args.typeId)
-                .collect { result ->
-                    when (result) {
-                        is ResourceFlow.Error -> _states.update { it.copy(uiMessages = result.uiMessages) }
-                        is ResourceFlow.Loading -> {
-                            _states.update { it.copy(isLoading = result.isLoading) }
-                        }
-                        is ResourceFlow.Success -> {
-                            result.data?.let { data ->
-                                _states.update { it.copy(details = data) }
+            _states.update {
+                it.copy(
+                    loadingIndicator = LoadingIndicator.SolidSpinningWheel,
+                    errorState = null // Clear error state on retry
+                )
+            }
+
+            when (val result = repository.getType(typeId)) {
+                is Resource.Error -> {
+                    _states.update {
+                        it.copy(
+                            errorState = result.networkErrorType.retryFullScreen {
+                                getType(typeId)
                             }
-                        }
+                        )
                     }
                 }
+                is Resource.Success -> {
+                    result.data?.let { data ->
+                        _states.update { it.copy(details = data) }
+                    }
+                }
+            }
+
+            _states.update { it.copy(loadingIndicator = LoadingIndicator.None) }
         }
     }
 
     fun onEvent(event: DetailsTypeEvents) {
-        when (event) {
-            DetailsTypeEvents.onDismiss -> onDismiss()
-        }
-    }
-
-    fun onDismiss() {
-        _states.update { it.copy(uiMessages = null) }
     }
 }
