@@ -2,7 +2,6 @@ package com.priorDev.pokerroutejc.presentation.reusable
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,35 +14,35 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.priorDev.pokerroutejc.core.getTypeColor
 import com.priorDev.pokerroutejc.domain.types.models.TypeData
-import com.priorDev.pokerroutejc.domain.types.models.getColor
-import com.priorDev.pokerroutejc.ui.theme.PokemonRRouteJCTheme
 
 @Composable
 fun ItemType(
     type: TypeData,
     modifier: Modifier = Modifier,
-    elevation: Dp = 16.dp,
+    elevation: Dp? = null,
     style: TextStyle = MaterialTheme.typography.titleMedium,
     onClick: () -> Unit = { }
 ) {
     Card(
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(
-            containerColor = type.getColor()
+            containerColor = type.id.getTypeColor()
         ),
         border = BorderStroke(
             width = 2.dp,
             color = MaterialTheme.colorScheme.onSurface
         ),
-        modifier = Modifier
+        modifier = modifier
             .padding(8.dp)
             .aspectRatio(1f)
-            .clickable { onClick() }
+            .clickable { onClick() },
+        elevation = elevation?.let { CardDefaults.cardElevation(defaultElevation = elevation) }
+            ?: CardDefaults.cardElevation()
     ) {
         Box(
             modifier = Modifier

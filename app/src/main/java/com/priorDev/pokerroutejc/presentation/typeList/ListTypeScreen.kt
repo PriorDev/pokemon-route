@@ -47,9 +47,6 @@ fun ListTypeScreen(
         ) {
             items(states.typeList) { type ->
                 ItemType(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(150.dp),
                     type = type,
                     style = MaterialTheme.typography.titleLarge,
                     onClick = {

@@ -1,13 +1,25 @@
 package com.priorDev.pokerroutejc.core
 
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import com.priorDev.pokerroutejc.R
 import com.priorDev.pokerroutejc.presentation.core.UiMessages
 
-fun Int.getTypeColor() =
-    EnumLightColorTypes.entries
-        .firstOrNull { it.typeId == this }?.color
-        ?: EnumLightColorTypes.Normal.color
-
+@Composable
+fun Int.getTypeColor(isDarkMode: Boolean = isSystemInDarkTheme()): Color {
+    return if (isDarkMode) {
+        EnumDarkColorTypes.entries
+            .firstOrNull { it.typeId == this }
+            ?.color
+            ?: EnumDarkColorTypes.Normal.color
+    } else {
+        EnumLightColorTypes.entries
+            .firstOrNull { it.typeId == this }
+            ?.color
+            ?: EnumLightColorTypes.Normal.color
+    }
+}
 fun String.getIdFromPokeUrl(): Int {
     return this.substring(0, this.length - 1).split("/").last().toInt()
 }

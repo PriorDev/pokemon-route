@@ -37,11 +37,11 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.priorDev.pokerroutejc.R
 import com.priorDev.pokerroutejc.core.EnumLightColorTypes
+import com.priorDev.pokerroutejc.core.getTypeColor
 import com.priorDev.pokerroutejc.domain.pokemon.models.AbilityData
 import com.priorDev.pokerroutejc.domain.pokemon.models.AbilityDetailsData
 import com.priorDev.pokerroutejc.domain.pokemon.models.PokemonData
 import com.priorDev.pokerroutejc.domain.types.models.TypeData
-import com.priorDev.pokerroutejc.domain.types.models.getColor
 import com.priorDev.pokerroutejc.presentation.pokemonDetails.PokemonDetailsEvents
 import com.priorDev.pokerroutejc.presentation.pokemonDetails.PokemonDetailsStates
 import com.priorDev.pokerroutejc.presentation.reusable.PreviewTemplate
@@ -63,8 +63,8 @@ fun PokemonInfo(
         )
     } else {
         listOf(
-            states.pokemon.types.first().getColor(),
-            states.pokemon.types.last().getColor()
+            states.pokemon.types.first().id.getTypeColor(),
+            states.pokemon.types.last().id.getTypeColor()
         )
     }
 
@@ -117,7 +117,7 @@ fun PokemonInfo(
                                     )
                                 },
                                 colors = ButtonDefaults.buttonColors(
-                                    containerColor = type.getColor(),
+                                    containerColor = type.id.getTypeColor(),
                                     contentColor = Color.Black
                                 ),
                                 modifier = Modifier.padding(horizontal = 16.dp)
@@ -201,7 +201,7 @@ private fun PokemonAbilities(
             HorizontalDivider(Modifier.fillMaxWidth(.8f))
 
             pokemon.abilities.filter { !it.isHidden }.forEach { ability ->
-                val color = pokemon.types.first().getColor()
+                val color = pokemon.types.first().id.getTypeColor()
                 Button(
                     onClick = {
                         onEvent(PokemonDetailsEvents.OnAbilityClick(ability.name))
@@ -225,7 +225,7 @@ private fun PokemonAbilities(
             Divider(Modifier.fillMaxWidth(.8f))
 
             pokemon.abilities.filter { it.isHidden }.forEach { ability ->
-                val color = pokemon.types.first().getColor()
+                val color = pokemon.types.first().id.getTypeColor()
                 Button(
                     onClick = {
                         onEvent(PokemonDetailsEvents.OnAbilityClick(ability.name))

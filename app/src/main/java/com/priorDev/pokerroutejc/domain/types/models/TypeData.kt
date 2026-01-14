@@ -27,21 +27,6 @@ fun TypeEntity.toDomain() =
         name = name,
     )
 
-@Composable
-fun TypeData.getColor(isDarkMode: Boolean = isSystemInDarkTheme()): Color {
-    return if (isDarkMode) {
-        EnumDarkColorTypes.entries
-            .firstOrNull { it.typeId == this.id }
-            ?.color
-            ?: EnumDarkColorTypes.Normal.color
-    } else {
-        EnumLightColorTypes.entries
-            .firstOrNull { it.typeId == this.id }
-            ?.color
-            ?: EnumLightColorTypes.Normal.color
-    }
-}
-
 fun GetPkMovesQuery.Pokemon_v2_type.toModel(): TypeData {
     return TypeData(
         id = id,

@@ -2,12 +2,12 @@ package com.priorDev.pokerroutejc.presentation.core
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.priorDev.pokerroutejc.ui.theme.PokemonRRouteJCTheme
 
@@ -15,7 +15,8 @@ import com.priorDev.pokerroutejc.ui.theme.PokemonRRouteJCTheme
 @Composable
 fun MyTopBar(
     title: UiMessages,
-    actions: @Composable RowScope.() -> Unit = {},
+    color: Color = MaterialTheme.colorScheme.background,
+    actions: @Composable RowScope.() -> Unit = {}
 ) {
     TopAppBar(
         title = {
@@ -26,7 +27,7 @@ fun MyTopBar(
         },
         actions = actions,
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.background,
+            containerColor = color,
             scrolledContainerColor = MaterialTheme.colorScheme.surfaceContainer
         )
     )
