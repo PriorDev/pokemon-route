@@ -85,7 +85,8 @@ fun PokemonDetailsScreen(
 
     ScreenTemplate(
         loadingIndicator = states.loading,
-        errorState = null,
+        errorState = states.errorState,
+        onEvent = onEvents,
         topBar = {
             TopAppBar(
                 title = {

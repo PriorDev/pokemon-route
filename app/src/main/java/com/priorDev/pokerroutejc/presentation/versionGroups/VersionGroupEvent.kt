@@ -10,4 +10,5 @@ sealed class VersionGroupEvent {
     ) : VersionGroupEvent()
 
     data object OnToggleOrder : VersionGroupEvent()
+    data object OnRetryGetVersionGroup : VersionGroupEvent()
 }

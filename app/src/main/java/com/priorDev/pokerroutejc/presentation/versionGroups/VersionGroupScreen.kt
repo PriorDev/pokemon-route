@@ -43,6 +43,7 @@ fun VersionGroupScreen(
     ScreenTemplate(
         errorState = states.errorState,
         loadingIndicator = states.loading,
+        onEvent = onEvent,
         topBar = {
             MyTopBar(
                 title = UiMessages.StringResource(R.string.pokedex),

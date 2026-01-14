@@ -47,6 +47,7 @@ fun DetailsTypeScreen(
     ScreenTemplate(
         loadingIndicator = states.loadingIndicator,
         errorState = states.errorState,
+        onEvent = onEvents,
         topBar = {
             MyTopBar(
                 title = UiMessages.DynamicMessage(details.name.uppercase()),

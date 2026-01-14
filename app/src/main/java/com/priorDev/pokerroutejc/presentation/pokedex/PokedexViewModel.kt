@@ -23,14 +23,21 @@ class PokedexViewModel(
     private val _states = MutableStateFlow(PokedexStates())
     val states = _states.asStateFlow()
 
+    private val versionGroupId: Int
+
     init {
         val screenArgs = savedStateHandle.toRoute<Routes.Pokedex>()
-        getPokedexEntries(screenArgs.versionGroupId)
+        versionGroupId = screenArgs.versionGroupId
+        getPokedexEntries(versionGroupId)
     }
 
     fun onEvent(event: PokedexEvent) {
         when (event) {
             is PokedexEvent.OnNavigate -> eventChannel.navigate(event.route, event.navOptions)
+            PokedexEvent.OnRetryGetPokedexEntries -> {
+                 _states.update { it.copy(loading = LoadingIndicator.None, errorState = null) }
+                 getPokedexEntries(versionGroupId)
+            }
         }
     }
 
@@ -43,10 +50,7 @@ class PokedexViewModel(
                     _states.update { currentState ->
                         currentState.copy(
                             errorState = result.networkErrorType.retryFullScreen(
-                                onAction = {
-                                    _states.update { it.copy(loading = LoadingIndicator.None) }
-                                    getPokedexEntries(versionGroupId)
-                                }
+                                actionEvent = PokedexEvent.OnRetryGetPokedexEntries
                             )
                         )
                     }

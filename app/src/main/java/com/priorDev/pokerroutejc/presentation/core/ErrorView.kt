@@ -33,25 +33,27 @@ import com.priorDev.pokerroutejc.data.network.utils.NetworkError
 import com.priorDev.pokerroutejc.presentation.reusable.PreviewTemplate
 
 @Composable
-fun ErrorView(
-    errorState: ErrorState?
+fun <E> ErrorView(
+    errorState: ErrorState<E>?,
+    onEvent: (E) -> Unit
 ) {
     errorState?.let {
         when (errorState.displayAs) {
             DisplayError.Dialog -> {
-                ErrorDialog(errorState)
+                ErrorDialog(errorState, onEvent)
             }
 
             DisplayError.FullScreen -> {
-                FullScreenError(errorState)
+                FullScreenError(errorState, onEvent)
             }
         }
     }
 }
 
 @Composable
-private fun ErrorDialog(
-    errorState: ErrorState
+private fun <E> ErrorDialog(
+    errorState: ErrorState<E>,
+    onEvent: (E) -> Unit
 ) {
     CustomAlertDialog(
         AlertDialogModel(
@@ -72,19 +74,20 @@ private fun ErrorDialog(
             },
             confirmText = errorState.actionButtonText.takeIf { errorState.isActionButtonVisible },
             onConfirm = {
-                errorState.onAction.invoke()
+                errorState.actionEvent?.let { onEvent(it) }
             },
             dismissText = errorState.dismissButtonText.takeIf { errorState.isDismissButtonVisible },
             onDismiss = {
-                errorState.onDismiss.invoke()
+                errorState.dismissEvent?.let { onEvent(it) }
             }
         )
     )
 }
 
 @Composable
-private fun FullScreenError(
-    errorState: ErrorState
+private fun <E> FullScreenError(
+    errorState: ErrorState<E>,
+    onEvent: (E) -> Unit
 ) {
     Box(
         modifier = Modifier
@@ -143,7 +146,7 @@ private fun FullScreenError(
                     OutlinedButton(
                         colors = ButtonDefaults.buttonColors(),
                         onClick = {
-                            errorState.onAction.invoke()
+                            errorState.actionEvent?.let { onEvent(it) }
                         }
                     ) {
                         Text(text = errorState.actionButtonText.asString())
@@ -156,7 +159,7 @@ private fun FullScreenError(
                     OutlinedButton(
                         colors = ButtonDefaults.filledTonalButtonColors(),
                         onClick = {
-                            errorState.onDismiss.invoke()
+                            errorState.dismissEvent?.let { onEvent(it) }
                         }
                     ) {
                         Text(text = errorState.dismissButtonText.asString())
@@ -167,8 +170,8 @@ private fun FullScreenError(
     }
 }
 
-class NetworkErrorProvider : PreviewParameterProvider<ErrorState> {
-    override val values: Sequence<ErrorState>
+class NetworkErrorProvider : PreviewParameterProvider<ErrorState<Unit>> {
+    override val values: Sequence<ErrorState<Unit>>
         get() = sequenceOf(
             ErrorState(
                 displayAs = DisplayError.Dialog,
@@ -176,7 +179,9 @@ class NetworkErrorProvider : PreviewParameterProvider<ErrorState> {
                 actionButtonText = UiMessages.DynamicMessage("Retry"),
                 isActionButtonVisible = true,
                 dismissButtonText = UiMessages.DynamicMessage("Dismiss"),
-                isDismissButtonVisible = true
+                isDismissButtonVisible = true,
+                actionEvent = Unit,
+                dismissEvent = Unit
             ),
 
             ErrorState(
@@ -184,6 +189,7 @@ class NetworkErrorProvider : PreviewParameterProvider<ErrorState> {
                 networkError = NetworkError.ServerError("Server down"),
                 actionButtonText = UiMessages.DynamicMessage("Retry"),
                 isActionButtonVisible = true,
+                actionEvent = Unit,
             ),
 
             ErrorState(
@@ -206,11 +212,12 @@ class NetworkErrorProvider : PreviewParameterProvider<ErrorState> {
 @Composable
 @Preview
 private fun ErrorViewPreview(
-    @PreviewParameter(NetworkErrorProvider::class) networkError: ErrorState
+    @PreviewParameter(NetworkErrorProvider::class) networkError: ErrorState<Unit>
 ) {
     PreviewTemplate {
         ErrorView(
-            errorState = networkError
+            errorState = networkError,
+            onEvent = {}
         )
     }
 }

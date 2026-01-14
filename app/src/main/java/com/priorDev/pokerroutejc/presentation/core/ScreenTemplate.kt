@@ -16,10 +16,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 @Composable
-fun ScreenTemplate(
+fun <E> ScreenTemplate(
     modifier: Modifier = Modifier,
-    errorState: ErrorState?,
+    errorState: ErrorState<E>?,
     loadingIndicator: LoadingIndicator,
+    onEvent: (E) -> Unit,
     topBar: @Composable () -> Unit = {},
     floatingActionButton: @Composable () -> Unit = {},
     content: @Composable () -> Unit
@@ -32,6 +33,7 @@ fun ScreenTemplate(
         ScreenTemplate(
             loadingIndicator = loadingIndicator,
             errorState = errorState,
+            onEvent = onEvent,
             content = content,
             modifier = Modifier.padding(top = innerPadding.calculateTopPadding())
         )
@@ -40,10 +42,11 @@ fun ScreenTemplate(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ScreenTemplate(
+fun <E> ScreenTemplate(
     modifier: Modifier = Modifier,
     loadingIndicator: LoadingIndicator,
-    errorState: ErrorState?,
+    errorState: ErrorState<E>?,
+    onEvent: (E) -> Unit,
     onRefresh: () -> Unit,
     topBar: @Composable () -> Unit = {},
     floatingActionButton: @Composable () -> Unit = {},
@@ -62,6 +65,7 @@ fun ScreenTemplate(
             ScreenTemplate(
                 loadingIndicator = loadingIndicator,
                 errorState = errorState,
+                onEvent = onEvent,
                 content = content,
                 modifier = Modifier.padding(top = innerPadding.calculateTopPadding())
             )
@@ -71,10 +75,11 @@ fun ScreenTemplate(
 }
 
 @Composable
-fun ScreenTemplate(
+fun <E> ScreenTemplate(
     modifier: Modifier = Modifier,
     loadingIndicator: LoadingIndicator,
-    errorState: ErrorState?,
+    errorState: ErrorState<E>?,
+    onEvent: (E) -> Unit,
     content: @Composable () -> Unit
 ) {
     Box(
@@ -109,6 +114,6 @@ fun ScreenTemplate(
             }
         }
 
-        ErrorView(errorState)
+        ErrorView(errorState, onEvent)
     }
 }
