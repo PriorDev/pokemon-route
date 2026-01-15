@@ -62,7 +62,8 @@ fun PokemonMovesView(
                     contentDescription = contentDescription
                 )
             }
-        }
+        },
+        onEvent = onEvents
     ) {
         MoveBottomSheet(
             isVisible = isBottomSheetVisible,
