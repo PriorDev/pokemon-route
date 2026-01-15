@@ -13,19 +13,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.priorDev.pokerroutejc.presentation.core.ScreenTemplate
+import com.priorDev.pokerroutejc.presentation.pokemonDetails.PokemonDetailsEvents
 import com.priorDev.pokerroutejc.presentation.reusable.ItemType
 
 @Composable
 fun DamageRelationView(
     states: DamageRelationStates,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onEvents: (PokemonDetailsEvents) -> Unit
 ) {
     val damageKeys = states.damageRelations.keys.toList()
 
     ScreenTemplate(
         modifier = modifier,
         errorState = states.errorState,
-        loadingIndicator = states.loading
+        loadingIndicator = states.loading,
+        onEvent = onEvents
     ) {
         LazyColumn {
             items(damageKeys) { key ->

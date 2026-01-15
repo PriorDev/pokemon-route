@@ -49,6 +49,7 @@ fun PokemonMovesView(
 
     ScreenTemplate(
         errorState = pkMovesState.errorState,
+        onEvent = onEvents,
         loadingIndicator = pkMovesState.loading,
         floatingActionButton = {
             FloatingActionButton(
