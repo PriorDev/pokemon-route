@@ -128,8 +128,7 @@ fun PokemonDetailsScreen(
                 PkDetailsPages.DAMAGE_RELATION -> {
                     DamageRelationView(
                         states = damageRelationStates,
-                        modifier = Modifier.padding(cardPadding),
-                        onEvents = onEvents
+                        modifier = Modifier.padding(cardPadding)
                     )
                 }
                 PkDetailsPages.POKEMON_MOVES -> {
