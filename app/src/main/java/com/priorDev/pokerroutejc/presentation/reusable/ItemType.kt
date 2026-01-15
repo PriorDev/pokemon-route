@@ -39,6 +39,7 @@ fun ItemType(
         ),
         modifier = modifier
             .padding(8.dp)
+            .aspectRatio(1f)
             .clickable { onClick() },
         elevation = elevation?.let { CardDefaults.cardElevation(defaultElevation = elevation) }
             ?: CardDefaults.cardElevation()

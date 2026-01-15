@@ -27,7 +27,6 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.priorDev.pokerroutejc.R
 import com.priorDev.pokerroutejc.domain.pokemon.models.PokemonNameData
-import com.priorDev.pokerroutejc.presentation.core.ErrorState
 import com.priorDev.pokerroutejc.presentation.core.LoadingIndicator
 import com.priorDev.pokerroutejc.presentation.core.ScreenTemplate
 import com.priorDev.pokerroutejc.presentation.pokemonList.components.ItemPokemonName

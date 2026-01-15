@@ -45,7 +45,7 @@ class ListTypeViewModelTest {
 
         listTypeViewModel.onEvent(ListTypesEvent.Refresh)
 
-        listTypeViewModel.states.test {
+        listTypeViewModel.screenStates.test {
             // Discard initial state
             awaitItem()
 
@@ -71,7 +71,7 @@ class ListTypeViewModelTest {
 
         listTypeViewModel.onEvent(ListTypesEvent.Refresh)
 
-        listTypeViewModel.states.test {
+        listTypeViewModel.screenStates.test {
             // Discard initial state
             awaitItem()
 
