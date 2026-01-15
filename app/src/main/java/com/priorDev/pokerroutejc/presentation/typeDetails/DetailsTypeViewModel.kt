@@ -16,10 +16,10 @@ import kotlinx.coroutines.launch
 
 class DetailsTypeViewModel(
     private val repository: TypeRepo,
-    private val savedStateHandle: SavedStateHandle,
+    savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-    private val _states = MutableStateFlow(DetailsTypeState())
-    val states = _states.asStateFlow()
+    private val _uiStates = MutableStateFlow(DetailsTypeState())
+    val states = _uiStates.asStateFlow()
 
     private val typeId: Int
 
@@ -31,7 +31,7 @@ class DetailsTypeViewModel(
 
     private fun getType(typeId: Int) {
         viewModelScope.launch {
-            _states.update {
+            _uiStates.update {
                 it.copy(
                     loadingIndicator = LoadingIndicator.SolidSpinningWheel,
                     errorState = null // Clear error state on retry
@@ -40,7 +40,7 @@ class DetailsTypeViewModel(
 
             when (val result = repository.getType(typeId)) {
                 is Resource.Error -> {
-                    _states.update {
+                    _uiStates.update {
                         it.copy(
                             errorState = result.networkErrorType.retryFullScreen(
                                 actionEvent = DetailsTypeEvents.OnRetryGetType
@@ -50,12 +50,12 @@ class DetailsTypeViewModel(
                 }
                 is Resource.Success -> {
                     result.data?.let { data ->
-                        _states.update { it.copy(details = data) }
+                        _uiStates.update { it.copy(details = data) }
                     }
                 }
             }
 
-            _states.update { it.copy(loadingIndicator = LoadingIndicator.None) }
+            _uiStates.update { it.copy(loadingIndicator = LoadingIndicator.None) }
         }
     }
 
