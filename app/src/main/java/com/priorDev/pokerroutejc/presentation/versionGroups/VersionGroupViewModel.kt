@@ -35,6 +35,11 @@ class VersionGroupViewModel(
             VersionGroupEvent.OnToggleOrder -> {
                 toggleSortOrder()
             }
+
+            VersionGroupEvent.OnRetryGetVersionGroup -> {
+                _states.update { it.copy(errorState = null) }
+                getVersionGroups()
+            }
         }
     }
 
@@ -63,12 +68,7 @@ class VersionGroupViewModel(
                     _states.update {
                         it.copy(
                             errorState = resource.networkErrorType.retryFullScreen(
-                                onAction = {
-                                    viewModelScope.launch {
-                                        getVersionGroups()
-                                    }
-                                    _states.update { it.copy(errorState = null) }
-                                }
+                                actionEvent = VersionGroupEvent.OnRetryGetVersionGroup
                             )
                         )
                     }

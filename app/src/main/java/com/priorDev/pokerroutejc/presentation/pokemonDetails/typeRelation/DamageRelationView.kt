@@ -25,7 +25,8 @@ fun DamageRelationView(
     ScreenTemplate(
         modifier = modifier,
         errorState = states.errorState,
-        loadingIndicator = states.loading
+        loadingIndicator = states.loading,
+        onEvent = { }
     ) {
         LazyColumn {
             items(damageKeys) { key ->

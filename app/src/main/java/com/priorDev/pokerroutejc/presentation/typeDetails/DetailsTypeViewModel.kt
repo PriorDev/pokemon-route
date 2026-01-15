@@ -21,9 +21,12 @@ class DetailsTypeViewModel(
     private val _states = MutableStateFlow(DetailsTypeState())
     val states = _states.asStateFlow()
 
+    private val typeId: Int
+
     init {
         val args = savedStateHandle.toRoute<Routes.TypeDetails>()
-        getType(args.typeId)
+        typeId = args.typeId
+        getType(typeId)
     }
 
     private fun getType(typeId: Int) {
@@ -39,9 +42,9 @@ class DetailsTypeViewModel(
                 is Resource.Error -> {
                     _states.update {
                         it.copy(
-                            errorState = result.networkErrorType.retryFullScreen {
-                                getType(typeId)
-                            }
+                            errorState = result.networkErrorType.retryFullScreen(
+                                actionEvent = DetailsTypeEvents.OnRetryGetType
+                            )
                         )
                     }
                 }
@@ -57,5 +60,10 @@ class DetailsTypeViewModel(
     }
 
     fun onEvent(event: DetailsTypeEvents) {
+        when(event) {
+            DetailsTypeEvents.OnRetryGetType -> {
+                getType(typeId)
+            }
+        }
     }
 }

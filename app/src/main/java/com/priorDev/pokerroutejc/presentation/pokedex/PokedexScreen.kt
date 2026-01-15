@@ -42,6 +42,7 @@ fun PokedexScreen(
     ScreenTemplate(
         errorState = states.errorState,
         loadingIndicator = states.loading,
+        onEvent = onEvent,
         topBar = {
             MyTopBar(
                 title = UiMessages.DynamicMessage(states.pokedexName)

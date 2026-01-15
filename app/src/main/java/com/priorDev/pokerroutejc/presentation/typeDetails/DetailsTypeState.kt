@@ -7,5 +7,5 @@ import com.priorDev.pokerroutejc.presentation.core.LoadingIndicator
 data class DetailsTypeState(
     val loadingIndicator: LoadingIndicator = LoadingIndicator.None,
     val details: TypeDetailsData = TypeDetailsData(),
-    val errorState: ErrorState? = null
+    val errorState: ErrorState<DetailsTypeEvents>? = null
 )

@@ -23,7 +23,6 @@ serialization = "1.7.3"
 ktor = "3.0.3"
 jupiter = "5.11.4"
 kspVersion = "2.1.0-1.0.29"
-foundationLayoutVersion = "1.10.0"
 
 [libraries]
 apollo-runtime = { module = "com.apollographql.apollo3:apollo-runtime", version.ref = "apolloRuntimeVersion" }
@@ -82,7 +81,6 @@ mockk = { module = "io.mockk:mockk", version = "1.13.13"}
 mockk-android = { module = "io.mockk:mockk-android", version = "1.13.13"}
 assertk = "com.willowtreeapps.assertk:assertk:0.28.1"
 turbine = "app.cash.turbine:turbine:1.2.0"
-foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout", version.ref = "foundationLayoutVersion" }
 
 [bundles]
 detekt = ["detekt-formatting", "detekt-cli", "detekt-rules-compose"]

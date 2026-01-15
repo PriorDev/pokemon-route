@@ -9,4 +9,7 @@ sealed class ListTypesEvent {
         val route: Routes,
         val navOptions: NavOptionsBuilder.() -> Unit = {}
     ) : ListTypesEvent()
+
+    data object OnRetryGetAllTypes : ListTypesEvent()
+    data object OnDismissError : ListTypesEvent()
 }

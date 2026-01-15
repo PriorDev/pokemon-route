@@ -30,4 +30,7 @@ sealed class PokemonDetailsEvents {
     ) : PokemonDetailsEvents()
 
     data class SelectLanguage(val language: ApiLanguages) : PokemonDetailsEvents()
+
+    data object OnRetryGetDamageRelation : PokemonDetailsEvents()
+    data object OnRetryGetPokemonMoves : PokemonDetailsEvents()
 }

@@ -141,6 +141,16 @@ class PokemonDetailsViewModel(
             PokemonDetailsEvents.OnAbilityDismiss -> onAbilityDismiss()
 
             is PokemonDetailsEvents.OnSearchTextChange -> onSearchTextChanged(event.text)
+
+            PokemonDetailsEvents.OnRetryGetDamageRelation -> {
+                _damageRelationStates.update { it.copy(errorState = null) }
+                getDamageRelation()
+            }
+
+            PokemonDetailsEvents.OnRetryGetPokemonMoves -> {
+                _pkMovesStates.update { it.copy(errorState = null) }
+                getPokemonMoves()
+            }
         }
     }
 
@@ -190,10 +200,7 @@ class PokemonDetailsViewModel(
                     _damageRelationStates.update {
                         it.copy(
                             errorState = resource.networkErrorType.retryFullScreen(
-                                onAction = {
-                                    getDamageRelation()
-                                    _damageRelationStates.update { it.copy(errorState = null) }
-                                }
+                                actionEvent = PokemonDetailsEvents.OnRetryGetDamageRelation
                             )
                         )
                     }
@@ -244,10 +251,7 @@ class PokemonDetailsViewModel(
                     _pkMovesStates.update { currentState ->
                         currentState.copy(
                             errorState = response.networkErrorType.retryFullScreen(
-                                onAction = {
-                                    getPokemonMoves()
-                                    _pkMovesStates.update { it.copy(errorState = null) }
-                                }
+                                actionEvent = PokemonDetailsEvents.OnRetryGetPokemonMoves
                             )
                         )
                     }

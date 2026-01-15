@@ -50,11 +50,12 @@ fun PokemonListScreen(
     // ScreenTemplate can handle refresh if we pass onRefresh and loadingIndicator
     ScreenTemplate(
         loadingIndicator = loadingIndicator,
-        errorState = null, // PokemonListState doesn't seem to have ErrorState type yet, maybe handle internally
+        errorState = states.errorState,
         onRefresh = {
             onEvent(PokemonListEvent.OnRefresh)
             pokemonList.refresh()
-        }
+        },
+        onEvent = onEvent
     ) {
         Column(
             modifier = Modifier

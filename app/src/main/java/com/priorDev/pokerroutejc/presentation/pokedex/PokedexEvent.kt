@@ -8,4 +8,6 @@ sealed class PokedexEvent {
         val route: Routes,
         val navOptions: NavOptionsBuilder.() -> Unit = {}
     ) : PokedexEvent()
+
+    data object OnRetryGetPokedexEntries : PokedexEvent()
 }

@@ -3,25 +3,25 @@ package com.priorDev.pokerroutejc.presentation.core
 import com.priorDev.pokerroutejc.R
 import com.priorDev.pokerroutejc.data.network.utils.NetworkError
 
-data class ErrorState(
+data class ErrorState<E>(
     val displayAs: DisplayError = DisplayError.Dialog,
     val networkError: NetworkError = NetworkError.None,
     val actionButtonText: UiMessages = UiMessages.StringResource(R.string.retry),
-    val onAction: () -> Unit = {},
+    val actionEvent: E? = null,
     val isActionButtonVisible: Boolean = false,
     val dismissButtonText: UiMessages = UiMessages.StringResource(R.string.dismiss),
-    val onDismiss: () -> Unit = {},
+    val dismissEvent: E? = null,
     val isDismissButtonVisible: Boolean = false
 )
 
-fun NetworkError.retryFullScreen(
-    onAction: () -> Unit
-): ErrorState {
+fun <E> NetworkError.retryFullScreen(
+    actionEvent: E
+): ErrorState<E> {
     return ErrorState(
         displayAs = DisplayError.FullScreen,
         networkError = this,
         actionButtonText = UiMessages.StringResource(R.string.retry),
-        onAction = onAction,
+        actionEvent = actionEvent,
         isActionButtonVisible = true,
     )
 }

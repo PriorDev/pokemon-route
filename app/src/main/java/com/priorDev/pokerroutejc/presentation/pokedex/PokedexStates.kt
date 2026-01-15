@@ -7,7 +7,7 @@ import com.priorDev.pokerroutejc.presentation.core.LoadingIndicator
 
 data class PokedexStates(
     val loading: LoadingIndicator = LoadingIndicator.None,
-    val errorState: ErrorState? = null,
+    val errorState: ErrorState<PokedexEvent>? = null,
     val pokedexStatus: PokedexStatus = PokedexStatus.INCOMPLETE,
     val pokedexName: String = "",
     val entries: List<PokedexEntriesData> = emptyList()

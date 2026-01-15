@@ -73,13 +73,6 @@ val NoDamageColor = Color(0xFF9E9E9E)
 val Offensive = Color(0xFFFFEBEE)
 val Defensive = Color(0xFFE1F5FE)
 
-// Damage Dark
-val DarkDoubleDamageColor = Color(0xFF1B5E20)
-val DarkHalfDamageColor = Color(0xFFF57F17)
-val DarkNoDamageColor = Color(0xFF424242)
-val DarkOffensive = Color(0xFFB71C1C)
-val DarkDefensive = Color(0xFF0D47A1)
-
 // Light Mode Palette (Your original values)
 val LightNormal = Color(0xFFF5F5F5)
 val LightFire = Color(0xFFFFEBEE)

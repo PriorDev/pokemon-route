@@ -6,7 +6,6 @@ import com.priorDev.pokerroutejc.R
 import com.priorDev.pokerroutejc.core.ResourceFlow
 import com.priorDev.pokerroutejc.data.TypeRepo
 import com.priorDev.pokerroutejc.data.network.utils.NetworkError
-import com.priorDev.pokerroutejc.domain.types.models.TypeData
 import com.priorDev.pokerroutejc.presentation.core.DisplayError
 import com.priorDev.pokerroutejc.presentation.core.ErrorState
 import com.priorDev.pokerroutejc.presentation.core.UiMessages
@@ -36,6 +35,15 @@ class ListTypeViewModel(
 
             is ListTypesEvent.Navigate -> {
                 globalEvent.navigate(event.route, event.navOptions)
+            }
+
+            ListTypesEvent.OnRetryGetAllTypes -> {
+                _states.update { it.copy(error = null) }
+                getAllTypes(isRefresh = true)
+            }
+
+            ListTypesEvent.OnDismissError -> {
+                _states.update { it.copy(error = null) }
             }
         }
     }
@@ -75,27 +83,18 @@ class ListTypeViewModel(
         }
     }
 
-    private fun getAllTypesError(error: NetworkError): ErrorState {
+    private fun getAllTypesError(error: NetworkError): ErrorState<ListTypesEvent> {
         return when (error) {
             is NetworkError.UnableToConnect -> {
                 ErrorState(
                     displayAs = DisplayError.Dialog,
                     networkError = error,
                     actionButtonText = UiMessages.StringResource(R.string.retry),
-                    onAction = {
-                        _states.update {
-                            it.copy(error = ErrorState())
-                        }
-                        getAllTypes(isRefresh = true)
-                    },
+                    actionEvent = ListTypesEvent.OnRetryGetAllTypes,
                     isActionButtonVisible = true,
                     dismissButtonText = UiMessages.StringResource(R.string.dismiss),
                     isDismissButtonVisible = true,
-                    onDismiss = {
-                        _states.update {
-                            it.copy(error = ErrorState())
-                        }
-                    }
+                    dismissEvent = ListTypesEvent.OnDismissError
                 )
             }
 
