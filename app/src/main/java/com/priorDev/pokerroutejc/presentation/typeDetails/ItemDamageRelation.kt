@@ -41,15 +41,15 @@ fun ItemDamageRelation(
                 text = title,
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.headlineMedium,
-                color = Color.Black,
+                color = MaterialTheme.colorScheme.onSurface,
             )
             Spacer(modifier = Modifier.height(16.dp))
             LazyRow(Modifier.padding(horizontal = 4.dp)) {
                 items(list) { type ->
                     ItemType(
                         modifier = Modifier
-                            .height(50.dp)
-                            .width(100.dp)
+                            .height(70.dp)
+                            .width(150.dp)
                             .padding(horizontal = 8.dp),
                         type = type
                     )

@@ -1,6 +1,7 @@
 package com.priorDev.pokerroutejc.presentation.typeDetails
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,6 +12,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,6 +36,11 @@ import com.priorDev.pokerroutejc.presentation.core.LoadingIndicator
 import com.priorDev.pokerroutejc.presentation.core.MyTopBar
 import com.priorDev.pokerroutejc.presentation.core.ScreenTemplate
 import com.priorDev.pokerroutejc.presentation.core.UiMessages
+import com.priorDev.pokerroutejc.ui.theme.DarkDefensive
+import com.priorDev.pokerroutejc.ui.theme.DarkDoubleDamageColor
+import com.priorDev.pokerroutejc.ui.theme.DarkHalfDamageColor
+import com.priorDev.pokerroutejc.ui.theme.DarkNoDamageColor
+import com.priorDev.pokerroutejc.ui.theme.DarkOffensive
 import com.priorDev.pokerroutejc.ui.theme.PokemonRRouteJCTheme
 
 @Composable
@@ -50,8 +57,7 @@ fun DetailsTypeScreen(
         onEvent = onEvents,
         topBar = {
             MyTopBar(
-                title = UiMessages.DynamicMessage(details.name.uppercase()),
-                color = colorType
+                title = UiMessages.DynamicMessage(details.name.uppercase())
             )
         }
     ) {
@@ -65,7 +71,9 @@ fun DetailsTypeScreen(
             item {
                 Card(
                     elevation = CardDefaults.elevatedCardElevation(defaultElevation = 8.dp),
-                    colors = CardDefaults.cardColors(containerColor = Offensive),
+                    colors = CardDefaults.cardColors(
+                        containerColor = if(isSystemInDarkTheme()) DarkOffensive else Offensive
+                    ),
                     modifier = Modifier.padding(horizontal = 16.dp)
                 ) {
                     Column(
@@ -79,14 +87,14 @@ fun DetailsTypeScreen(
                                 .size(50.dp),
                             painter = painterResource(id = R.drawable.icon_attack),
                             contentDescription = stringResource(id = R.string.offensive),
-                            tint = Color.Black,
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
 
                         Spacer(modifier = Modifier.height(16.dp))
 
                         ItemDamageRelation(
                             title = stringResource(id = R.string.damageX2),
-                            background = DoubleDamageColor,
+                            background = if (isSystemInDarkTheme()) DarkDoubleDamageColor else DoubleDamageColor,
                             list = details.damageRelationsData.doubleDamageTo,
                         )
 
@@ -94,7 +102,7 @@ fun DetailsTypeScreen(
 
                         ItemDamageRelation(
                             title = stringResource(id = R.string.half_damage),
-                            background = HalfDamageColor,
+                            background = if (isSystemInDarkTheme()) DarkHalfDamageColor else HalfDamageColor,
                             list = details.damageRelationsData.halfDamageTo
                         )
 
@@ -102,7 +110,7 @@ fun DetailsTypeScreen(
 
                         ItemDamageRelation(
                             title = stringResource(id = R.string.no_damage),
-                            background = NoDamageColor,
+                            background = if (isSystemInDarkTheme()) DarkNoDamageColor else NoDamageColor,
                             list = details.damageRelationsData.noDamageTo
                         )
                         Spacer(modifier = Modifier.height(8.dp))
@@ -117,7 +125,10 @@ fun DetailsTypeScreen(
             item {
                 Card(
                     elevation = CardDefaults.elevatedCardElevation(defaultElevation = 8.dp),
-                    colors = CardDefaults.cardColors(containerColor = Defensive),
+                    colors = CardDefaults
+                        .cardColors(
+                            containerColor = if (isSystemInDarkTheme()) DarkDefensive else Defensive
+                        ),
                     modifier = Modifier.padding(horizontal = 16.dp)
                 ) {
                     Column(
@@ -131,14 +142,14 @@ fun DetailsTypeScreen(
                                 .size(50.dp),
                             painter = painterResource(id = R.drawable.icon_defensive),
                             contentDescription = stringResource(id = R.string.defensive),
-                            tint = Color.Black,
+                            tint = MaterialTheme.colorScheme.onSurface,
                         )
 
                         Spacer(modifier = Modifier.height(16.dp))
 
                         ItemDamageRelation(
                             title = stringResource(id = R.string.damageX2),
-                            background = DoubleDamageColor,
+                            background = if (isSystemInDarkTheme()) DarkDoubleDamageColor else DoubleDamageColor,
                             list = details.damageRelationsData.doubleDamageFrom,
                         )
 
@@ -146,7 +157,7 @@ fun DetailsTypeScreen(
 
                         ItemDamageRelation(
                             title = stringResource(id = R.string.half_damage),
-                            background = HalfDamageColor,
+                            background = if (isSystemInDarkTheme()) DarkHalfDamageColor else HalfDamageColor,
                             list = details.damageRelationsData.halfDamageFrom,
                         )
 
@@ -154,7 +165,7 @@ fun DetailsTypeScreen(
 
                         ItemDamageRelation(
                             title = stringResource(id = R.string.no_damage),
-                            background = NoDamageColor,
+                            background = if (isSystemInDarkTheme()) DarkNoDamageColor else NoDamageColor,
                             list = details.damageRelationsData.noDamageFrom,
                         )
                         Spacer(modifier = Modifier.height(8.dp))
