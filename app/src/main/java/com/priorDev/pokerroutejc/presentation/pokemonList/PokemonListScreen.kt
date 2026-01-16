@@ -14,8 +14,12 @@ import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
@@ -25,14 +29,12 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.priorDev.pokerroutejc.R
 import com.priorDev.pokerroutejc.domain.pokemon.models.PokemonNameData
 import com.priorDev.pokerroutejc.presentation.core.LoadingIndicator
 import com.priorDev.pokerroutejc.presentation.core.ScreenTemplate
 import com.priorDev.pokerroutejc.presentation.pokemonList.components.ItemPokemonName
-import com.priorDev.pokerroutejc.presentation.reusable.DisposableMessage
+import com.priorDev.pokerroutejc.presentation.pokemonList.components.PokemonSearchBar
 import com.priorDev.pokerroutejc.presentation.reusable.PreviewTemplate
-import com.priorDev.pokerroutejc.presentation.reusable.SearchBarButton
 import com.priorDev.pokerroutejc.ui.Routes
 
 @Composable
@@ -42,10 +44,15 @@ fun PokemonListScreen(
     onEvent: (PokemonListEvent) -> Unit,
 ) {
     val gridState = rememberLazyGridState()
-
-    DisposableMessage(states.uiMessages, onDismiss = { onEvent(PokemonListEvent.OnDismiss) })
-
     val loadingIndicator = if (states.isRefreshing) LoadingIndicator.Refreshing else LoadingIndicator.None
+
+    var isSearchActive by rememberSaveable { mutableStateOf(false) }
+
+    LaunchedEffect(isSearchActive) {
+        if (!isSearchActive) {
+            onEvent(PokemonListEvent.OnSearchQueryChange(""))
+        }
+    }
 
     // ScreenTemplate can handle refresh if we pass onRefresh and loadingIndicator
     ScreenTemplate(
@@ -63,9 +70,22 @@ fun PokemonListScreen(
                     color = MaterialTheme.colorScheme.background
                 )
         ) {
-            SearchBarButton(
-                text = stringResource(R.string.search_pokemon_by_name),
-                onClick = { onEvent.invoke(PokemonListEvent.OnSearch) }
+            PokemonSearchBar(
+                query = states.searchText,
+                isActive = isSearchActive,
+                onQueryChange = { onEvent(PokemonListEvent.OnSearchQueryChange(it)) },
+                onActiveChange = { isSearchActive = it },
+                searchResults = states.searchResults,
+                onResultClick = { pokemon ->
+                    onEvent(
+                        PokemonListEvent.Navigate(
+                            Routes.PkDetails(pokemon.name)
+                        )
+                    )
+                },
+                onClear = {
+                    onEvent(PokemonListEvent.OnSearchQueryChange(""))
+                }
             )
 
             if (states.isLoading || pokemonList.loadState.append is LoadState.Loading) {

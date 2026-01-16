@@ -14,8 +14,6 @@ fun NavGraphBuilder.pokemonNavigation() {
     ) {
         pokemonListWrapper()
 
-        pkSearchWrapper()
-
         pokemonDetailWrapper()
 
         detailsTypeWrapper<Routes.TypeDetails.PokemonTab>()

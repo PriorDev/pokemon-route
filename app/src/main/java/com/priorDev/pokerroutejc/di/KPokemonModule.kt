@@ -80,7 +80,8 @@ val kPokemonModule = module {
     viewModel {
         PokemonListViewModel(
             pager = get(),
-            globalEventChannel = get()
+            globalEventChannel = get(),
+            pokemonApolloService = get()
         )
     }
 
@@ -91,13 +92,6 @@ val kPokemonModule = module {
             useCases = get(),
             globalEvent = get(),
             settingsRepo = get()
-        )
-    }
-
-    viewModel {
-        PkSearchViewModel(
-            pokemonApolloService = get(),
-            globalEventChannel = get()
         )
     }
 }
