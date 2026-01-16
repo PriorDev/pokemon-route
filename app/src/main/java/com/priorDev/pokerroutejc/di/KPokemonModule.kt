@@ -17,7 +17,6 @@ import com.priorDev.pokerroutejc.domain.pokemon.useCases.GetDamageRelations
 import com.priorDev.pokerroutejc.domain.pokemon.useCases.PokemonUseCases
 import com.priorDev.pokerroutejc.presentation.pokemonDetails.PokemonDetailsViewModel
 import com.priorDev.pokerroutejc.presentation.pokemonList.PokemonListViewModel
-import com.priorDev.pokerroutejc.presentation.pokemonSearch.PkSearchViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 

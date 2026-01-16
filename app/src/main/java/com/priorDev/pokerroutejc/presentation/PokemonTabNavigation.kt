@@ -4,7 +4,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navigation
 import com.priorDev.pokerroutejc.presentation.pokemonDetails.pokemonDetailWrapper
 import com.priorDev.pokerroutejc.presentation.pokemonList.pokemonListWrapper
-import com.priorDev.pokerroutejc.presentation.pokemonSearch.pkSearchWrapper
 import com.priorDev.pokerroutejc.presentation.typeDetails.detailsTypeWrapper
 import com.priorDev.pokerroutejc.ui.Routes
 
