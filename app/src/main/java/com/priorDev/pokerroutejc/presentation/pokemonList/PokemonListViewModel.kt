@@ -42,8 +42,6 @@ class PokemonListViewModel(
 
     fun onEvent(event: PokemonListEvent) {
         when (event) {
-            PokemonListEvent.OnDismiss -> { /* no-op */ }
-
             PokemonListEvent.OnRefresh -> onRefresh()
 
             is PokemonListEvent.OnSearchQueryChange -> {

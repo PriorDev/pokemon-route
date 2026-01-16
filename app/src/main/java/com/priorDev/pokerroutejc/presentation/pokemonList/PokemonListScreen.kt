@@ -1,45 +1,25 @@
 package com.priorDev.pokerroutejc.presentation.pokemonList
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SearchBar
-import androidx.compose.material3.SearchBarDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
@@ -49,16 +29,14 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
 import com.priorDev.pokerroutejc.domain.pokemon.models.PokemonNameData
 import com.priorDev.pokerroutejc.presentation.core.LoadingIndicator
 import com.priorDev.pokerroutejc.presentation.core.ScreenTemplate
 import com.priorDev.pokerroutejc.presentation.pokemonList.components.ItemPokemonName
+import com.priorDev.pokerroutejc.presentation.pokemonList.components.PokemonSearchBar
 import com.priorDev.pokerroutejc.presentation.reusable.PreviewTemplate
 import com.priorDev.pokerroutejc.ui.Routes
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PokemonListScreen(
     states: PokemonListState,
@@ -67,7 +45,6 @@ fun PokemonListScreen(
 ) {
     val gridState = rememberLazyGridState()
     val loadingIndicator = if (states.isRefreshing) LoadingIndicator.Refreshing else LoadingIndicator.None
-    val keyboardController = LocalSoftwareKeyboardController.current
 
     var isSearchActive by rememberSaveable { mutableStateOf(false) }
 
@@ -93,94 +70,23 @@ fun PokemonListScreen(
                     color = MaterialTheme.colorScheme.background
                 )
         ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = if (isSearchActive) 0.dp else 4.dp)
-            ) {
-                SearchBar(
-                    modifier = Modifier
-                        .align(Alignment.TopCenter),
-                    inputField = {
-                        SearchBarDefaults.InputField(
-                            query = states.searchText,
-                            onQueryChange = { onEvent(PokemonListEvent.OnSearchQueryChange(it)) },
-                            onSearch = { keyboardController?.hide() },
-                            expanded = isSearchActive,
-                            onExpandedChange = { isSearchActive = it },
-                            placeholder = { Text("Search Pokemon") },
-                            leadingIcon = {
-                                if (isSearchActive) {
-                                    IconButton(onClick = {
-                                        isSearchActive = false
-                                        onEvent(PokemonListEvent.OnSearchQueryChange(""))
-                                    }) {
-                                        Icon(
-                                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                            contentDescription = "Back"
-                                        )
-                                    }
-                                } else {
-                                    Icon(
-                                        imageVector = Icons.Default.Search,
-                                        contentDescription = "Search"
-                                    )
-                                }
-                            },
-                            trailingIcon = {
-                                if (isSearchActive && states.searchText.isNotEmpty()) {
-                                    IconButton(onClick = {
-                                        onEvent(PokemonListEvent.OnSearchQueryChange(""))
-                                        isSearchActive = false
-                                    }) {
-                                        Icon(
-                                            imageVector = Icons.Default.Close,
-                                            contentDescription = "Clear search"
-                                        )
-                                    }
-                                }
-                            }
+            PokemonSearchBar(
+                query = states.searchText,
+                isActive = isSearchActive,
+                onQueryChange = { onEvent(PokemonListEvent.OnSearchQueryChange(it)) },
+                onActiveChange = { isSearchActive = it },
+                searchResults = states.searchResults,
+                onResultClick = { pokemon ->
+                    onEvent(
+                        PokemonListEvent.Navigate(
+                            Routes.PkDetails(pokemon.name)
                         )
-                    },
-                    expanded = isSearchActive,
-                    onExpandedChange = { isSearchActive = it },
-                ) {
-                    LazyColumn(
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
-                        modifier = Modifier.padding(horizontal = 16.dp),
-                    ) {
-                        items(states.searchResults) { pokemon ->
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .clickable {
-                                        onEvent(
-                                            PokemonListEvent.Navigate(
-                                                Routes.PkDetails(pokemon.name)
-                                            )
-                                        )
-                                    }
-                            ) {
-                                AsyncImage(
-                                    model = ImageRequest.Builder(LocalContext.current)
-                                        .data(pokemon.imgUrl)
-                                        .crossfade(true)
-                                        .build(),
-                                    contentDescription = pokemon.name,
-                                    contentScale = ContentScale.Fit,
-                                    modifier = Modifier.size(50.dp)
-                                )
-                                Text(
-                                    text = pokemon.name.uppercase(),
-                                    style = MaterialTheme.typography.titleMedium,
-                                    modifier = Modifier.padding(4.dp),
-                                )
-                            }
-                        }
-                    }
+                    )
+                },
+                onClear = {
+                    onEvent(PokemonListEvent.OnSearchQueryChange(""))
                 }
-            }
+            )
 
             if (states.isLoading || pokemonList.loadState.append is LoadState.Loading) {
                 LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
@@ -216,10 +122,6 @@ fun PokemonListScreen(
                 }
             }
         }
-    }
-    BackHandler(enabled = isSearchActive) {
-        isSearchActive = false
-        onEvent(PokemonListEvent.OnSearchQueryChange(""))
     }
 }
 
