@@ -74,6 +74,7 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     //Material
+    implementation(libs.material)
     implementation(libs.material3)
     implementation(libs.material.icons.extended)
     //lifecycle

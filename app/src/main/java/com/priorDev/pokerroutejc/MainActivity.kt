@@ -13,7 +13,7 @@ import com.priorDev.pokerroutejc.ui.theme.PokemonRRouteJCTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        
         setContent {
             PokemonRRouteJCTheme {
                 Surface(
