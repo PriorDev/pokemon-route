@@ -51,7 +51,7 @@ fun MainComposable() {
 
         NavHost(
             modifier = Modifier
-                .padding(innerPadding),
+                .padding(bottom = innerPadding.calculateBottomPadding()),
             navController = navController,
             startDestination = Routes.TypeNav,
             route = Routes.MainNav::class
