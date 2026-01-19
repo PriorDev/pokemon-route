@@ -54,8 +54,7 @@ fun ItemMove(
             move.type?.let {
                 ItemType(
                     type = it,
-                    modifier = Modifier.height(32.dp),
-                    elevation = 0.dp
+                    modifier = Modifier.height(32.dp)
                 )
             }
 

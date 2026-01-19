@@ -24,6 +24,7 @@ ktor = "3.0.3"
 jupiter = "5.11.4"
 kspVersion = "2.1.0-1.0.29"
 material = "1.12.0"
+composeMaterial3Version = "1.5.6"
 
 [libraries]
 apollo-runtime = { module = "com.apollographql.apollo3:apollo-runtime", version.ref = "apolloRuntimeVersion" }
@@ -83,6 +84,7 @@ mockk = { module = "io.mockk:mockk", version = "1.13.13"}
 mockk-android = { module = "io.mockk:mockk-android", version = "1.13.13"}
 assertk = "com.willowtreeapps.assertk:assertk:0.28.1"
 turbine = "app.cash.turbine:turbine:1.2.0"
+compose-material3 = { group = "androidx.wear.compose", name = "compose-material3", version.ref = "composeMaterial3Version" }
 
 [bundles]
 detekt = ["detekt-formatting", "detekt-cli", "detekt-rules-compose"]

@@ -51,8 +51,7 @@ fun DamageRelationView(
                         states.damageRelations[key]?.forEach {
                             ItemType(
                                 type = it.type,
-                                modifier = Modifier.padding(8.dp),
-                                elevation = 0.dp
+                                modifier = Modifier.padding(8.dp)
                             )
                         }
                     }

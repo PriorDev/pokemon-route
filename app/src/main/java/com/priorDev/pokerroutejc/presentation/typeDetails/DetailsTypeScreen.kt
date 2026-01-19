@@ -1,7 +1,10 @@
 package com.priorDev.pokerroutejc.presentation.typeDetails
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -14,6 +17,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -35,6 +39,7 @@ import com.priorDev.pokerroutejc.presentation.core.MyTopBar
 import com.priorDev.pokerroutejc.presentation.core.ScreenTemplate
 import com.priorDev.pokerroutejc.presentation.core.UiMessages
 import com.priorDev.pokerroutejc.ui.theme.PokemonRRouteJCTheme
+import com.priorDev.pokerroutejc.ui.theme.Shapes
 
 @Composable
 fun DetailsTypeScreen(
@@ -51,119 +56,59 @@ fun DetailsTypeScreen(
         topBar = {
             MyTopBar(
                 title = UiMessages.DynamicMessage(details.name.uppercase()),
-                color = colorType
             )
         }
     ) {
         LazyColumn(
-            Modifier
-                .background(colorType)
+            Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             item {
-                Spacer(modifier = Modifier.height(16.dp))
-            }
-            item {
-                Card(
-                    elevation = CardDefaults.elevatedCardElevation(defaultElevation = 8.dp),
-                    colors = CardDefaults.cardColors(containerColor = Offensive),
-                    modifier = Modifier.padding(horizontal = 16.dp)
-                ) {
-                    Column(
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Icon(
-                            modifier = Modifier
-                                .size(50.dp),
-                            painter = painterResource(id = R.drawable.icon_attack),
-                            contentDescription = stringResource(id = R.string.offensive),
-                            tint = Color.Black,
-                        )
-
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        ItemDamageRelation(
-                            title = stringResource(id = R.string.damageX2),
-                            background = DoubleDamageColor,
-                            list = details.damageRelationsData.doubleDamageTo,
-                        )
-
-                        Spacer(modifier = Modifier.height(8.dp))
-
-                        ItemDamageRelation(
-                            title = stringResource(id = R.string.half_damage),
-                            background = HalfDamageColor,
-                            list = details.damageRelationsData.halfDamageTo
-                        )
-
-                        Spacer(modifier = Modifier.height(8.dp))
-
-                        ItemDamageRelation(
-                            title = stringResource(id = R.string.no_damage),
-                            background = NoDamageColor,
-                            list = details.damageRelationsData.noDamageTo
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                    }
-                }
+                ItemDamageRelation(
+                    title = stringResource(id = R.string.damageX2),
+                    list = details.damageRelationsData.doubleDamageTo,
+                    painter = painterResource(id = R.drawable.icon_attack)
+                )
             }
 
             item {
-                Spacer(modifier = Modifier.height(16.dp))
+                ItemDamageRelation(
+                    title = stringResource(id = R.string.half_damage),
+                    list = details.damageRelationsData.halfDamageTo,
+                    painter = painterResource(id = R.drawable.icon_attack)
+                )
             }
 
             item {
-                Card(
-                    elevation = CardDefaults.elevatedCardElevation(defaultElevation = 8.dp),
-                    colors = CardDefaults.cardColors(containerColor = Defensive),
-                    modifier = Modifier.padding(horizontal = 16.dp)
-                ) {
-                    Column(
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Icon(
-                            modifier = Modifier
-                                .size(50.dp),
-                            painter = painterResource(id = R.drawable.icon_defensive),
-                            contentDescription = stringResource(id = R.string.defensive),
-                            tint = Color.Black,
-                        )
-
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        ItemDamageRelation(
-                            title = stringResource(id = R.string.damageX2),
-                            background = DoubleDamageColor,
-                            list = details.damageRelationsData.doubleDamageFrom,
-                        )
-
-                        Spacer(modifier = Modifier.height(8.dp))
-
-                        ItemDamageRelation(
-                            title = stringResource(id = R.string.half_damage),
-                            background = HalfDamageColor,
-                            list = details.damageRelationsData.halfDamageFrom,
-                        )
-
-                        Spacer(modifier = Modifier.height(8.dp))
-
-                        ItemDamageRelation(
-                            title = stringResource(id = R.string.no_damage),
-                            background = NoDamageColor,
-                            list = details.damageRelationsData.noDamageFrom,
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                    }
-                }
+                ItemDamageRelation(
+                    title = stringResource(id = R.string.no_damage),
+                    list = details.damageRelationsData.noDamageTo,
+                    painter = painterResource(id = R.drawable.icon_attack)
+                )
             }
 
             item {
-                Spacer(modifier = Modifier.height(16.dp))
+                ItemDamageRelation(
+                    title = stringResource(id = R.string.damageX2),
+                    list = details.damageRelationsData.doubleDamageFrom,
+                    painter = painterResource(id = R.drawable.icon_defensive)
+                )
+            }
+
+            item {
+                ItemDamageRelation(
+                    title = stringResource(id = R.string.half_damage),
+                    list = details.damageRelationsData.halfDamageFrom,
+                    painter = painterResource(id = R.drawable.icon_defensive)
+                )
+            }
+
+            item {
+                ItemDamageRelation(
+                    title = stringResource(id = R.string.no_damage),
+                    list = details.damageRelationsData.noDamageFrom,
+                    painter = painterResource(id = R.drawable.icon_defensive)
+                )
             }
         }
     }

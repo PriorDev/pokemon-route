@@ -1,76 +1,126 @@
 package com.priorDev.pokerroutejc.presentation.typeDetails
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
+import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import com.priorDev.pokerroutejc.presentation.reusable.ItemType
+import com.priorDev.pokerroutejc.R
 import com.priorDev.pokerroutejc.domain.types.models.TypeData
+import com.priorDev.pokerroutejc.presentation.reusable.ItemType
+import com.priorDev.pokerroutejc.ui.theme.PokemonRRouteJCTheme
 
 @Composable
 fun ItemDamageRelation(
     title: String,
-    background: Color,
     list: List<TypeData>,
-    modifier: Modifier = Modifier
+    painter: Painter
 ) {
     if (list.isEmpty()) return
+    val rowCount by remember {
+        derivedStateOf { ((list.size +1) / 2) }
+    }
 
-    Card(
-        modifier = modifier,
-        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 16.dp),
-        colors = CardDefaults.cardColors(containerColor = background),
-    ) {
-        Column {
+    Column {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                modifier = Modifier
+                    .size(50.dp),
+                painter = painter,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary
+            )
             Text(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier,
                 text = title,
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.headlineMedium,
-                color = Color.Black,
+                style = MaterialTheme.typography.titleLarge,
+                color =  MaterialTheme.colorScheme.primary
             )
-            Spacer(modifier = Modifier.height(16.dp))
-            LazyRow(Modifier.padding(horizontal = 4.dp)) {
-                items(list) { type ->
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        for (i in 0 until rowCount) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(
+                        when {
+                            rowCount == 1 -> MaterialTheme.shapes.extraLarge
+                            i == 0 -> MaterialTheme.shapes.extraLarge.copy(
+                                bottomStart = CornerSize(0.dp),
+                                bottomEnd = CornerSize(0.dp)
+                            )
+                            i == rowCount - 1 -> MaterialTheme.shapes.extraLarge.copy(
+                                topStart = CornerSize(0.dp),
+                                topEnd = CornerSize(0.dp)
+                            )
+                            else -> MaterialTheme.shapes.small
+                        }
+                    )
+            ) {
+                ItemType(
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(64.dp),
+                    type = list[i * 2]
+                )
+
+                val index2 = (i * 2) + 1
+                if (index2 < list.size) {
+                    Spacer(modifier = Modifier.width(4.dp))
                     ItemType(
                         modifier = Modifier
-                            .height(50.dp)
-                            .width(100.dp)
-                            .padding(horizontal = 8.dp),
-                        type = type
+                            .weight(1f)
+                            .height(64.dp),
+                        type = list[index2]
                     )
                 }
             }
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(4.dp))
         }
+
+        Spacer(modifier = Modifier.height(8.dp))
     }
 }
 
-@Preview(showSystemUi = true)
+@PreviewLightDark
 @Composable
 private fun ItemDamageRelationPreview() {
-    ItemDamageRelation(
-        title = "Double damage to",
-        background = MaterialTheme.colorScheme.tertiary,
-        list = listOf(
-            TypeData(1, "Hielo"),
-            TypeData(1, "Fiego"),
-            TypeData(1, "Fantasma"),
-            TypeData(1, "Bicho"),
+    PokemonRRouteJCTheme {
+        ItemDamageRelation(
+            title = "Double damage to",
+            painter = painterResource(id = R.drawable.icon_defensive),
+            list = listOf(
+                TypeData(1, "Hielo"),
+                TypeData(1, "Fiego"),
+                TypeData(1, "Fantasma"),
+                TypeData(1, "Bicho"),
+                TypeData(1, "Siniestro")
+            )
         )
-    )
+    }
 }

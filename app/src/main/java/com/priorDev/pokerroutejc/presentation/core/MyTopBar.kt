@@ -22,7 +22,8 @@ fun MyTopBar(
         title = {
             Text(
                 text = title.asString(),
-                style = MaterialTheme.typography.headlineMedium
+                style = MaterialTheme.typography.headlineMedium,
+                color = MaterialTheme.colorScheme.tertiary
             )
         },
         actions = actions,
