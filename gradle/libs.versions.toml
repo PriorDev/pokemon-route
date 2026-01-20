@@ -1,7 +1,7 @@
 [versions]
 accompanistSystemuicontrollerVersion = "0.36.0"
 activityComposeVersion = "1.9.3"
-apolloRuntimeVersion = "3.8.5"
+apolloVersion = "3.8.6"
 coilComposeVersion = "2.7.0"
 coreKtxVersion = "1.15.0"
 datastorePreferencesVersion = "1.1.2"
@@ -27,7 +27,7 @@ material = "1.12.0"
 composeMaterial3Version = "1.5.6"
 
 [libraries]
-apollo-runtime = { module = "com.apollographql.apollo3:apollo-runtime", version.ref = "apolloRuntimeVersion" }
+apollo-runtime = { module = "com.apollographql.apollo3:apollo-runtime", version.ref = "apolloVersion" }
 datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferencesVersion" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koinAndroidVersion" }
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koinAndroidVersion" }
@@ -94,3 +94,4 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinVersion" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlinVersion" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "kspVersion" }
+apollo = { id = "com.apollographql.apollo3", version.ref = "apolloVersion" }

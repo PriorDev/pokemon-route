@@ -4,7 +4,7 @@ plugins {
     alias(libs.plugins.ksp)
     id("io.gitlab.arturbosch.detekt") version "1.23.7"
     alias(libs.plugins.kotlin.serialization)
-    id("com.apollographql.apollo3").version("3.8.5")
+    alias(libs.plugins.apollo)
     alias(libs.plugins.compose.compiler)
     id("de.mannodermaus.android-junit5") version "1.11.0.0"
 }
