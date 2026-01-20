@@ -27,11 +27,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.priorDev.pokerroutejc.R
 import com.priorDev.pokerroutejc.domain.pokemon.models.MoveDetailsData
 import com.priorDev.pokerroutejc.presentation.core.ScreenTemplate
 import com.priorDev.pokerroutejc.presentation.pokemonDetails.PokemonDetailsEvents
+import com.priorDev.pokerroutejc.ui.theme.PokemonRRouteJCTheme
 import com.priorDev.pokerroutejc.utils.ApiLanguages
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
@@ -148,5 +150,53 @@ fun PokemonMovesView(
                 }
             )
         }
+    }
+}
+
+@Preview
+@Composable
+private fun PokemonMovesViewPreview() {
+    PokemonRRouteJCTheme {
+        PokemonMovesView(
+            pkMovesState = PokemonMovesState(),
+            selectedLanguage = ApiLanguages.ENGLISH,
+            movesList = mapOf(
+                "level-up" to listOf(
+                    MoveDetailsData(
+                        visible = true,
+                        learnMethod = "level-up",
+                        name = "Tackle",
+                        accuracy = 100,
+                        power = 40,
+                        pp = 35,
+                        priority = 0,
+                        type = null,
+                        damageClass = "physical",
+                        generationName = "generation-i",
+                        effect = "Inflicts regular damage.",
+                        machineNumber = "",
+                        level = 1
+                    )
+                ),
+                "machine" to listOf(
+                    MoveDetailsData(
+                        visible = true,
+                        learnMethod = "machine",
+                        name = "Thunderbolt",
+                        accuracy = 100,
+                        power = 90,
+                        pp = 15,
+                        priority = 0,
+                        type = null,
+                        damageClass = "special",
+                        generationName = "generation-i",
+                        effect = "Has a 10% chance to paralyze the target.",
+                        machineNumber = "TM24",
+                        level = 0
+                    )
+                )
+            ),
+            onEvents = {}
+        )
     }
 }

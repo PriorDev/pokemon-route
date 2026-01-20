@@ -29,14 +29,14 @@ import com.priorDev.pokerroutejc.presentation.reusable.ItemType
 import com.priorDev.pokerroutejc.ui.theme.PokemonRRouteJCTheme
 
 @Composable
-fun ItemDamageRelation(
-    title: String,
-    list: List<TypeData>,
-    painter: Painter
+fun TypeGroup(
+    title: String?,
+    painter: Painter?,
+    damageRelation: List<TypeData>
 ) {
-    if (list.isEmpty()) return
+    if (damageRelation.isEmpty()) return
     val rowCount by remember {
-        derivedStateOf { ((list.size +1) / 2) }
+        derivedStateOf { ((damageRelation.size +1) / 2) }
     }
 
     Column {
@@ -45,20 +45,24 @@ fun ItemDamageRelation(
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(
-                modifier = Modifier
-                    .size(50.dp),
-                painter = painter,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary
-            )
-            Text(
-                modifier = Modifier,
-                text = title,
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.titleLarge,
-                color =  MaterialTheme.colorScheme.primary
-            )
+            painter?.let {
+                Icon(
+                    modifier = Modifier
+                        .size(50.dp),
+                    painter = painter,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
+            title?.let {
+                Text(
+                    modifier = Modifier,
+                    text = title,
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.titleLarge,
+                    color =  MaterialTheme.colorScheme.primary
+                )
+            }
         }
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -86,21 +90,21 @@ fun ItemDamageRelation(
                     modifier = Modifier
                         .weight(1f)
                         .height(64.dp),
-                    type = list[i * 2]
+                    type = damageRelation[i * 2]
                 )
 
                 val index2 = (i * 2) + 1
-                if (index2 < list.size) {
-                    Spacer(modifier = Modifier.width(4.dp))
+                if (index2 < damageRelation.size) {
+                    Spacer(modifier = Modifier.width(2.dp))
                     ItemType(
                         modifier = Modifier
                             .weight(1f)
                             .height(64.dp),
-                        type = list[index2]
+                        type = damageRelation[index2]
                     )
                 }
             }
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(2.dp))
         }
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -109,12 +113,12 @@ fun ItemDamageRelation(
 
 @PreviewLightDark
 @Composable
-private fun ItemDamageRelationPreview() {
+private fun TypeGroupPreview() {
     PokemonRRouteJCTheme {
-        ItemDamageRelation(
+        TypeGroup(
             title = "Double damage to",
             painter = painterResource(id = R.drawable.icon_defensive),
-            list = listOf(
+            damageRelation = listOf(
                 TypeData(1, "Hielo"),
                 TypeData(1, "Fiego"),
                 TypeData(1, "Fantasma"),

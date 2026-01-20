@@ -30,7 +30,6 @@ import com.priorDev.pokerroutejc.presentation.pokemonDetails.sprites.SpritesStat
 import com.priorDev.pokerroutejc.presentation.pokemonDetails.sprites.SpritesView
 import com.priorDev.pokerroutejc.presentation.pokemonDetails.typeRelation.DamageRelationStates
 import com.priorDev.pokerroutejc.presentation.pokemonDetails.typeRelation.DamageRelationView
-import com.priorDev.pokerroutejc.presentation.reusable.DisposableMessage
 import com.priorDev.pokerroutejc.presentation.utils.PageItem
 import com.priorDev.pokerroutejc.presentation.utils.PkDetailsPages
 import com.priorDev.pokerroutejc.ui.theme.PokemonRRouteJCTheme
@@ -128,7 +127,8 @@ fun PokemonDetailsScreen(
                 PkDetailsPages.DAMAGE_RELATION -> {
                     DamageRelationView(
                         states = damageRelationStates,
-                        modifier = Modifier.padding(cardPadding)
+                        modifier = Modifier.padding(cardPadding),
+                        onEvents = onEvents
                     )
                 }
                 PkDetailsPages.POKEMON_MOVES -> {

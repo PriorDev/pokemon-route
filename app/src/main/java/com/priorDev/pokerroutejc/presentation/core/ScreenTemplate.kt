@@ -2,6 +2,7 @@ package com.priorDev.pokerroutejc.presentation.core
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -98,31 +99,7 @@ fun <E> ScreenTemplate(
     ) {
         content()
 
-        when (loadingIndicator) {
-            LoadingIndicator.None,
-
-            LoadingIndicator.Refreshing -> {
-                // Don't display anything
-            }
-            LoadingIndicator.SolidSpinningWheel -> {
-                Box(
-                    modifier
-                        .fillMaxSize()
-                        .background(MaterialTheme.colorScheme.background)
-                ) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.align(Alignment.Center)
-                    )
-                }
-            }
-            LoadingIndicator.TopLinear -> {
-                LinearProgressIndicator(
-                    Modifier
-                        .fillMaxWidth()
-                        .align(Alignment.TopCenter)
-                )
-            }
-        }
+        LoaderIndicatorView(loadingIndicator, modifier)
 
         ErrorView(errorState, onEvent)
     }

@@ -1,6 +1,7 @@
 package com.priorDev.pokerroutejc.presentation.pokemonDetails.pkInfo
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -21,9 +23,11 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ShapeDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -44,6 +48,7 @@ import com.priorDev.pokerroutejc.domain.pokemon.models.PokemonData
 import com.priorDev.pokerroutejc.domain.types.models.TypeData
 import com.priorDev.pokerroutejc.presentation.pokemonDetails.PokemonDetailsEvents
 import com.priorDev.pokerroutejc.presentation.pokemonDetails.PokemonDetailsStates
+import com.priorDev.pokerroutejc.presentation.reusable.ItemType
 import com.priorDev.pokerroutejc.presentation.reusable.PreviewTemplate
 import com.priorDev.pokerroutejc.ui.Routes
 
@@ -103,29 +108,7 @@ fun PokemonInfo(
 
                     Spacer(modifier = Modifier.height(10.dp))
 
-                    Row(
-                        horizontalArrangement = Arrangement.Center,
-                        modifier = Modifier.fillMaxWidth(),
-                    ) {
-                        pokemon.types.forEach { type ->
-                            Button(
-                                onClick = {
-                                    onEvents(
-                                        PokemonDetailsEvents.Navigate(
-                                            Routes.TypeDetails.PokemonTab(type.id)
-                                        )
-                                    )
-                                },
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = type.id.getTypeColor(),
-                                    contentColor = Color.Black
-                                ),
-                                modifier = Modifier.padding(horizontal = 16.dp)
-                            ) {
-                                Text(text = type.name.uppercase())
-                            }
-                        }
-                    }
+                    PokemonTypes(pokemon.types, onEvents)
 
                     Spacer(modifier = Modifier.height(16.dp))
 
@@ -151,6 +134,76 @@ fun PokemonInfo(
                 .size(200.dp)
                 .align(Alignment.TopCenter)
         )
+    }
+}
+
+@Composable
+private fun PokemonTypes(
+    types:  List<TypeData>,
+    onEvents: (PokemonDetailsEvents) -> Unit
+) {
+    if (types.isEmpty()) return
+
+    Row(
+        horizontalArrangement = Arrangement.Center,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+    ) {
+        val isMultitype = types.size > 1
+
+        ItemType(
+            modifier = Modifier
+                .weight(1f)
+                .height(64.dp)
+                .then(
+                    if (isMultitype) {
+                        Modifier
+                            .clip(
+                                shape = MaterialTheme.shapes.extraLarge.copy(
+                                    topEnd = CornerSize(0.dp),
+                                    bottomEnd = CornerSize(0.dp)
+                                )
+                            )
+                    } else {
+                        Modifier.clip(MaterialTheme.shapes.extraLarge)
+                    }
+                )
+                .clickable(
+                    onClick = {
+                        onEvents(
+                            PokemonDetailsEvents.Navigate(
+                                Routes.TypeDetails.PokemonTab(types.first().id)
+                            )
+                        )
+                    }
+                ),
+            type = types.first()
+        )
+
+        if (isMultitype) {
+            ItemType(
+                modifier = Modifier
+                    .weight(1f)
+                    .height(64.dp)
+                    .clip(
+                        shape = MaterialTheme.shapes.extraLarge.copy(
+                            topStart = CornerSize(0.dp),
+                            bottomStart = CornerSize(0.dp)
+                        )
+                    )
+                    .clickable(
+                        onClick = {
+                            onEvents(
+                                PokemonDetailsEvents.Navigate(
+                                    Routes.TypeDetails.PokemonTab(types.last().id)
+                                )
+                            )
+                        }
+                    ),
+                type = types.last()
+            )
+        }
     }
 }
 
@@ -201,7 +254,6 @@ private fun PokemonAbilities(
             HorizontalDivider(Modifier.fillMaxWidth(.8f))
 
             pokemon.abilities.filter { !it.isHidden }.forEach { ability ->
-                val color = pokemon.types.first().id.getTypeColor()
                 Button(
                     onClick = {
                         onEvent(PokemonDetailsEvents.OnAbilityClick(ability.name))
