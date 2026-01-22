@@ -103,7 +103,7 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinVersion" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlinVersion" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "kspVersion" }
-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 apollo = { id = "com.apollographql.apollo3", version.ref = "apolloVersion" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 android-junit5 = { id = "de.mannodermaus.android-junit5", version.ref = "androidJunit5" }
 google-service = { id = "com.google.gms.google-services", version.ref = "googleService" }
