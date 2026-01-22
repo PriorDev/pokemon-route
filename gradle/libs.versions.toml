@@ -3,7 +3,7 @@ accompanistSystemuicontrollerVersion = "0.36.0"
 activityComposeVersion = "1.9.3"
 agp = "8.13.2"
 androidJunit5 = "1.11.0.0"
-apolloRuntimeVersion = "3.8.5"
+apolloVersion = "3.8.6"
 coilComposeVersion = "2.7.0"
 compileSdk = "35"
 coreKtxVersion = "1.15.0"
@@ -34,7 +34,7 @@ composeMaterial3Version = "1.5.6"
 targetSdk = "35"
 
 [libraries]
-apollo-runtime = { module = "com.apollographql.apollo3:apollo-runtime", version.ref = "apolloRuntimeVersion" }
+apollo-runtime = { module = "com.apollographql.apollo3:apollo-runtime", version.ref = "apolloVersion" }
 datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferencesVersion" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koinAndroidVersion" }
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koinAndroidVersion" }
@@ -104,6 +104,6 @@ org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.re
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlinVersion" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "kspVersion" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
-apollo = { id = "com.apollographql.apollo3", version.ref = "apolloRuntimeVersion" }
+apollo = { id = "com.apollographql.apollo3", version.ref = "apolloVersion" }
 android-junit5 = { id = "de.mannodermaus.android-junit5", version.ref = "androidJunit5" }
 google-service = { id = "com.google.gms.google-services", version.ref = "googleService" }
