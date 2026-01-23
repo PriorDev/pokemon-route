@@ -1,12 +1,12 @@
 plugins {
-    id("com.android.application")
-    kotlin("android")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.org.jetbrains.kotlin.android)
     alias(libs.plugins.ksp)
-    id("io.gitlab.arturbosch.detekt") version "1.23.7"
+    alias(libs.plugins.detekt)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.apollo)
     alias(libs.plugins.compose.compiler)
-    id("de.mannodermaus.android-junit5") version "1.11.0.0"
+    alias(libs.plugins.android.junit5)
 }
 
 apollo {
@@ -17,12 +17,12 @@ apollo {
 
 android {
     namespace = "com.priorDev.pokerroutejc"
-    compileSdk = 35
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
         applicationId = "com.priorDev.pokerroutejc"
-        minSdk = 29
-        targetSdk = 35
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = 5
         versionName = "1.3"
 
@@ -58,7 +58,7 @@ android {
 }
 
 detekt {
-    toolVersion = "1.23.7" // Use the version that matches the plugin
+    toolVersion = libs.versions.detekt.get()
     buildUponDefaultConfig = true // Start with default config
     config.setFrom(files("../detekt.yml"))
 }
